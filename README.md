@@ -2,7 +2,7 @@
 
 | Student's name | SCIPER |
 | -------------- | ------ |
-| | |
+| Haeeun Kim|304107 |
 | | |
 | | |
 
