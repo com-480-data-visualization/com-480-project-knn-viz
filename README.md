@@ -28,6 +28,7 @@ Exploratory Data Analysis
 
 ### Pre-processing of the data set you chose:
 
+The initial dataset is already quite clean and ready to be used. 
 
 
 ### Related work
