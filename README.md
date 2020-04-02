@@ -14,9 +14,11 @@
 
 ### Dataset
 
-The dataset we are going to use is *120 years of Olympic history: athletes and results*. The dataset is extracted from  [Kaggle](https://www.kaggle.com/heesoo37/120-years-of-olympic-history-athletes-and-results) and contains data about the athletes that have taken part in the olympics from 1896 to 2016. 
+The dataset we are going to use is *120 years of Olympic history: athletes and results*. The dataset is extracted from  [Kaggle](https://www.kaggle.com/heesoo37/120-years-of-olympic-history-athletes-and-results) and contains data about the athletes that have taken part in the olympics (summer and winter) from 1896 to 2016. 
 
 The data contains over 270k entries where each entry corresponds to an athlete taking part in any sportive event. Details we can extract from the data are **Name, Year, NOC (National Olympic Committee), Sport, Event, Medal** among others. 
+
+This dataset is already clean and ready to use, so we only need to do the explorations to get the results that we want to visualize.
 
 ### Problematic
 
