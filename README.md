@@ -35,9 +35,9 @@ This app provides different plots using the same dataset as we plan to use. In t
 
 Although they share very interesting plots and even share a story with them, we miss some more interactivity with the user as well as completeness. Given these two examples, we want to create something that allows the reader to extract information and interact in different levels. We want our visitors to learn more about the olympics, from general facts that may not be that well known, to more detailed information that requires further analysis. The idea is that no matter how you landed in our page, you will obtain what you were looking for:
   
-  ** If you are just visiting and want to learn some general facts to later share with your friends, some text will accompany the different visualizations so that even without further engagement you can extract these facts. 
+  * If you are just visiting and want to learn some general facts to later share with your friends, some text will accompany the different visualizations so that even without further engagement you can extract these facts. 
   
-  ** If you are more interested in the topic and want to explore further, interactive visualizations will allow you to do so and get more insights by yourself. 
+  * If you are more interested in the topic and want to explore further, interactive visualizations will allow you to do so and get more insights by yourself. 
   
 The main axis of our visualization will be a historical timeline of the Olympic Games and from that timeline, show the rest of the insights and curiosities. Apart from the general information, we also want to show findings that we found surprising.
 
