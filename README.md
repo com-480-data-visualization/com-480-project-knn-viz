@@ -79,7 +79,7 @@ We divided our first exploratory analysis in 4 parts taking different points of 
   
   * There are athletes who have participated in both summer and winter olympics.
   
-The whole exploration data analysis is available [here](data_exploration.ipynb).
+The whole exploratory data analysis is available [here](data_exploration.ipynb).
 
 
 ### Related work
