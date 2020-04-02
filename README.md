@@ -20,6 +20,8 @@ The data contains over 270k entries where each entry corresponds to an athlete t
 
 This dataset is already clean and ready to use, so we only need to do the data exploration and get the results that we want to visualize.
 
+Additionally, we have created another small [dataset](data/host_cities.csv) with information about the host cities that have held the olympics such as their country, continent and hemisphere in order to explore them in more detail.
+
 ### Problematic
 
 Our motivation is to show people more things about the olympics in an easy way and anyone that is interested in the topic can discover new things about these historical events. Therefore, our target audience would be the general public and, in particular, people interested in sports and the olympics.
