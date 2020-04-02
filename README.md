@@ -20,28 +20,26 @@ The data contains over 270k entries where each entry corresponds to an athlete t
 
 This dataset is already clean and ready to use, so we only need to do the data exploration and get the results that we want to visualize.
 
+Additionally, we have created another small [dataset](data/host_cities.csv) with information about the host cities that have held the olympics such as their country, continent and hemisphere in order to explore them in more detail.
+
 ### Problematic
 
-**TODO: Frame the general topic of your visualization and the main axis that you want to develop. (Explain what we want to visualize -in general terms- and what's the story that will guide you through**
+Our motivation is to show people more things about the olympics in an easy way and anyone that is interested in the topic can discover new things about these historical events. Therefore, our target audience would be the general public and, in particular, people interested in sports and the olympics.
+We will start by taking a historical look, showing information about the host cities and interruptions they have suffered due to major events. From there we want to proceed to evaluate a question: what makes a country successful? Why are there countries with a lot of medals and others with any? 
 
+To analyse this question, we will go through different aspects. We can start by the influence of the number of participations: 
+* participation of countries along time
+* number of participants along time and also grouped by country
+Then we will check the influence of sports in this "successfulness" factor:
+* which sports have more events?
+* how have sports varied along time? 
+* which countries are more successful in each sport?
+With this factors we can get an idea per country of how they perform on each of these factors (# athletes, # years participating, # sports in which they take part, etc.) and maybe even propose a new ranking that could be something like how many medals they have / how many medals they could have had taking into account all the competitions they have taken part in.
 
-We want to visualize insights from the Olympics Games. However, visualizations using the olympics as data are not new. Some good examples are: 
+The data will be displayed in a way that allows the reader to extract information and interact in different levels. We want our visitors to learn more about the olympics, from general facts that may not be that well known, to more detailed information that requires further analysis. The idea is that no matter how you landed in our page, you will obtain what you were looking for:
+*	If you are just visiting and want to learn some general facts to later share with your friends, some text will accompany the different visualizations so that even without further engagement you can extract these facts.
+*	If you are more interested in the topic and want to explore further, interactive visualizations will allow you to do so and get more insights by yourself.
 
-* [The Winter Games, by Elbert Wang](https://www.dremio.com/the-winter-olympics/)
-In this visualization they show the evolution of the winter olympics across different topics (number of participants, number of sports, host cities, etc.). We can take it as inspiration for some graphics (how it display medals per country looks nice) but we would like to create something more interactive where the user has more control over the data it wants to see. 
-
-* [App Olympics Data, by Matthew Rautionmaa](https://matthewrautionmaa.shinyapps.io/Olympic_Shiny/) 
-This app provides different plots using the same dataset as we plan to use. In this case, the number of plots is large and many topics are already explored. Nevertheless, no further information is shared with the user and the degree of interactivity is very limited. 
-
-Although they share very interesting plots and even share a story with them, we miss some more interactivity with the user as well as completeness. Given these two examples, we want to create something that allows the reader to extract information and interact in different levels. We want our visitors to learn more about the olympics, from general facts that may not be that well known, to more detailed information that requires further analysis. The idea is that no matter how you landed in our page, you will obtain what you were looking for:
-  
-  * If you are just visiting and want to learn some general facts to later share with your friends, some text will accompany the different visualizations so that even without further engagement you can extract these facts. 
-  
-  * If you are more interested in the topic and want to explore further, interactive visualizations will allow you to do so and get more insights by yourself. 
-  
-The main axis of our visualization will be a historical timeline of the Olympic Games and from that timeline, show the rest of the insights and curiosities. Apart from the general information, we also want to show findings that we found surprising.
-
-Thus, our motivation is to show people more things about the olympics in an easy way and anyone that is interested in the topic can discover new things about these historical events. Therefore, our target audience would be the general public and, in particular, people interested in sports and the olympics. 
 
 ### Pre-processing of the data set you chose:
 
@@ -83,13 +81,18 @@ We divided our first exploratory analysis in 4 parts taking different points of 
   
   * There are athletes who have participated in both summer and winter olympics.
   
-The whole exploration data analysis is available [here](data_exploration.ipynb).
+The whole exploratory data analysis is available [here](data_exploration.ipynb).
 
-**TODO: Add some insights that we extracted from the data; link to the notebook**
 
 ### Related work
 
-Visualization with olympic data were shown in the section [Problematic](#Problematic)
+We want to visualize insights from the Olympics Games. However, visualizations using the olympics as data are not new. Some good examples are:
+
+* [The Winter Games, by Elbert Wang](https://www.dremio.com/the-winter-olympics/)
+In this visualization they show the evolution of the winter olympics across different topics (number of participants, number of sports, host cities, etc.). We can take it as inspiration for some graphics (how it display medals per country looks nice) but we would like to create something more interactive where the user has more control over the data it wants to see. 
+
+* [App Olympics Data, by Matthew Rautionmaa](https://matthewrautionmaa.shinyapps.io/Olympic_Shiny/) 
+This app provides different plots using the same dataset as we plan to use. In this case, the number of plots is large and many topics are already explored. Nevertheless, no further information is shared with the user and the degree of interactivity is very limited. 
 
 Some inspiration from other projects that are specially interesting because they outstand in one of the points we are trying to achieve with our visualization are: 
 
