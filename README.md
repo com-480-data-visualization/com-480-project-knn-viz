@@ -45,7 +45,7 @@ The initial dataset is already quite clean and ready to be used. **TODO: Add som
 
 ### Related work
 
-Visualization with olympic data were shown in the section [Problematic](### Problematic)
+Visualization with olympic data were shown in the section [Problematic](#Problematic)
 
 Some inspiration from other projects that are specially interesting because they outstand in one of the points we are trying to achieve with our visualization are: 
 
