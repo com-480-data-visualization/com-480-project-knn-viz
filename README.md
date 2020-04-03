@@ -43,46 +43,43 @@ The data will be displayed in a way that allows the reader to extract informatio
 
 ### Pre-processing of the data set you chose:
 
-The initial dataset is already clean and ready to be used. 
-
-We divided our first exploratory analysis in 4 parts taking different points of views. Here are the main basic insights of each one of them:
+We divided our first exploratory analysis in 4 parts taking different points of view. Here are the main findings of each one of them:
 
 * **From a historical point of view**:
 
   * Different big historical events such as World War I and II have affected the games multiple times.
   
-  * The number of athletes participating each year follow an increasing trend, with a majority of men through all the years. However, the gap between males and females participating in the Games have been descreasing over time. 
+  * The number of athletes participating each year follow an increasing trend, with a majority of men with respect to women through all the years. However, the gap between males and females participating in the Games have been decreasing over time.
   
   * Swimming, fencing, cycling, athletics and gymnastics are the only sports that have been present in all the summer games.
 
-  * The number of National Olympic Comittees (NOCs) participating in the summer games have also been increasing over years. 
+  * The number of National Olympic Committees (NOCs) participating in the summer games have also been increasing over years. 
   
   * Most of the host cities of the summer olympics are located in Europe, although the country that has held more times the summer games is the USA.
   
 * **From sport point of view**:
 
-  * The number of different event belonging to the same sport varies a lot depending on the sport. The two sports with more different events throughout the history are athletics and shooting with 83 events. These are followed by swimming, cycling and sailing. 
+  * The number of different events belonging to the same sport varies a lot depending on the sport. The two sports with more different events throughout the history are athletics and shooting with 83 events. These are followed by swimming, cycling and sailing. 
   
-  * Most of the events have been individual (~70% individual vs 30% of team events).
+  * Most of the events have been individual (70% - 30%).
   
-  * Most of the events have been for males, followed by events for females and mixed. This last one represent a low percentage. 
+  * Most of the events have been for males, followed by events for females and finally mixed.
   
 * **From country point of view**:
 
-  * The USA is the country with more medals in total. It is also the country with more gold medals in the summer olympics, but not in the winter ones. The country with more gold medals in the winter olympics is Germany. 
+  * The USA is the country with more gold medals in total as well as in the summer Olympics. The country with more gold medals in the winter Olympics is Germany. 
   
 * **From athlete point of view**:
 
-  * Michael Phelps is the athlete with olympic medals (total of 28) as well as the one with more gold medals with a total of 23.
+  * Michael Phelps is the athlete with Olympic medals (total of 28) as well as the one with more gold medals.
   
-  * The athlete who participated more years in the games is Ian Millar with a participation in 10 different games (from 1972 to 2012).
+  * The athlete who participated more years in the games is Ian Millar with a participation in 10 different games.
+
+  *	The athlete who have participated in more sports did it in 5 different ones.
   
-  * There are athletes that have participated in more than 1 sport. The ones who have taken part in more sports have participated in 5 different ones. However, most of them did not achieve any medal.
-  
-  * There are athletes who have participated in both summer and winter olympics.
+  * There are athletes who have participated in both summer and winter Olympics.
   
 The whole exploratory data analysis is available [here](data_exploration.ipynb).
-
 
 ### Related work
 
