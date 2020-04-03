@@ -24,8 +24,7 @@ Additionally, we have created another small [dataset](data/host_cities.csv) with
 
 ### Problematic
 
-Our motivation is to show people more things about the olympics in an easy way and anyone that is interested in the topic can discover new things about these historical events. Therefore, our target audience would be the general public and, in particular, people interested in sports and the olympics.
-We will start by taking a historical look, showing information about the host cities and interruptions they have suffered due to major events. From there we want to proceed to evaluate a question: what makes a country successful? Why are there countries with a lot of medals and others with any? 
+Our motivation is to allow general public, in particular those people interested in sports and Olympics, to discover more details about these historical events in an interactive way. We will start by taking a historical look, showing information about the host cities and major disruptions along time. From there we want to proceed to evaluate a question: what makes a country successful? 
 
 To analyse this question, we will go through different aspects. We can start by the influence of the number of participations: 
 * participation of countries along time
@@ -36,7 +35,8 @@ Then we will check the influence of sports in this "successfulness" factor:
 * which countries are more successful in each sport?
 With this factors we can get an idea per country of how they perform on each of these factors (# athletes, # years participating, # sports in which they take part, etc.) and maybe even propose a new ranking that could be something like how many medals they have / how many medals they could have had taking into account all the competitions they have taken part in.
 
-The data will be displayed in a way that allows the reader to extract information and interact in different levels. We want our visitors to learn more about the olympics, from general facts that may not be that well known, to more detailed information that requires further analysis. The idea is that no matter how you landed in our page, you will obtain what you were looking for:
+The data will be displayed in a way that allows the reader to extract information and interact in different levels. We want our visitors to learn more about the olympics. From general facts that may not be that well known, to more detailed information that requires further analysis, the idea is that no matter how you landed in our page, you will obtain what you were looking for:
+
 *	If you are just visiting and want to learn some general facts to later share with your friends, some text will accompany the different visualizations so that even without further engagement you can extract these facts.
 *	If you are more interested in the topic and want to explore further, interactive visualizations will allow you to do so and get more insights by yourself.
 
