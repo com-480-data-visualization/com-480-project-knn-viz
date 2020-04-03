@@ -89,18 +89,18 @@ The whole exploratory data analysis is available [here](data_exploration.ipynb).
 We want to visualize insights from the Olympics Games. However, visualizations using the olympics as data are not new. Some good examples are:
 
 * [The Winter Games, by Elbert Wang](https://www.dremio.com/the-winter-olympics/)
-In this visualization they show the evolution of the winter olympics across different topics (number of participants, number of sports, host cities, etc.). We can take it as inspiration for some graphics (how it display medals per country looks nice) but we would like to create something more interactive where the user has more control over the data it wants to see. 
+In this visualization they show the evolution of the winter olympics across different topics. We can take it as inspiration for some graphics (how it display medals per country looks nice) but we would like to create something more interactive where the user has more control over the data it wants to see. 
 
 * [App Olympics Data, by Matthew Rautionmaa](https://matthewrautionmaa.shinyapps.io/Olympic_Shiny/) 
 This app provides different plots using the same dataset as we plan to use. In this case, the number of plots is large and many topics are already explored. Nevertheless, no further information is shared with the user and the degree of interactivity is very limited. 
 
 Some inspiration from other projects that are specially interesting because they outstand in one of the points we are trying to achieve with our visualization are: 
 
-* [Pudding](https://pudding.cool/) usually presents similar transitions on their data stories to the one showed in [The Winter Games, by Elbert Wang](The-Winter-Games,-by-Elbert-Wang). One example is ['Where will you need an umbrella?'](https://pudding.cool/2020/02/rain/) where they combine some data plots together with text and as the user advances the same plot introduces new data as the text displays new information. 
+* [Pudding](https://pudding.cool/) usually present a characteristic transition in their visualizations. One example is ['Where will you need an umbrella?'](https://pudding.cool/2020/02/rain/) where they combine some data plots together with text and as the user advances the same plot introduces new data as the text displays new information. 
 
 * A more interactive and engaging project is ["Based on a True Story, from Information is Beautiful](https://informationisbeautiful.net/visualizations/based-on-a-true-true-story/). This project shows different movies and signals which parts are actually based on real stories and which parts are not. The interesting point is the level of freedom the user has at the time of selecting a movie and a part of it to read new information. 
 
-* [Missing Flights, by The New York Times](https://www.nytimes.com/interactive/2020/02/21/business/coronavirus-airline-travel.html). The project provides an very nice animation at the begginning comparing two scenarios. The animation allows the user to easily spot the differences (in terms of density of flights). A few information is shared at the begginning (some highlights) and then, for those users who are more interested, a more developed explanation is followed. This format looks very interesting because it allows the user to choose to which level of depth it wants to explore the information. Either it can choose to just look at the initial animation and get the important points or it can continue reading further for more details. 
+* [Missing Flights, by The New York Times](https://www.nytimes.com/interactive/2020/02/21/business/coronavirus-airline-travel.html). The project provides an very nice animation at the begginning comparing two scenarios. The animation allows the user to easily spot the differences. A few information is shared at the begginning and then a more developed explanation follows. This format looks very interesting because it allows the user to choose to which level of depth it wants to explore. 
 
 
 
