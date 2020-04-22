@@ -22,6 +22,11 @@
   <link href="css/grayscale.min.css" rel="stylesheet">
   <link href="css/our_style.css" rel="stylesheet">
 
+  <!-- map script -->
+  <script src="http://d3js.org/d3.v4.js"></script>
+  <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+  <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+
 </head>
 
 <body id="page-top">
@@ -40,8 +45,12 @@
             <a class="nav-link js-scroll-trigger" href="#about">About</a>
           </li>
           <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#timeline-map">Host cities</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link js-scroll-trigger" href="#projects">Projects</a>
           </li>
+
         </ul>
       </div>
     </div>
@@ -63,20 +72,53 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-8 mx-auto">
-          <h2 class="mb-4">The Olympics Games</h2>
+          <h1 class="mb-4">The Olympics Games</h1>
+
+          <img class="img-fluid mb-3 mb-lg-0" src="img/giphy-olympic-rings.gif" alt="GIF olympic rings">
+
           <p class="text-white-50">Here INTRO ABOUT THE OLYMPIC GAMES AND BLABLABLA. CHANGE THE PICTURE, IS HERE JUST TO SUBSTITUTE THE PREV ONE</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Projects Section -->
+  <!-- Timeline Section -->
+  <section id="timeline-map" class="projects-section bg-light">
+    <div class="container">
+
+      <!-- Featured Project Row -->
+      <div class="row align-items-center no-gutters mb-4 mb-lg-5">
+        <p class="info-text mb-0">Here we should explain something about
+          the temporal evolution, host cities and participating countries. An intro</p>
+
+        <div class="col-xl-8 col-lg-7">
+          <!-- Create an element where the map will take place -->
+          <img class="img-fluid mb-3 mb-lg-0" src="img/Olympic-1896.jpg" alt="Olympic games Summer 1896, Athens">
+
+        </div>
+        <div class="col-xl-4 col-lg-5">
+          <div class="featured-text text-center text-lg-left">
+            <h4>Where and Who</h4>
+            <p class="text-black-50 mb-0"> The Olympic games have taken place in
+               different locations along their history. Moverover, not all countries
+               have participated from the very beginning, speacilly those coming
+               from outside Europe. BLA BLA BLA MORE INFO
+            </p>
+          </div>
+        </div>
+        <!-- Interactive map -->
+        <svg id="my_dataviz" width="800" height="400" preserveAspectRatio="xMidYMid meet"></svg>
+      </div>
+
+  </section>
+
+  <!-- Example Section -->
   <section id="projects" class="projects-section bg-light">
     <div class="container">
 
       <!-- Featured Project Row -->
       <div class="row align-items-center no-gutters mb-4 mb-lg-5">
-        <p class="text-black-50 mb-0">Example of text in paragraph! We should create a new class to make it bigger !</p>
+        <p class="info-text mb-0">Example of text in paragraph! Class info-text!</p>
 
         <div class="col-xl-8 col-lg-7">
           <img class="img-fluid mb-3 mb-lg-0" src="img/bg-masthead.jpg" alt="">
@@ -146,6 +188,8 @@
 
   <!-- Custom scripts for this template -->
   <script src="js/grayscale.min.js"></script>
+
+  <script src="js/map.js"></script>
 
 </body>
 

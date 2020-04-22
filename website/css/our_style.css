@@ -168,13 +168,14 @@
   background: linear-gradient(to bottom, rgba(22, 22, 22, 0.3) 0%, rgba(255,255,255, 0.9) 50%, #f8f9fa 100%);
 }
 
-.about-section h2 {
+.about-section h1 {
   color: #0085C7 !important;
   margin-bottom: 5rem;
 }
 
 .about-section p {
-  color: #0071AA !important; 
+  color: #0071AA !important;
+  margin-top: 3rem;
   margin-bottom: 5rem;
 }
 
@@ -184,6 +185,13 @@
 
 .projects-section .featured-text {
   padding: 2rem;
+}
+
+.projects-section .info-text {
+  padding: 2rem;
+  font-size: 1.5rem;
+  text-align: justify;
+  text-justify: inter-word;
 }
 
 @media (min-width: 992px) {
