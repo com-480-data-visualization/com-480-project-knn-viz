@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<style>
+  .countries {
+    fill: none;
+    stroke: #fff;
+    stroke-linejoin: round;
+  }
+  .legendThreshold {
+      font-size: 12px;
+      font-family: sans-serif;
+  }
+  .caption {
+      fill: #000;
+      text-anchor: start;
+      font-weight: bold;
+  }
+
+  .d3-tip {
+  line-height: 1;
+  font-size: 10px;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.8);
+  color: #000;
+  border-radius: 2px;
+  }
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 6px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.8);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+  }
+
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+  }
+
+</style>
+
+
+<h2>Map with timeline</h2>
+  <div class="row align-items-center">
+    <div id="slider-time"></div>
+  </div>
+
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+<script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+<script src="https://unpkg.com/d3-simple-slider"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.24.0/d3-legend.js"></script>
+<div id="my_dataviz">
+</div>
+<script>
+// The svg
+
+var width = 960
+var height = 600
+var year = 1896
+
+var svg = d3.select("#my_dataviz")
+  .append("svg")
+  .attr("width", width)
+  .attr("height", height);
+
+// Map and projection
+var path = d3.geoPath();
+var projection = d3.geoNaturalEarth()
+    .scale(width / 2 / Math.PI)
+    .translate([width / 2, height / 2])
+var path = d3.geoPath()
+    .projection(projection);
+
+// Data and color scale
+var data = d3.map();
+var full_data = d3.map();
+var colorScheme = d3.schemeReds[6];
+colorScheme.unshift("#eee")
+var colorScale = d3.scaleThreshold()
+    .domain([1, 11, 51, 101, 501, 1001])
+    .range(colorScheme);
+
+// Legend
+var g = svg.append("g")
+    .attr("class", "legendThreshold")
+    .attr("transform", "translate(20,20)");
+g.append("text")
+    .attr("class", "caption")
+    .attr("x", 0)
+    .attr("y", -6)
+    .text("Athletes");
+var labels = ['0', '1-10', '11-50', '50-100', '101-500', '501-1000', '> 1000'];
+var legend = d3.legendColor()
+    .labels(function (d) { return labels[d.i]; })
+    .shapePadding(4)
+    .scale(colorScale);
+
+// tooltip
+var tip = d3.tip()
+    .attr('class', 'd3-tip')
+    .offset([-10, 0])
+    .html(function(d) {
+            let name = d.properties.name;
+            let info = data[name];
+            var part = 0
+            if(info != undefined) { part = info.participants; }
+            return "<strong>Country:" + name +" <br> Participants: </strong> <span>" + part + "</span>";
+          })
+
+// Time
+var dataTime = d3.range(0, 124, 4).map(function(d) {
+    return new Date(1896 + d, 10, 3);
+  });
+
+var sliderTime = d3
+    .sliderBottom()
+    .min(d3.min(dataTime))
+    .max(d3.max(dataTime))
+    .step(1000 * 60 * 60 * 24 * 365)
+    .width(700)
+    .tickFormat(d3.timeFormat('%Y'))
+    .tickValues(dataTime)
+    .default(new Date(1896, 10, 3))
+    .on('onchange', val => {
+                select(val);
+              });
+
+var gTime = d3
+    .select('div#slider-time')
+    .append('svg')
+    .attr('width', 750)
+    .attr('height', 100)
+    .append('g')
+    .attr('transform', 'translate(30,30)');
+
+gTime.call(sliderTime);
+
+d3.select('p#value-time').text(d3.timeFormat('%Y')(sliderTime.value()));
+
+svg.select(".legendThreshold")
+    .call(legend);
+
+svg.call(tip);
+
+// Load external data and boot
+d3.queue()
+    .defer(d3.json, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson")
+    .defer(d3.csv, "regions_participants2.csv",
+        function(d) {
+
+            if ('$' + d.Year in full_data){
+                //console.log(d)
+                var myKey = '$' + d.Year;
+
+                if (d.region == 'UK'){
+                    //full_data[myKey].set('England', +d.total)
+                    full_data[myKey]['England'] = {
+                        participants: d.Name,
+                        sports: d.Sport,
+                    }
+                } else {
+                    //full_data[myKey].set(d.Name, +d.total);
+                    full_data[myKey][d.region] = {
+                        participants: d.Name,
+                        sports: d.Sport,
+                    }
+                }
+            } else {
+                full_data.set(d.Year, {});
+
+            };
+            data = full_data['$' + year]
+        })
+
+    .await(ready);
+
+function load_data(){
+    data = full_data['$' + year];
+    console.log(data)
+    //console.log(full_data)
+    //console.log(data)
+}
+
+
+function select(y){
+    year = y.getYear() + 1900
+    console.log(year)
+    load_data();
+    d3.queue()
+        .defer(d3.json, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson")
+        .await(ready);
+}
+
+function ready(error, topo) {
+    if (error) throw error;
+
+
+
+  var tooltip = d3.select("#my_dataviz")
+    .append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 1)
+    .style("color", "black")
+    .style("background-color", "white")
+    .style("border-width", "1px")
+    .style("padding", "5px");
+
+/**
+  let mouseOver = function(d) {
+    d3.selectAll(".Country")
+      .transition()
+      .style("opacity", 1)
+    d3.select(this)
+      //.transition()
+      //.style("opacity", 1)
+      //.style("stroke", "black")
+          let name = d.properties.name;
+          let info = data[name];
+          var part = 0
+          if(info != undefined) { part = info.participants; }
+
+    tooltip.html('Country: ' + name + "<br>" + 'Number of participants: ' + part)
+      .style("opacity", 1)
+      .style("left", (d3.mouse(this)[0]+10) + "px")
+      .style("top", (d3.mouse(this)[1]) + "px");
+
+  }
+
+  let mouseLeave = function(d) {
+    d3.selectAll(".Country")
+      .transition()
+      .style("opacity", 1)
+    d3.select(this)
+      //.transition()
+      //.style("stroke", "gray")
+      //.style("opacity", .7)
+    tooltip.html("")
+      .style("opacity", 0);
+
+  }
+*/
+    // Draw the map
+    svg.append("g")
+        .attr("class", "countries")
+        .selectAll("path")
+        .data(topo.features)
+        .enter().append("path")
+            .attr("fill", function (d){
+                // check if country inside data
+                if (data[d.properties.name] != undefined){
+                    d.total = data[d.properties.name]['participants'] || 0;
+                } else {
+                    d.total = 0;
+                }
+                //d.total = data[d.properties.name] || 0;
+                // Set the color
+                return colorScale(d.total);
+            })
+            .attr("d", path)
+
+          .style("stroke", "transparent")
+          .attr("class", function(d){ return "Country" } )
+          .style("opacity", 1)
+          .on("mouseover", tip.show)
+          .on("mouseleave", tip.hide );
+}
+</script>
