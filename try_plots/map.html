@@ -55,15 +55,14 @@
   </div>
 
   <div class="row align-items-center">
-      <div id="chart-container" class="container">
-          <svg id="my_timeline" width="1200" height="400" preserveAspectRatio="xMidYMid meet"></svg>
-      </div>
-  </div>
-
-  <div class="row align-items-center">
       <div id="my_dataviz">
 
       </div>
+  </div>
+
+  <div id="chart-container" class="row align-items-center">
+      <div id="my_timeline"></div>
+
   </div>
 
 
@@ -159,16 +158,22 @@ d3.queue()
                     full_data[yearKey][season] =  {'other': d.id};
                 };
 
-                    full_data[myKey][d.region] = {
-                        participants: d.Name,
-                        sports: d.Sport,
-                    }
+                full_data[yearKey][season][d.region] = {
+                    participants: d.Name,
+                    sports: d.Sport,
+                                    }
             } else {
                 full_data.set(d.Year, {});
 
-                var myKey = '$' + d.Year;
+                var yearKey = '$' + d.Year;
+                season = d.Season;
 
-                full_data[myKey][d.region] = {
+                if (season in full_data[yearKey]){
+                } else {
+                    full_data[yearKey][season] =  {'other': d.id};
+                };
+
+                full_data[yearKey][season][d.region] = {
                     participants: d.Name,
                     sports: d.Sport,
                 }
@@ -180,8 +185,8 @@ d3.queue()
 
     // Time
     var dataTime = d3.range(0, 124, 4).map(function(d) {
-            console.log(full_data)
-            console.log(full_data['$' + d+1896])
+            //console.log(full_data)
+            //console.log(full_data['$' + d+1896])
             return new Date(1896 + d, 10, 3);
       });
 
@@ -289,6 +294,7 @@ function ready(error, topo, markers) {
             .attr("fill", function (d){
                 // check if country inside data
                 if (data[d.properties.name] != undefined){
+
                     d.total = data[d.properties.name]['participants'] || 0;
                 } else {
                     d.total = 0;
