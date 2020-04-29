@@ -54,20 +54,37 @@
     <div id="slider-time"></div>
   </div>
 
+  <div class="row align-items-center">
+      <div id="chart-container" class="container">
+          <svg id="my_timeline" width="1200" height="400" preserveAspectRatio="xMidYMid meet"></svg>
+      </div>
+  </div>
+
+  <div class="row align-items-center">
+      <div id="my_dataviz">
+
+      </div>
+  </div>
+
+
+
+
+
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
 <script src="https://unpkg.com/d3-simple-slider"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.24.0/d3-legend.js"></script>
-<div id="my_dataviz">
-</div>
+<script src="timeline.js"></script>
+
 <script>
 // The svg
 
 var width = 960
 var height = 600
 var year = 1896
+var season = 'Summer'
 
 var svg = d3.select("#my_dataviz")
   .append("svg")
@@ -118,39 +135,11 @@ var tip = d3.tip()
             return "<strong>Country:" + name +" <br> Participants: </strong> <span>" + part + "</span>";
           })
 
-// Time
-var dataTime = d3.range(0, 124, 4).map(function(d) {
-    return new Date(1896 + d, 10, 3);
-  });
-
-var sliderTime = d3
-    .sliderBottom()
-    .min(d3.min(dataTime))
-    .max(d3.max(dataTime))
-    .step(1000 * 60 * 60 * 24 * 365)
-    .width(700)
-    .tickFormat(d3.timeFormat('%Y'))
-    .tickValues(dataTime)
-    .default(new Date(1896, 10, 3))
-    .on('onchange', val => {
-                select(val);
-              });
-
-var gTime = d3
-    .select('div#slider-time')
-    .append('svg')
-    .attr('width', 750)
-    .attr('height', 100)
-    .append('g')
-    .attr('transform', 'translate(30,30)');
-
-gTime.call(sliderTime);
-
-d3.select('p#value-time').text(d3.timeFormat('%Y')(sliderTime.value()));
-
+// Legend
 svg.select(".legendThreshold")
     .call(legend);
 
+// Tooltip
 svg.call(tip);
 
 // Load external data and boot
@@ -162,7 +151,13 @@ d3.queue()
 
             if ('$' + d.Year in full_data){
                 //console.log(d)
-                var myKey = '$' + d.Year;
+                var yearKey = '$' + d.Year;
+                season = d.Season;
+
+                if (season in full_data[yearKey]){
+                } else {
+                    full_data[yearKey][season] =  {'other': d.id};
+                };
 
                     full_data[myKey][d.region] = {
                         participants: d.Name,
@@ -179,21 +174,59 @@ d3.queue()
                 }
 
             };
-            data = full_data['$' + year]
+            data = full_data['$' + year][season]
         })
     .await(ready);
 
+    // Time
+    var dataTime = d3.range(0, 124, 4).map(function(d) {
+            console.log(full_data)
+            console.log(full_data['$' + d+1896])
+            return new Date(1896 + d, 10, 3);
+      });
+
+    //var dataTime = full_data.keys().forEach(function(d){
+    //    return new Date(1896, 10, 3);
+    //})
+
+    var sliderTime = d3
+        .sliderBottom()
+        .min(d3.min(dataTime))
+        .max(d3.max(dataTime))
+        .step(2*1000 * 60 * 60 * 24 * 365)
+        .width(700)
+        .tickFormat(d3.timeFormat('%Y'))
+        .tickValues(dataTime)
+        .default(new Date(1896, 10, 3))
+        .on('onchange', val => {
+                    select(val);
+                  });
+
+    var gTime = d3
+        .select('div#slider-time')
+        .append('svg')
+        .attr('width', 750)
+        .attr('height', 100)
+        .append('g')
+        .attr('transform', 'translate(30,30)');
+
+    gTime.call(sliderTime);
+
+    d3.select('p#value-time').text(d3.timeFormat('%Y')(sliderTime.value()));
+
 function load_data(){
-    data = full_data['$' + year];
-    console.log(data)
-    //console.log(full_data)
-    //console.log(data)
+    data = full_data['$' + year][season];
 }
 
 
 function select(y){
     year = y.getYear() + 1900
-    console.log(year)
+    if (Object.keys(full_data['$'+year]).length > 2){
+        season = 'Summer'
+    } else {
+        season = Object.keys(full_data['$'+year])[0]
+    }
+    //console.log(Object.keys(full_data['$'+year]).length)
     load_data();
     d3.queue()
         .defer(d3.json, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson")
