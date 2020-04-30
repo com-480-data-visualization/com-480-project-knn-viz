@@ -44,11 +44,11 @@ var cValue = function(d) { return d.Continent;},
     color = d3.scaleOrdinal(d3.schemeCategory10);
 
 // add the graph canvas to the body of the webpage
-var svg = d3.select("#my_timeline")
-		.append("svg")
+var svg2 = d3.select("#my_timeline")
+		.append("svg2")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
-  	.append("g")
+  	.append("g-timeline")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 // add the tooltip area to the webpage
@@ -70,7 +70,7 @@ d3.csv("location_host_cities.csv", function(error, data) {
   yScale.domain([-3, 3]);
 
 	// try to draw lines
-	svg.selectAll(".line")
+	svg2.selectAll(".line")
 		      .data(data)
 		    .enter().append("line")
 		      .attr("class", "line")
@@ -81,7 +81,7 @@ d3.csv("location_host_cities.csv", function(error, data) {
 					.style("stroke", "rgb(159,159,159, 0.3)");
 
   // x-axis
-  svg.append("g")
+  svg2.append("g-timeline")
       .attr("class", "x axis")
       .attr("transform", "translate(0," + height/2 + ")")
       .call(xAxis)
@@ -93,7 +93,7 @@ d3.csv("location_host_cities.csv", function(error, data) {
       .text("Year");
 
 
-	svg.append("g")
+	svg2.append("g-timeline")
     .append("text")
       .attr("class", "label")
       .attr("y", 6)
@@ -102,7 +102,7 @@ d3.csv("location_host_cities.csv", function(error, data) {
       .style("text-anchor", "end")
       .text("Summer");
 
-	svg.append("g")
+	svg2.append("g-timeline")
 		 .append("text")
 		 	.attr("class", "label")
 		  .attr("y", height)
@@ -112,7 +112,7 @@ d3.csv("location_host_cities.csv", function(error, data) {
 		  .text("Winter");
 
   // draw dots
-  svg.selectAll(".dot")
+  svg2.selectAll(".dot")
       .data(data)
     .enter().append("circle")
       .attr("class", "dot")
@@ -139,7 +139,7 @@ d3.csv("location_host_cities.csv", function(error, data) {
   // draw legend
   var legend = svg.selectAll(".legend")
       .data(color.domain())
-    .enter().append("g")
+    .enter().append("g-timeline")
       .attr("class", "legend")
       .attr("transform", function(d, i) { return "translate(" + -i*200 + ", " + height*1.2 + ")"; });
 
