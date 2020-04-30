@@ -47,15 +47,18 @@
   }
   #mainNav .navbar-brand {
     padding: .5rem 0;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.75);
+  }
+  #mainNav .navbar-brand:hover {
+    color: rgba(255, 255, 255, 1);
   }
   #mainNav .nav-link {
     transition: none;
     padding: 2rem 1.5rem;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.75);
   }
   #mainNav .nav-link:hover {
-    color: rgba(255, 255, 255, 0.75);
+    color: rgba(255, 255, 255, 1);
   }
   #mainNav .nav-link:active {
     color: white;
@@ -90,7 +93,7 @@
   height: auto;
   min-height: 35rem;
   padding: 15rem 0;
-  background: linear-gradient(to bottom, rgba(00, 00, 00, 0.3) 0%, rgba(22, 22, 22, 0.7) 50%, rgba(22, 22, 22, 0.3) 100%), url("../img/Olympic_rings_without_rims.svg");
+  background: linear-gradient(to bottom, rgba(00, 00, 00, 0.6) 0%, rgba(22, 22, 22, 0.3) 60%, rgba(22, 22, 22, 0) 100%), url("../img/Olympic_rings_without_rims.svg");
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: scroll;
@@ -301,6 +304,10 @@ a:focus, a:hover {
 
 .bg-primary {
   background-color: #0085C7 !important;
+}
+
+.bg-light {
+  background-color: #FFFFFF !important;
 }
 
 .text-primary {
