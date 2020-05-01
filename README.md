@@ -105,11 +105,11 @@ Some inspiration from other projects that are specially interesting because they
 
 **10% of the final grade**
 
-Report for Milestone 2 can be found [here](https://github.com/com-480-data-visualization/com-480-project-knn-viz/blob/master/Milestone2_Dataviz.pdf)
+Report for Milestone 2 can be found [here](https://github.com/com-480-data-visualization/com-480-project-knn-viz/blob/master/Milestone2_Dataviz.pdf).
 
-For a template of the final website, you can visit the following [link](https://com-480-data-visualization.github.io/com-480-project-knn-viz/website/index.html)
+For a template of the final website, you can visit the following [link](https://com-480-data-visualization.github.io/com-480-project-knn-viz/website/index.html).
 
-First idea of the interactive plots can be found in the folder [try_plots](https://github.com/com-480-data-visualization/com-480-project-knn-viz/tree/master/try_plots) 
+First idea of the interactive timeline and map can be found [here](https://com-480-data-visualization.github.io/com-480-project-knn-viz/try_plots/map.html).
 
 
 ## Milestone 3 (Thursday 28th May, 5pm)
