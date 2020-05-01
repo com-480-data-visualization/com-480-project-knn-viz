@@ -60,9 +60,8 @@
       </div>
   </div>
 
-  <div id="chart-container" class="row align-items-center">
-      <div id="my_timeline"></div>
-
+  <div id="chart-container" class="container">
+           <div id="my_timeline" width="1200" height="400" preserveAspectRatio="xMidYMid meet"></div>
   </div>
 
 
@@ -111,11 +110,13 @@ var colorScale = d3.scaleThreshold()
 var g = svg.append("g")
     .attr("class", "legendThreshold")
     .attr("transform", "translate(20,20)");
-g.append("text")
+
+    g.append("text")
     .attr("class", "caption")
     .attr("x", 0)
     .attr("y", -6)
     .text("Athletes");
+    
 var labels = ['0', '1-10', '11-50', '50-100', '101-500', '501-1000', '> 1000'];
 var legend = d3.legendColor()
     .labels(function (d) { return labels[d.i]; })

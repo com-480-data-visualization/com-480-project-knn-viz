@@ -45,14 +45,15 @@ var cValue = function(d) { return d.Continent;},
 
 // add the graph canvas to the body of the webpage
 var svg2 = d3.select("#my_timeline")
-		.append("svg2")
+		.append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
   	.append("g-timeline")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 // add the tooltip area to the webpage
-var tooltip = d3.select("body").append("div")
+var tooltip = d3.select("body")
+		.append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
 
@@ -72,7 +73,7 @@ d3.csv("location_host_cities.csv", function(error, data) {
 	// try to draw lines
 	svg2.selectAll(".line")
 		      .data(data)
-		    .enter().append("line")
+		    	.append("line")
 		      .attr("class", "line")
 					.attr("x1", xMap)
 		      .attr("x2", xMap)
@@ -85,7 +86,7 @@ d3.csv("location_host_cities.csv", function(error, data) {
       .attr("class", "x axis")
       .attr("transform", "translate(0," + height/2 + ")")
       .call(xAxis)
-    .append("text")
+    	.append("text")
       .attr("class", "label")
       .attr("x", width)
       .attr("y", -6)
@@ -94,7 +95,7 @@ d3.csv("location_host_cities.csv", function(error, data) {
 
 
 	svg2.append("g-timeline")
-    .append("text")
+      .append("text")
       .attr("class", "label")
       .attr("y", 6)
       .attr("dy", ".71em")
@@ -103,7 +104,7 @@ d3.csv("location_host_cities.csv", function(error, data) {
       .text("Summer");
 
 	svg2.append("g-timeline")
-		 .append("text")
+		  .append("text")
 		 	.attr("class", "label")
 		  .attr("y", height)
 		  .attr("dy", ".71em")
@@ -114,7 +115,7 @@ d3.csv("location_host_cities.csv", function(error, data) {
   // draw dots
   svg2.selectAll(".dot")
       .data(data)
-    .enter().append("circle")
+    	.append("circle")
       .attr("class", "dot")
       .attr("r", 6)
       .attr("cx", xMap)
@@ -137,9 +138,9 @@ d3.csv("location_host_cities.csv", function(error, data) {
 
 
   // draw legend
-  var legend = svg.selectAll(".legend")
+  var legend = svg2.selectAll(".legend")
       .data(color.domain())
-    .enter().append("g-timeline")
+    	.append("g-timeline")
       .attr("class", "legend")
       .attr("transform", function(d, i) { return "translate(" + -i*200 + ", " + height*1.2 + ")"; });
 
