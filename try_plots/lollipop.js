@@ -1,7 +1,7 @@
 // set the dimensions and margins of the graph
-var margin = {top: 30, right: 30, bottom: 70, left: 60},
+var margin = {top: 20, right: 30, bottom: 70, left: 60},
     width_timeline= 1100 - margin.left - margin.right,
-    height_timeline= 400 - margin.top - margin.bottom;
+    height_timeline= 300 - margin.top - margin.bottom;
 
 var dy = 50;
 
@@ -39,6 +39,20 @@ var svg2 = d3.select("#my_dataviz_timeline")
   .append("g")
     .attr("transform",
           "translate(" + margin.left + "," + margin.top + ")");
+
+var informativeText = d3.select("#informative_text")
+  .append("svg")
+    .attr("width", width_timeline+ margin.left + margin.right)
+    .attr("height", 50 + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform",
+        "translate(" + margin.left + "," + margin.top + ")");
+
+    informativeText.append("text")
+      .attr("class", "caption")
+      .attr("x", -margin.left)
+      .attr("y", height_timeline/2 - 80)
+      .text("TODO: HERE GOES INFO TEXT Total number of participants")
 
 var g_timeline = svg2.append("g")
               .attr("class", "legendColor")
@@ -86,7 +100,13 @@ var yAxis = svg2.append("g")
 // Tooltip
 var tip_timeline = d3.tip()
           .attr('class', 'd3-tip')
-          .offset([-10, 0])
+          .offset(function(d){
+            if (d.Season == "Summer"){
+              return [-10, 50];
+            } else {
+              return [+60, +50];
+            }
+          })
           .html(function(d) {
                   return d["City"] + ", " + d["Country"] + "<br/> Year "+ d.Year;
                 })
@@ -153,7 +173,7 @@ function update(selectedVar) {
         .enter()
         .append("circle")
           .attr("cx", function(d,i){ return 200 + i*150})
-          .attr("cy", margin.top) // 100 is where the first dot appears. 25 is the distance between dots
+          .attr("cy", - 10) // 100 is where the first dot appears. 25 is the distance between dots
           .attr("r", 7)
           .style("fill", function(d){ return color(d);})
 
@@ -162,8 +182,9 @@ function update(selectedVar) {
         .data(allgroups)
         .enter()
         .append("text")
+          .attr("class", "continentLegend")
           .attr("x", function(d,i){ return 220 + i*150})
-          .attr("y", margin.top +3) // 100 is where the first dot appears. 25 is the distance between dots
+          .attr("y", -7) // 100 is where the first dot appears. 25 is the distance between dots
           .style("fill", "black")
           .text(function(d){ return d})
           .attr("text-anchor", "left")

@@ -24,7 +24,8 @@
 
   .d3-tip {
   line-height: 1;
-  font-size: 10px;
+  font-size: 12px;
+  font-family: sans-serif;
   padding: 8px;
   background: rgba(255, 255, 255, 0.8);
   color: #000;
@@ -51,20 +52,29 @@
   left: 0;
   }
 
-  .myCircleTimeline {
+.continentLegend{
+  font-size: 12px;
+  font-family: sans-serif;
+}
+
+.myCircleTimeline {
     stroke-width: 0.5px;
     stroke: white;
   }
-  .myCircleTimeline:hover {
+
+.myCircleTimeline:hover {
     stroke-width: 2px;
     stroke: black;
   }
+
 </style>
 
 
 <h2>Map with timeline</h2>
 
   <div id="my_dataviz_timeline"></div>
+
+  <div id="informative_text"></div>
 
   <div class="row align-items-center">
       <div id="my_dataviz">
