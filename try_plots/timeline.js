@@ -1,13 +1,11 @@
-var chartDiv = document.getElementById("chart-container");
-
 var margin = {
 		    top: 10,
 		    right: 40,
 		    bottom: 10,
 		    left: 60
 		  },
-		  width = chartDiv.clientWidth * 0.95,
-		  height = chartDiv.clientHeight * 0.5,
+		  width = 1200,
+		  height = 400,
 		  contextHeight = 50;
 		contextWidth = width;
 
@@ -46,10 +44,11 @@ var cValue = function(d) { return d.Continent;},
 // add the graph canvas to the body of the webpage
 var svg2 = d3.select("#my_timeline")
 		.append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-  	.append("g-timeline")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    .attr("width", int(width + margin.left + margin.right))
+    .attr("height", int(height + margin.top + margin.bottom))
+
+//var g2 = svg2.append("g-timeline")
+//            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 // add the tooltip area to the webpage
 var tooltip = d3.select("body")

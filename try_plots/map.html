@@ -2,6 +2,11 @@
 <meta charset="utf-8">
 
 <style>
+  .title {
+      font-size: 16px;
+      font-family: sans-serif;
+  }
+
   .countries {
     fill: none;
     stroke: #fff;
@@ -46,13 +51,20 @@
   left: 0;
   }
 
+  .myCircleTimeline {
+    stroke-width: 0.5px;
+    stroke: white;
+  }
+  .myCircleTimeline:hover {
+    stroke-width: 2px;
+    stroke: black;
+  }
 </style>
 
 
 <h2>Map with timeline</h2>
-  <div class="row align-items-center">
-    <div id="slider-time"></div>
-  </div>
+
+  <div id="my_dataviz_timeline"></div>
 
   <div class="row align-items-center">
       <div id="my_dataviz">
@@ -60,9 +72,6 @@
       </div>
   </div>
 
-  <div id="chart-container" class="container">
-           <div id="my_timeline" width="1200" height="400" preserveAspectRatio="xMidYMid meet"></div>
-  </div>
 
 
 
@@ -74,262 +83,5 @@
 <script src="https://unpkg.com/d3-simple-slider"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.24.0/d3-legend.js"></script>
-<script src="timeline.js"></script>
-
-<script>
-// The svg
-
-var width = 960
-var height = 600
-var year = 1896
-var season = 'Summer'
-
-var svg = d3.select("#my_dataviz")
-  .append("svg")
-  .attr("width", width)
-  .attr("height", height);
-
-// Map and projection
-var path = d3.geoPath();
-var projection = d3.geoNaturalEarth()
-    .scale(width / 2 / Math.PI)
-    .translate([width / 2, height / 2])
-var path = d3.geoPath()
-    .projection(projection);
-
-// Data and color scale
-var data = d3.map();
-var full_data = d3.map();
-var colorScheme = d3.schemeReds[6];
-colorScheme.unshift("#eee")
-var colorScale = d3.scaleThreshold()
-    .domain([1, 11, 51, 101, 501, 1001])
-    .range(colorScheme);
-
-// Legend
-var g = svg.append("g")
-    .attr("class", "legendThreshold")
-    .attr("transform", "translate(20,20)");
-
-    g.append("text")
-    .attr("class", "caption")
-    .attr("x", 0)
-    .attr("y", -6)
-    .text("Athletes");
-    
-var labels = ['0', '1-10', '11-50', '50-100', '101-500', '501-1000', '> 1000'];
-var legend = d3.legendColor()
-    .labels(function (d) { return labels[d.i]; })
-    .shapePadding(4)
-    .scale(colorScale);
-
-// tooltip
-var tip = d3.tip()
-    .attr('class', 'd3-tip')
-    .offset([-10, 0])
-    .html(function(d) {
-            let name = d.properties.name;
-            let info = data[name];
-            var part = 0
-            if(info != undefined) { part = info.participants; }
-            return "<strong>Country:" + name +" <br> Participants: </strong> <span>" + part + "</span>";
-          })
-
-// Legend
-svg.select(".legendThreshold")
-    .call(legend);
-
-// Tooltip
-svg.call(tip);
-
-// Load external data and boot
-d3.queue()
-    .defer(d3.json, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson")
-    .defer(d3.json, "host_cities_markers.json")
-    .defer(d3.csv, "regions_participants3.csv",
-        function(d) {
-
-            if ('$' + d.Year in full_data){
-                //console.log(d)
-                var yearKey = '$' + d.Year;
-                season = d.Season;
-
-                if (season in full_data[yearKey]){
-                } else {
-                    full_data[yearKey][season] =  {'other': d.id};
-                };
-
-                full_data[yearKey][season][d.region] = {
-                    participants: d.Name,
-                    sports: d.Sport,
-                                    }
-            } else {
-                full_data.set(d.Year, {});
-
-                var yearKey = '$' + d.Year;
-                season = d.Season;
-
-                if (season in full_data[yearKey]){
-                } else {
-                    full_data[yearKey][season] =  {'other': d.id};
-                };
-
-                full_data[yearKey][season][d.region] = {
-                    participants: d.Name,
-                    sports: d.Sport,
-                }
-
-            };
-            data = full_data['$' + year][season]
-        })
-    .await(ready);
-
-    // Time
-    var dataTime = d3.range(0, 124, 4).map(function(d) {
-            //console.log(full_data)
-            //console.log(full_data['$' + d+1896])
-            return new Date(1896 + d, 10, 3);
-      });
-
-    //var dataTime = full_data.keys().forEach(function(d){
-    //    return new Date(1896, 10, 3);
-    //})
-
-    var sliderTime = d3
-        .sliderBottom()
-        .min(d3.min(dataTime))
-        .max(d3.max(dataTime))
-        .step(2*1000 * 60 * 60 * 24 * 365)
-        .width(700)
-        .tickFormat(d3.timeFormat('%Y'))
-        .tickValues(dataTime)
-        .default(new Date(1896, 10, 3))
-        .on('onchange', val => {
-                    select(val);
-                  });
-
-    var gTime = d3
-        .select('div#slider-time')
-        .append('svg')
-        .attr('width', 750)
-        .attr('height', 100)
-        .append('g')
-        .attr('transform', 'translate(30,30)');
-
-    gTime.call(sliderTime);
-
-    d3.select('p#value-time').text(d3.timeFormat('%Y')(sliderTime.value()));
-
-function load_data(){
-    data = full_data['$' + year][season];
-}
-
-
-function select(y){
-    year = y.getYear() + 1900
-    if (Object.keys(full_data['$'+year]).length > 2){
-        season = 'Summer'
-    } else {
-        season = Object.keys(full_data['$'+year])[0]
-    }
-    //console.log(Object.keys(full_data['$'+year]).length)
-    load_data();
-    d3.queue()
-        .defer(d3.json, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson")
-        .defer(d3.json, "host_cities_markers.json")
-        .await(ready);
-}
-
-function ready(error, topo, markers) {
-    if (error) throw error;
-
-  var tooltip = d3.select("#my_dataviz")
-    .append("div")
-    .attr("class", "tooltip")
-    .style("opacity", 1)
-    .style("color", "black")
-    .style("background-color", "white")
-    .style("border-width", "1px")
-    .style("padding", "5px");
-
-/**
-  let mouseOver = function(d) {
-    d3.selectAll(".Country")
-      .transition()
-      .style("opacity", 1)
-    d3.select(this)
-      //.transition()
-      //.style("opacity", 1)
-      //.style("stroke", "black")
-          let name = d.properties.name;
-          let info = data[name];
-          var part = 0
-          if(info != undefined) { part = info.participants; }
-
-    tooltip.html('Country: ' + name + "<br>" + 'Number of participants: ' + part)
-      .style("opacity", 1)
-      .style("left", (d3.mouse(this)[0]+10) + "px")
-      .style("top", (d3.mouse(this)[1]) + "px");
-
-  }
-
-  let mouseLeave = function(d) {
-    d3.selectAll(".Country")
-      .transition()
-      .style("opacity", 1)
-    d3.select(this)
-      //.transition()
-      //.style("stroke", "gray")
-      //.style("opacity", .7)
-    tooltip.html("")
-      .style("opacity", 0);
-
-  }
-*/
-    // Draw the map
-    svg.append("g")
-        .attr("class", "countries")
-        .selectAll("path")
-        .data(topo.features)
-        .enter().append("path")
-            .attr("fill", function (d){
-                // check if country inside data
-                if (data[d.properties.name] != undefined){
-
-                    d.total = data[d.properties.name]['participants'] || 0;
-                } else {
-                    d.total = 0;
-                }
-                //d.total = data[d.properties.name] || 0;
-                // Set the color
-                return colorScale(d.total);
-            })
-            .attr("d", path)
-
-          .style("stroke", "transparent")
-          .attr("class", function(d){ return "Country" } )
-          .style("opacity", 1)
-          .on("mouseover", tip.show)
-          .on("mouseleave", tip.hide );
-
-    // remove the previous circle in host city
-    svg.selectAll("circle").remove()
-
-    // get the data for host city
-    var data_marker = [markers[year]['Summer']]
-
-    // Add circle in host city
-    svg.selectAll("myCircles")
-      .data(data_marker)
-      .enter()
-      .append("circle")
-        .attr("cx", function(d){ return projection([d.long, d.lat])[0] })
-        .attr("cy", function(d){ return projection([d.long, d.lat])[1] })
-        .attr("r", 4)
-        .style("fill", "#0000A0")
-        .attr("stroke", "#0000A0")
-        .attr("stroke-width", 1)
-        .attr("fill-opacity", .7);
-
-}
-</script>
+<script src="lollipop.js"></script>
+<script type="text/javascript" src="map.js"></script>

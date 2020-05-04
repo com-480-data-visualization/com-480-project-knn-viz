@@ -2,18 +2,25 @@
 <meta charset="utf-8">
 <head>
 <script src="https://d3js.org/d3.v4.min.js"></script>
-
+<script>
+  $(function(){
+    var includes = $('[data-include]');
+    jQuery.each(includes, function(){
+      var file = 'views/' + $(this).data('include') + '.html';
+      $(this).load(file);
+    });
+  });
+</script>
 
 </head>
 
 <body>
 
-<div id="my_dataviz_timeline"></div>
+
 <div id="chart-container" class="container">
          <svg id="my_timeline" width="1200" height="400" preserveAspectRatio="xMidYMid meet"></svg>
 </div>
 
 
 <script src="timeline.js"></script>
-<script src="lollipop.js"></script>
 </body>
