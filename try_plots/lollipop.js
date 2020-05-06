@@ -24,6 +24,7 @@ var clickYear = function(d){
       city = d.City
       //console.log(Object.keys(full_data['$'+year]).length)
       load_data();
+      update_medals(year);
       d3.queue()
           .defer(d3.json, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson")
           .defer(d3.json, "host_cities_markers.json")

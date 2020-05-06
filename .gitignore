@@ -2,3 +2,5 @@
 .ipynb_checkpoints
 *.icloud
 website/data/cereal.csv
+data/medals_per_year_country_sport_sex.json
+data/medals_per_year_country_sport_sex.csv
