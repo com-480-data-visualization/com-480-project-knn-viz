@@ -28,7 +28,7 @@ var getXText = function(i){
 }
 
 var getYText = function(i){
-  return parseInt(i/6)*50;
+  return parseInt(i/6)*80;
 }
 
 
@@ -86,7 +86,7 @@ function update_medals(year) {
           .data(data)
           .enter()
           .append("circle")
-            .attr("class", "myCircleTimeline")
+            .attr("class", "myCircleMedals")
             .attr("cx", function(d,i){
               return deltaXText -10 + getXText(i)})
             .attr("cy", function(d,i){return 7 + getYText(i)}) // 100 is where the first dot appears. 25 is the distance between dots
@@ -97,6 +97,55 @@ function update_medals(year) {
               return 'red';
             })
             .attr("r",4)
+
+            // add medal symbols - GOLD
+      svg3.selectAll("sportCircles")
+          .data(data)
+          .enter()
+          .append("circle")
+              .attr("class", "myCircleMedals")
+              .attr("cx", function(d,i){
+                      return deltaXText -10 + 10+ getXText(i)})
+              .attr("cy", function(d,i){return 10 + 35 + getYText(i)}) // 100 is where the first dot appears. 25 is the distance between dots
+              .style("fill", function(d){
+                      if (d[String(year)][season] > 0){
+                        return "rgba(255, 215, 0,1)";
+                      }
+                      return "rgba(255,255,255,0)";
+                    })
+              .attr("r",4)
+
+        svg3.selectAll("sportCircles")
+            .data(data)
+            .enter()
+            .append("circle")
+                .attr("class", "myCircleMedals")
+                .attr("cx", function(d,i){
+                        return deltaXText -10 + 50+ getXText(i)})
+                .attr("cy", function(d,i){return 10 + 35 + getYText(i)}) // 100 is where the first dot appears. 25 is the distance between dots
+                .style("fill", function(d){
+                        if (d[String(year)][season] > 0){
+                          return "rgba(192, 192, 192,1)";
+                        }
+                        return "rgba(255,255,255,0)";
+                      })
+                .attr("r",4)
+
+        svg3.selectAll("sportCircles")
+            .data(data)
+            .enter()
+            .append("circle")
+                .attr("class", "myCircleMedals")
+                .attr("cx", function(d,i){
+                        return deltaXText -10 + 90+ getXText(i)})
+                .attr("cy", function(d,i){return 10 + 35 + getYText(i)}) // 100 is where the first dot appears. 25 is the distance between dots
+                .style("fill", function(d){
+                        if (d[String(year)][season] > 0){
+                          return "rgba(205, 127, 50,1)";
+                        }
+                        return "rgba(255,255,255,0)";
+                      })
+                .attr("r",4)
 
 
   })

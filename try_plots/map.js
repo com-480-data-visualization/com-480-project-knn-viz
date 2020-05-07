@@ -5,6 +5,8 @@ var season = 'Summer'
 var city = "Athens"
 var country = "Greece"
 
+var country_code = d3.map()
+
 var svg = d3.select("#my_dataviz")
   .append("svg")
   .attr("width", width)
@@ -44,6 +46,9 @@ var g = svg.append("g")
     .attr("y", -6)
     .text(season + " Olympic Games Year " + year + " held in " + city + ", " + country);
 
+    // not working
+
+
 
 
 var labels = ['0', '1-10', '11-50', '50-100', '101-200', '201-300', '301-400', '401-500', '> 500'];
@@ -77,7 +82,7 @@ d3.queue()
     .defer(d3.json, "host_cities_markers.json")
     .defer(d3.csv, "regions_participants3.csv",
         function(d) {
-
+            //console.log(d)
             if ('$' + d.Year in full_data){
                 //console.log(d)
                 var yearKey = '$' + d.Year;
@@ -160,6 +165,13 @@ function ready(error, topo, markers) {
           // Update title
     g.selectAll(".title")
     .text(season + " Olympic Games Year " + year + " held in " + city + ", " + country);
+
+    g.append("svg:image")
+    .attr("xlink:href", "country-flags-master/svg/" + country +".svg")
+    .attr("x", width-100)
+    .attr("y", -20)
+    .attr("width", "20")
+    .attr("height", "20");
 
 
     // remove the previous circle in host city
