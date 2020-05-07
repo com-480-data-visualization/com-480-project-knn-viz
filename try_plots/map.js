@@ -166,6 +166,9 @@ function ready(error, topo, markers) {
     g.selectAll(".title")
     .text(season + " Olympic Games Year " + year + " held in " + city + ", " + country);
 
+    // delete previous image
+    g.selectAll("svg:image").remove()
+    // add new
     g.append("svg:image")
     .attr("xlink:href", "country-flags-master/svg/" + country +".svg")
     .attr("x", width-100)
