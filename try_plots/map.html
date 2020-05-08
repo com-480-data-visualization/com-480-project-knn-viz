@@ -6,6 +6,13 @@
 </head>
 
 <style>
+
+  div.fixed {
+    position: fixed;
+    top: 0;
+    right: 0;
+    background-color: rgba(255,255,255,0.8);
+  }
   .title {
       font-size: 16px;
       font-family: sans-serif;
@@ -90,11 +97,11 @@
 </style>
 
 
-<h2>Map with timeline</h2>
+<h2>Welcome to the Olympic Tour</h2>
 
-  <div id="my_dataviz_timeline"></div>
+  <div id="my_dataviz_timeline" class="fixed"></div>
 
-  <div id="informative_text"></div>
+
 
   <div id="logo_games"></div>
 
@@ -113,7 +120,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.24.0/d3-legend.js"></script>
 
-<script src="lollipop.js"></script>
+<script src="new_lollipop.js"></script>
 
 <script type="text/javascript" src="map.js"></script>
 <script type="text/javascript" src="medals.js"></script>

@@ -2,7 +2,7 @@
 // set the dimensions and margins of the graph
 var margin_medals = {top: 20, right: 30, bottom: 70, left: 60},
     width_medals= 1100 - margin_medals.left - margin_medals.right,
-    height_medals= 1500 - margin_medals.top - margin_medals.bottom;
+    height_medals= 2500 - margin_medals.top - margin_medals.bottom;
 
 var dy = 50;
 var sports = {}
@@ -24,11 +24,11 @@ var svg3 = d3.select("#medals")
           "translate(" + margin_medals.left + "," + margin_medals.top + ")");
 
 var getXText = function(i){
-  return parseInt(i%6)*200;
+  return parseInt(i%3)*200;
 }
 
 var getYText = function(i){
-  return parseInt(i/6)*80;
+  return parseInt(i/3)*80;
 }
 
 
@@ -146,6 +146,16 @@ function update_medals(year) {
                         return "rgba(255,255,255,0)";
                       })
                 .attr("r",4)
+
+
+        svg3.selectAll("image").remove()
+          // add new
+        svg3.append("svg:image")
+          .attr("xlink:href", "pictures/olympics_" + year +".jpg")
+          .attr("x", width_medals - 350)
+          .attr("y", -20)
+          .attr("width", "400")
+          .attr("height", "150");
 
 
   })

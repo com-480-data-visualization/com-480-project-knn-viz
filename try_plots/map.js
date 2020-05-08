@@ -222,6 +222,7 @@ function load_data(){
 function ready(error, topo, markers) {
     if (error) throw error;
 
+  /**
   var tooltip = d3.select("#my_dataviz")
     .append("div")
     .attr("class", "tooltip")
@@ -230,13 +231,16 @@ function ready(error, topo, markers) {
     .style("background-color", "white")
     .style("border-width", "1px")
     .style("padding", "5px");
+*/
 
     svg.selectAll("path").remove();
+    svg.selectAll("g").remove();
 
     // Draw the map
+    var delta_x = 40
     svg.append("g")
         .attr("class", "countries")
-        .attr("transform", "translate(" + width*0.1 + ",0)")
+        .attr("transform", "translate(" + delta_x + ",0)")
         .selectAll("path")
         .data(topo.features)
         .enter().append("path")
@@ -287,7 +291,7 @@ function ready(error, topo, markers) {
       .data(data_marker)
       .enter()
       .append("circle")
-        .attr("transform", "translate(" + width*0.1 + ",0)")
+        .attr("transform", "translate(" + delta_x + ",0)")
         .attr("cx", function(d){ return projection([d.long, d.lat])[0] })
         .attr("cy", function(d){ return projection([d.long, d.lat])[1] })
         .attr("r", 4)
