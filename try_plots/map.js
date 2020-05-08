@@ -12,6 +12,102 @@ var svg = d3.select("#my_dataviz")
   .attr("width", width)
   .attr("height", height);
 
+var info_games = d3.select("#logo_games")
+        .append("svg")
+        .attr("width", 1000)
+        .attr("height", 200);
+
+function upload_info_games(year, city, country, edition, season, n_countries, n_athletes) {
+  info_games.selectAll("text").remove();
+  info_games.selectAll("image").remove();
+
+  if (year <= 1928) {
+    info_games.append("svg:image")
+      .attr('x', 50)
+      .attr('y', 10)
+      .attr('width', 150)
+      .attr('height', 150)
+      .attr("xlink:href", "logos/" + year + "-" + season + ".jpg");
+  } else {
+    info_games.append("svg:image")
+      .attr('x', 50)
+      .attr('y', 10)
+      .attr('width', 150)
+      .attr('height', 150)
+      .attr("xlink:href", "logos/" + year + "-" + season + ".png");
+  }
+
+  if (edition == 1 | edition == 21) {
+      info_games.append("text")
+                .attr("x", 250)
+                .attr("y", 40)
+                .text(edition + "st EDITION OF " +  season.toUpperCase() + " OLYMPIC GAMES")
+                .attr("font-family", "Oswald")
+                .attr("font-size", "30px")
+                .attr("font-weight", 900);
+  } else if (edition == 2 | edition == 22) {
+      info_games.append("text")
+                .attr("x", 250)
+                .attr("y", 40)
+                .text(edition + "nd EDITION OF " +  season.toUpperCase() + " OLYMPIC GAMES")
+                .attr("font-family", "Oswald")
+                .attr("font-size", "30px")
+                .attr("font-weight", 900);
+  } else if (edition == 3 | edition == 23) {
+      info_games.append("text")
+                .attr("x", 250)
+                .attr("y", 40)
+                .text(edition + "rd EDITION OF " +  season.toUpperCase() + " OLYMPIC GAMES")
+                .attr("font-family", "Oswald")
+                .attr("font-size", "30px")
+                .attr("font-weight", 900);
+  } else {
+      info_games.append("text")
+                .attr("x", 250)
+                .attr("y", 40)
+                .text(edition + "th EDITION OF " +  season.toUpperCase() + " OLYMPIC GAMES")
+                .attr("font-family", "Oswald")
+                .attr("font-size", "30px")
+                .attr("font-weight", 900);
+  }
+
+  info_games.append("svg:image")
+            .attr("xlink:href", "country-flags-master/svg/" + country + ".svg")
+            .attr("x", 250)
+            .attr("y", 55)
+            .attr("width", "30")
+            .attr("height", "30");
+
+  info_games.append("text")
+            .attr("x", 290)
+            .attr("y", 80)
+            .text(city + ", " + country + " - " + year)
+            .attr("font-family", "Oswald")
+            .attr("font-size", "25px")
+            .attr("font-weight", 900);
+
+  info_games.append("text")
+            .attr("x", 250)
+            .attr("y", 120)
+            .text("Total Number of Countries Participating: " + n_countries)
+            .attr("font-family", "Oswald")
+            .attr("font-size", "18px")
+            .attr("fill", "gray")
+            .attr("font-weight", 700);
+
+  info_games.append("text")
+            .attr("x", 250)
+            .attr("y", 150)
+            .text("Total Number of Athletes Participating: " + n_athletes.toLocaleString())
+            .attr("font-family", "Oswald")
+            .attr("font-size", "18px")
+            .attr("fill", "gray")
+            .attr("font-weight", 700);
+}
+
+upload_info_games(year, "Athina", country, 1, season, 12, 176);
+
+
 // Map and projection
 var path = d3.geoPath();
 var projection = d3.geoNaturalEarth()
@@ -135,6 +231,8 @@ function ready(error, topo, markers) {
     .style("border-width", "1px")
     .style("padding", "5px");
 
+    svg.selectAll("path").remove();
+
     // Draw the map
     svg.append("g")
         .attr("class", "countries")
@@ -156,18 +254,19 @@ function ready(error, topo, markers) {
             })
             .attr("d", path)
 
-          .style("stroke", "transparent")
+          .attr("stroke-opacity", 0.1)
+          .style("stroke", "gray")
           .attr("class", function(d){ return "Country" } )
-          .style("opacity", 1)
+          .style("fill-opacity", 1)
           .on("mouseover", tip.show)
-          .on("mouseleave", tip.hide );
+          .on("mouseleave", tip.hide);
 
           // Update title
     g.selectAll(".title")
     .text(season + " Olympic Games Year " + year + " held in " + city + ", " + country);
 
     // delete previous image
-    g.selectAll("svg:image").remove()
+    g.selectAll("image").remove()
     // add new
     g.append("svg:image")
     .attr("xlink:href", "country-flags-master/svg/" + country +".svg")
@@ -197,4 +296,11 @@ function ready(error, topo, markers) {
         .attr("stroke-width", 1)
         .attr("fill-opacity", .7);
 
+    var edition = markers[year][season]['edition']
+    var n_athletes = markers[year][season]['n_athletes']
+    var n_countries = markers[year][season]['n_countries']
+
+    console.log(city)
+    // Change info about games
+    upload_info_games(year, city, country, edition, season, n_countries, n_athletes);
 }
