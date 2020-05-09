@@ -1,7 +1,7 @@
 // set the dimensions and margins of the graph
 var margin = {top: 50, right: 30, bottom: 20, left: 30},
-    width_timeline= 250 - margin.left - margin.right,
-    height_timeline= 900 - margin.top - margin.bottom;
+    width_timeline= 200 - margin.left - margin.right,
+    height_timeline= 1200 - margin.top - margin.bottom;
     //height_timeline= window.innerHeight - margin.top - margin.bottom;
 //console.log(window.innerHeight)
 
@@ -34,6 +34,22 @@ var clickYear = function(d){
 
 }
 
+var svg4 = d3.select("#my_dataviz_legend_timeline")
+  .append("svg")
+    .attr("width", 50)
+    .attr("height", window.innerHeight + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform",
+          "translate(" + 30 + "," + 1.5*margin.top + ")");
+
+var svg5 = d3.select("#my_dataviz_timeline_seasons")
+  .append("svg")
+    .attr("width", width_timeline+ margin.left + margin.right)
+    .attr("height", 70)
+  .append("g")
+    .attr("transform",
+          "translate(" + 10 + "," + 1.5*margin.top + ")");
+
 // append the svg object to the body of the page
 var svg2 = d3.select("#my_dataviz_timeline")
   .append("svg")
@@ -41,10 +57,10 @@ var svg2 = d3.select("#my_dataviz_timeline")
     .attr("height", height_timeline+ margin.top + margin.bottom)
   .append("g")
     .attr("transform",
-          "translate(" + 30 + "," + 1.5*margin.top + ")");
+          "translate(" + 10 + "," + 1.5*margin.top + ")");
 
 
-var g_timeline = svg2.append("g")
+var g_timeline = svg5.append("g")
               .attr("class", "legendColor")
               .attr("transform", "translate(-10,-20)");
 
@@ -74,14 +90,14 @@ svg2.select(".legendColor")
 
 // Initialize the X axis
 var x = d3.scaleLinear()
-  .range([ 0, width_timeline]);
+  .range([0, width_timeline]);
 
 var xAxis = svg2.append("g")
 
 
 // Initialize the Y axis
 var y = d3.scaleBand()
-  .range([ 0, height_timeline])
+  .range([0, height_timeline])
   .padding(1);
 
 var yAxis = svg2.append("g")
@@ -104,11 +120,17 @@ var tip_timeline = d3.tip()
 svg2.call(tip_timeline)
 
 
-var domain_function = function range(size, startAt = 1896) {
-return [...Array(size).keys()].map(i => i*4 + startAt);
+var domain_function = function range(size, step, startAt = 1896) {
+return [...Array(size).keys()].map(i => i*step + startAt);
 }
 
 //rotate(-45)
+
+var y2 = d3.scaleBand()
+  .range([0, height_timeline])
+  .domain(domain_function(32, 4))
+  .padding(0);
+
 
 // A function that create / update the plot for a given variable:
 function update(selectedVar) {
@@ -117,10 +139,11 @@ function update(selectedVar) {
   d3.csv("location_host_cities.csv", function(data) {
 
     // Y axis
-    y.domain(domain_function(32))
-    yAxis.call(d3.axisLeft(y))
+    y.domain(domain_function(63, 2))
+
+    yAxis.call(d3.axisLeft(y2))
       .selectAll("text")
-      .attr("transform", "translate(0,-10)")
+      .attr("transform", "translate(0,-6)")
 
     // Add X axis
     x.domain([-dx, d3.max(data, function(d) {
@@ -137,7 +160,7 @@ function update(selectedVar) {
       .append("line")
       .attr("class", "myLine")
       .merge(j)
-        .attr("x1", width_timeline/2)
+        .attr("x1", width_timeline/2 )
         .attr("x2", function(d) { return xLevel(d); })
         .attr("y1", function(d) { return y(d.Year); })
         .attr("y2", function(d) { return y(d.Year); })
@@ -165,23 +188,23 @@ function update(selectedVar) {
 
     var size = 20
     var allgroups = ["Asia", "Europe", "America", "Oceania"]
-      svg2.selectAll("myrect")
+      svg4.selectAll("myrect")
         .data(allgroups)
         .enter()
         .append("circle")
-          .attr("cy", function(d,i){ return 150 + i*height_timeline/6})
-          .attr("cx", 0) // 100 is where the first dot appears. 25 is the distance between dots
+          .attr("cy", function(d,i){ return 120 + i*window.innerHeight/6})
+          .attr("cx", -5) // 100 is where the first dot appears. 25 is the distance between dots
           .attr("r", 7)
           .style("fill", function(d){ return color(d);})
 
       // Add labels beside legend dots
-      svg2.selectAll("mylabels")
+      svg4.selectAll("mylabels")
         .data(allgroups)
         .enter()
         .append("text")
           .attr("class", "continentLegend")
-          .attr("y", function(d,i){ return 170 + i*height_timeline/6})
-          .attr("x", 0) // 100 is where the first dot appears. 25 is the distance between dots
+          .attr("y", function(d,i){ return 140 + i*window.innerHeight/6})
+          .attr("x", -5) // 100 is where the first dot appears. 25 is the distance between dots
           .style("fill", "black")
           .text(function(d){ return d})
           .attr("text-anchor", "middle")
