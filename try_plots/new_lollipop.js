@@ -1,7 +1,8 @@
 // set the dimensions and margins of the graph
 var margin = {top: 50, right: 30, bottom: 20, left: 30},
     width_timeline= 250 - margin.left - margin.right,
-    height_timeline= 830 - margin.top - margin.bottom;
+    height_timeline= window.innerHeight - margin.top - margin.bottom;
+//console.log(window.innerHeight)
 
 var dx = 50;
 
@@ -101,6 +102,11 @@ var tip_timeline = d3.tip()
                 })
 svg2.call(tip_timeline)
 
+
+var domain_function = function range(size, startAt = 1896) {
+return [...Array(size).keys()].map(i => i*4 + startAt);
+}
+
 //rotate(-45)
 
 // A function that create / update the plot for a given variable:
@@ -110,7 +116,7 @@ function update(selectedVar) {
   d3.csv("location_host_cities.csv", function(data) {
 
     // Y axis
-    y.domain(data.map(function(d) { return d.Year; }))
+    y.domain(domain_function(32))
     yAxis.call(d3.axisLeft(y))
       .selectAll("text")
       .attr("transform", "translate(0,-10)")
@@ -162,7 +168,7 @@ function update(selectedVar) {
         .data(allgroups)
         .enter()
         .append("circle")
-          .attr("cy", function(d,i){ return 200 + i*150})
+          .attr("cy", function(d,i){ return 150 + i*height_timeline/6})
           .attr("cx", 0) // 100 is where the first dot appears. 25 is the distance between dots
           .attr("r", 7)
           .style("fill", function(d){ return color(d);})
@@ -173,7 +179,7 @@ function update(selectedVar) {
         .enter()
         .append("text")
           .attr("class", "continentLegend")
-          .attr("y", function(d,i){ return 220 + i*150})
+          .attr("y", function(d,i){ return 170 + i*height_timeline/6})
           .attr("x", 0) // 100 is where the first dot appears. 25 is the distance between dots
           .style("fill", "black")
           .text(function(d){ return d})
