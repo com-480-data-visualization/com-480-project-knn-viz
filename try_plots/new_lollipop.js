@@ -1,7 +1,8 @@
 // set the dimensions and margins of the graph
 var margin = {top: 50, right: 30, bottom: 20, left: 30},
     width_timeline= 250 - margin.left - margin.right,
-    height_timeline= window.innerHeight - margin.top - margin.bottom;
+    height_timeline= 900 - margin.top - margin.bottom;
+    //height_timeline= window.innerHeight - margin.top - margin.bottom;
 //console.log(window.innerHeight)
 
 var dx = 50;

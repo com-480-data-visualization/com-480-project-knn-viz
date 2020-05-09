@@ -136,13 +136,11 @@ var g = svg.append("g")
     .attr("y", -6)
     .text("Athletes");
 
-    g.append("text")
+    /*g.append("text")
     .attr("class", "title")
     .attr("x", width/2)
     .attr("y", -6)
-    .text(season + " Olympic Games Year " + year + " held in " + city + ", " + country);
-
-    // not working
+    .text(season + " Olympic Games Year " + year + " held in " + city + ", " + country);*/
 
 
 
@@ -162,7 +160,16 @@ var tip = d3.tip()
             let info = data[name];
             var part = 0
             if(info != undefined) { part = info.participants; }
-            return "<strong>Country:" + name +" <br> Participants: </strong> <span>" + part + "</span>";
+            return "<strong>Country: " + name +" <br> Participants: </strong> <span>" + part + "</span>";
+          })
+
+var tip2 = d3.tip()
+    .attr('class', 'd3-tip2')
+    .offset([-10, 0])
+    .html(function(d) {
+            let city = d.city;
+            let country = d.country;
+            return "<strong>Host city: </strong>" + city + ", " + country;
           })
 
 // Legend
@@ -171,6 +178,7 @@ svg.select(".legendThreshold")
 
 // Tooltip
 svg.call(tip);
+svg.call(tip2);
 
 // Load external data and boot
 d3.queue()
@@ -234,7 +242,7 @@ function ready(error, topo, markers) {
 */
 
     svg.selectAll("path").remove();
-    svg.selectAll("g").remove();
+    //svg.selectAll("g").remove();  // to see the legend
 
     // Draw the map
     var delta_x = 40
@@ -270,14 +278,14 @@ function ready(error, topo, markers) {
     .text(season + " Olympic Games Year " + year + " held in " + city + ", " + country);
 
     // delete previous image
-    g.selectAll("image").remove()
+    //g.selectAll("image").remove()
     // add new
-    g.append("svg:image")
+    /*g.append("svg:image")
     .attr("xlink:href", "country-flags-master/svg/" + country +".svg")
     .attr("x", width-100)
     .attr("y", -20)
     .attr("width", "20")
-    .attr("height", "20");
+    .attr("height", "20");*/
 
 
     // remove the previous circle in host city
@@ -285,6 +293,7 @@ function ready(error, topo, markers) {
 
     // get the data for host city
     var data_marker = [markers[year][season]]
+    console.log(data_marker)
 
     // Add circle in host city
     svg.selectAll("myCircles")
@@ -298,7 +307,9 @@ function ready(error, topo, markers) {
         .style("fill", "#0000A0")
         .attr("stroke", "#0000A0")
         .attr("stroke-width", 1)
-        .attr("fill-opacity", .7);
+        .attr("fill-opacity", .7)
+        .on("mouseover", tip2.show)
+        .on("mouseleave", tip2.hide);;
 
     var edition = markers[year][season]['edition']
     var n_athletes = markers[year][season]['n_athletes']
