@@ -158,6 +158,21 @@ function update_medals(year) {
           .attr("height", "150");
 
 
+      /*svg3.selectAll("podiums")
+          .data(data)
+          .enter()
+          .append("svg:image")
+          .attr('x', function(d,i){
+            return deltaXText -10 + getXText(i)})
+          .attr('y', function(d,i){return 25 + getYText(i)})
+          .attr('width', 90)
+          .attr('height', 50)
+          .attr("xlink:href", function(d){
+                  if (d[String(year)][season] > 0){
+                    return "/podium/podium.png";
+                  }});*/
+
+
   })
 }
 
