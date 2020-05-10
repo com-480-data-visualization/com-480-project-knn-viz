@@ -33,9 +33,17 @@
     overflow-y: visible;
   }
 
+  div.fixed_title {
+    position: fixed;
+    top: 0;
+    right: window.innerWidth/2;
+    background-color: rgba(255,255,255,1);
+    overflow-y: visible;
+  }
+
   .title {
       font-size: 16px;
-      font-family: sans-serif;
+      font-family: Oswald;
   }
 
   .countries {
@@ -45,17 +53,17 @@
   }
   .legendThreshold {
       font-size: 12px;
-      font-family: sans-serif;
+      font-family: Oswald;
   }
 
   .sport{
       font-size: 14px;
-      font-family: sans-serif;
+      font-family: Oswald;
   }
 
   .sportLegend {
       font-size: 12px;
-      font-family: sans-serif;
+      font-family: Oswald;
   }
 
   .caption {
@@ -144,10 +152,16 @@
       stroke: rgba(255,255,255,0);
     }
 
+  .headertekst {
+      {
+        text-align: center;
+        width:100%
+      }
+
 </style>
 
 
-<h2>Welcome to the Olympic Tour</h2>
+
 
   <div id="my_dataviz_legend_timeline" class="fixed_legend"></div>
 
@@ -157,12 +171,14 @@
 
   <div id="logo_games"></div>
 
+  <div id="title" class="fixed_title"></div>
+
   <div class="row align-items-center">
       <div id="my_dataviz"></div>
   </div>
 
   <div id="medals">
-      <h2>Sports along time</h2>
+      <h2 class="headertekst">Sports along time</h2>
   </div>
 
 <script src="https://d3js.org/d3.v4.min.js"></script>
@@ -173,6 +189,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.24.0/d3-legend.js"></script>
 
 <script src="new_lollipop.js"></script>
+<script src="title.js"></script>
 
 <script type="text/javascript" src="map.js"></script>
 <script type="text/javascript" src="medals.js"></script>

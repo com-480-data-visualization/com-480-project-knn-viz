@@ -34,7 +34,6 @@ var getYText = function(i){
 
 // A function that create / update the plot for a given variable:
 function update_medals(year) {
-  console.log(year)
   //Remove previous entries to avoid overlapping
   svg3.selectAll("*").remove();
 

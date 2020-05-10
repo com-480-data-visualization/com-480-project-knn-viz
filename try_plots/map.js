@@ -1,5 +1,7 @@
 var width = 1100
 var height = 600
+var width_window = window.innerWidth
+var height_window = window.innerHeight
 var year = 1896
 var season = 'Summer'
 var city = "Athens"
@@ -15,11 +17,15 @@ var svg = d3.select("#my_dataviz")
 var info_games = d3.select("#logo_games")
         .append("svg")
         .attr("width", 1000)
-        .attr("height", 200);
+        .attr("height", 200)
+        .attr("transform", "translate("+ (width_window - width)/2 + ","+ 100 +")");
+
+
 
 function upload_info_games(year, city, country, edition, season, n_countries, n_athletes) {
   info_games.selectAll("text").remove();
   info_games.selectAll("image").remove();
+
 
   if (year <= 1928) {
     info_games.append("svg:image")
@@ -103,6 +109,8 @@ function upload_info_games(year, city, country, edition, season, n_countries, n_
             .attr("font-size", "18px")
             .attr("fill", "gray")
             .attr("font-weight", 700);
+
+
 }
 
 upload_info_games(year, "Athina", country, 1, season, 12, 176);
@@ -128,7 +136,7 @@ var colorScale = d3.scaleThreshold()
 // Legend
 var g = svg.append("g")
     .attr("class", "legendThreshold")
-    .attr("transform", "translate(20,20)");
+    .attr("transform", "translate(20,100)");
 
     g.append("text")
     .attr("class", "caption")
@@ -240,15 +248,16 @@ function ready(error, topo, markers) {
     .style("border-width", "1px")
     .style("padding", "5px");
 */
+    
 
     svg.selectAll("path").remove();
     //svg.selectAll("g").remove();  // to see the legend
 
     // Draw the map
-    var delta_x = 40
+    var delta_x = 100
     svg.append("g")
         .attr("class", "countries")
-        .attr("transform", "translate(" + delta_x + ",0)")
+        .attr("transform", "translate(" + delta_x + ",100)")
         .selectAll("path")
         .data(topo.features)
         .enter().append("path")
@@ -300,7 +309,7 @@ function ready(error, topo, markers) {
       .data(data_marker)
       .enter()
       .append("circle")
-        .attr("transform", "translate(" + delta_x + ",0)")
+        .attr("transform", "translate(" + delta_x + ",100)")
         .attr("cx", function(d){ return projection([d.long, d.lat])[0] })
         .attr("cy", function(d){ return projection([d.long, d.lat])[1] })
         .attr("r", 4)

@@ -27,6 +27,7 @@ var clickYear = function(d){
       //console.log(Object.keys(full_data['$'+year]).length)
       load_data();
       update_medals(year);
+      update_title(year, city, country);
       d3.queue()
           .defer(d3.json, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson")
           .defer(d3.json, "host_cities_markers.json")
@@ -69,12 +70,14 @@ var g_timeline = svg5.append("g")
               .attr("x", -20 + width_timeline/2 - dx)
               .attr("y", 0)
               .text("Summer")
+              .attr("font-family", "Oswald")
 
               g_timeline.append("text")
               .attr("class", "caption")
               .attr("x", -20 + width_timeline/2 + dx)
               .attr("y", 0)
               .text("Winter")
+              .attr("font-family", "Oswald")
 
 
 var legend_timeline = d3.legendColor()
@@ -144,6 +147,7 @@ function update(selectedVar) {
     yAxis.call(d3.axisLeft(y2))
       .selectAll("text")
       .attr("transform", "translate(0,-6)")
+      .attr("font-family", "Oswald")
 
     // Add X axis
     x.domain([-dx, d3.max(data, function(d) {
@@ -202,6 +206,7 @@ function update(selectedVar) {
         .data(allgroups)
         .enter()
         .append("text")
+          .attr("font-family", "Oswald")
           .attr("class", "continentLegend")
           .attr("y", function(d,i){ return 140 + i*window.innerHeight/6})
           .attr("x", -5) // 100 is where the first dot appears. 25 is the distance between dots
@@ -209,6 +214,7 @@ function update(selectedVar) {
           .text(function(d){ return d})
           .attr("text-anchor", "middle")
           .style("alignment-baseline", "middle")
+
 
 
   })
