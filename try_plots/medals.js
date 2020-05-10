@@ -2,12 +2,13 @@
 // set the dimensions and margins of the graph
 var margin_medals = {top: 20, right: 30, bottom: 70, left: 60},
     width_medals= 1100 - margin_medals.left - margin_medals.right,
-    height_medals= 2500 - margin_medals.top - margin_medals.bottom;
+    height_medals= 3500 - margin_medals.top - margin_medals.bottom;
 
 var dy = 50;
 var sports = {}
 var selectedSport = []
 var deltaXText = 100
+var selected_sport = "Athelics"
 
 //var year = 1896
 var city = "Athens"
@@ -17,18 +18,88 @@ var country = "Greece"
 // append the svg object to the body of the page
 var svg3 = d3.select("#medals")
   .append("svg")
-    .attr("width", width_medals+ margin_medals.left + margin_medals.right)
+    .attr("width", width_medals/2)
     .attr("height", height_medals+ margin_medals.top + margin_medals.bottom)
   .append("g")
+    .attr("width", 500)
+    .attr("height", height_medals)
     .attr("transform",
           "translate(" + margin_medals.left + "," + margin_medals.top + ")");
 
+var svg_info_medals = d3.select("#medals")
+  .append("svg")
+    .attr("width", width_medals/2)
+    .attr("height", height_medals+ margin_medals.top + margin_medals.bottom)
+  .append("g")
+    .attr("width", 600)
+    .attr("height", height_medals)
+    .attr("transform",
+          "translate(" + margin_medals.left + "," + margin_medals.top + ")");
+
+
 var getXText = function(i){
-  return parseInt(i%3)*200;
+  return parseInt(i%2)*200;
 }
 
 var getYText = function(i){
-  return parseInt(i/3)*80;
+  return parseInt(i/2)*80;
+}
+
+// Display info medals
+var info_medal = function generate_info_medals(selected_sport){
+  console.log(selected_sport)
+  svg_info_medals.selectAll(".infoTitle").remove();
+
+  svg_info_medals.append("text")
+    .attr("class", "infoTitle")
+    .attr("x", margin.left)
+    .attr("y", 10)
+    .text(selected_sport)
+    .attr("font-size", "30px")
+
+  svg_info_medals.selectAll("image").remove()
+    // add new
+  svg_info_medals.append("svg:image")
+    .attr("xlink:href", "pictures/olympics_" + year +".jpg")
+    .attr("x", 100)
+    .attr("y", -20)
+    .attr("width", "400")
+    .attr("height", "150");
+
+  svg_info_medals.append("text")
+    .attr("class", "infoTitle")
+    .attr("x", margin.left)
+    .attr("y", 250)
+    .text("Number of participating athletes: ")
+    .attr("font-size", "20px")
+
+  svg_info_medals.append("text")
+    .attr("class", "infoTitle")
+    .attr("x", margin.left + 20)
+    .attr("y", 300)
+    .text("   Men: ")
+    .attr("font-size", "15px")
+
+  svg_info_medals.append("text")
+    .attr("class", "infoTitle")
+    .attr("x", margin.left + 20)
+    .attr("y", 350)
+    .text("   Women: ")
+    .attr("font-size", "15px")
+
+  svg_info_medals.append("text")
+    .attr("class", "infoTitle")
+    .attr("x", margin.left)
+    .attr("y", 450)
+    .text("Number of participating countries: ")
+    .attr("font-size", "20px")
+
+
+}
+
+var delete_content = function delete_content(){
+    svg_info_medals.selectAll(".infoTitle").remove();
+    svg_info_medals.selectAll("image").remove();
 }
 
 
@@ -58,6 +129,14 @@ function update_medals(year) {
           return d.name})
         .attr("text-anchor", "left")
         .style("alignment-baseline", "middle")
+        .on("click", function(d){
+          if (d[String(year)][season] > 0){
+            info_medal(d.name);
+          } else {
+            delete_content();
+          }
+
+        })
 
     svg3.selectAll("sportNames")
           .data(data)
@@ -81,6 +160,7 @@ function update_medals(year) {
             .attr("text-anchor", "left")
             .style("alignment-baseline", "middle")
 
+
     svg3.selectAll("sportCircles")
           .data(data)
           .enter()
@@ -96,6 +176,7 @@ function update_medals(year) {
               return 'red';
             })
             .attr("r",4)
+
 
             // add medal symbols - GOLD
       svg3.selectAll("sportCircles")
@@ -147,14 +228,9 @@ function update_medals(year) {
                 .attr("r",4)
 
 
-        svg3.selectAll("image").remove()
-          // add new
-        svg3.append("svg:image")
-          .attr("xlink:href", "pictures/olympics_" + year +".jpg")
-          .attr("x", width_medals - 350)
-          .attr("y", -20)
-          .attr("width", "400")
-          .attr("height", "150");
+        // INFORMATION PART
+
+
 
 
       /*svg3.selectAll("podiums")
