@@ -11,7 +11,7 @@ var deltaXText = 100
 var selected_sport = "Athelics"
 
 //var year = 1896
-var city = "Athens"
+var city = "Athina"
 var country = "Greece"
 
 
