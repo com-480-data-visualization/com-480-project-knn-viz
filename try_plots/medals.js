@@ -18,10 +18,10 @@ var country = "Greece"
 // append the svg object to the body of the page
 var svg3 = d3.select("#medals")
   .append("svg")
-    .attr("width", width_medals/2)
+    .attr("width", width_medals)
     .attr("height", height_medals+ margin_medals.top + margin_medals.bottom)
   .append("g")
-    .attr("width", 500)
+    .attr("width", 1000)
     .attr("height", height_medals)
     .attr("transform",
           "translate(" + margin_medals.left + "," + margin_medals.top + ")");
@@ -37,12 +37,12 @@ var svg_info_medals = d3.select("#medals")
           "translate(" + margin_medals.left + "," + margin_medals.top + ")");
 
 
-var getXText = function(i){
-  return parseInt(i%2)*200;
+var text_x_pos = function(i){
+  return parseInt(i%6)*150
 }
 
-var getYText = function(i){
-  return parseInt(i/2)*80;
+var text_y_pos = function(i){
+  return parseInt(i/6)*80
 }
 
 // Display info medals
@@ -251,20 +251,50 @@ function update_medals(year) {
   })
 }
 
-var sport_svg = d3.select("#sport")
-                .append("svg")
-                .attr("width", 1100)
-                .attr("height", 80);
+var svg_events = d3.select("#medals")
+  .append("svg")
+    .attr("width", width_medals/2)
+    .attr("height", height_medals+ margin_medals.top + margin_medals.bottom)
+  .append("g")
+    .attr("width", 600)
+    .attr("height", height_medals)
+    .attr("transform",
+          "translate(" + margin_medals.left + "," + margin_medals.top + ")");
 
+
+
+function display_sport_detail(game, sport_detail){
+  var events_list = sport_detail;//Object.keys(sport_detail);
+  console.log(events_list)
+
+  svg3.selectAll("eventNames").remove()
+    .data(events_list)
+    .enter()
+    .append("text")
+      .attr("class", "event")
+      .attr("x", function(d,i){
+        return deltaXText + text_x_pos(i)})
+      .attr("y", function(d,i){return 510 + text_y_pos(i)}) // 100 is where the first dot appears. 25 is the distance between dots
+      .text(function(d){
+        return d})
+      .attr("text-anchor", "left")
+      .style("alignment-baseline", "middle")
+
+
+
+    // participating countries -> update map as well?
+    // events -> individual/team, men's/women's/mixed -> into small svg circles
+    // for each events, show medalists
+    // MVP countries overall
+}
 
 function update_sports(year, season) {
     svg3.selectAll("*").remove();
   //Remove previous entries to avoid overlapping
   var game = year + " " + season
 
-  d3.json("sports_per_game.json", function(data){
-    var sports_list = data['Sport'][game]
-
+  d3.json("sports_game_details.json",function(data){
+    var sports_list = Object.keys(data[game]);
 
     svg3.selectAll("sportNames").remove()
       .data(sports_list)
@@ -272,25 +302,21 @@ function update_sports(year, season) {
       .append("text")
         .attr("class", "sport")
         .attr("x", function(d,i){
-          return deltaXText + getXText(i)})
-        .attr("y", function(d,i){return 10 + getYText(i)}) // 100 is where the first dot appears. 25 is the distance between dots
+          return deltaXText + text_x_pos(i)})
+        .attr("y", function(d,i){return 10 + text_y_pos(i)}) // 100 is where the first dot appears. 25 is the distance between dots
         .text(function(d){
           return d})
         .attr("text-anchor", "left")
         .style("alignment-baseline", "middle")
-        .on("click", function(d){
-          console.log(d)
+        .on("click", function(s){
+          // on click, show events
+          display_sport_detail(game,data[game][s]);
+
+        // load pictogram file, display,  make svg element
         })
       })
     }
 
-    // for statement , display on screen -> no need for for loop... but make it horizontal. 8 sports per row, perhaps?
-    // on click, show
-    // load pictogram file, display,
-    // make svg element
-
-
 
 // Initialize plot
-//update_medals(year)
 update_sports(year, season)
