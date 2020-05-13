@@ -4,7 +4,7 @@ var width_window = window.innerWidth
 var height_window = window.innerHeight
 var year = 1896
 var season = 'Summer'
-var city = "Athens"
+var city = "Athina"
 var country = "Greece"
 
 var country_code = d3.map()
@@ -248,7 +248,7 @@ function ready(error, topo, markers) {
     .style("border-width", "1px")
     .style("padding", "5px");
 */
-    
+
 
     svg.selectAll("path").remove();
     //svg.selectAll("g").remove();  // to see the legend
