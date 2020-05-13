@@ -251,6 +251,46 @@ function update_medals(year) {
   })
 }
 
+var sport_svg = d3.select("#sport")
+                .append("svg")
+                .attr("width", 1100)
+                .attr("height", 80);
+
+
+function update_sports(year, season) {
+    svg3.selectAll("*").remove();
+  //Remove previous entries to avoid overlapping
+  var game = year + " " + season
+
+  d3.json("sports_per_game.json", function(data){
+    var sports_list = data['Sport'][game]
+
+
+    svg3.selectAll("sportNames").remove()
+      .data(sports_list)
+      .enter()
+      .append("text")
+        .attr("class", "sport")
+        .attr("x", function(d,i){
+          return deltaXText + getXText(i)})
+        .attr("y", function(d,i){return 10 + getYText(i)}) // 100 is where the first dot appears. 25 is the distance between dots
+        .text(function(d){
+          return d})
+        .attr("text-anchor", "left")
+        .style("alignment-baseline", "middle")
+        .on("click", function(d){
+          console.log(d)
+        })
+      })
+    }
+
+    // for statement , display on screen -> no need for for loop... but make it horizontal. 8 sports per row, perhaps?
+    // on click, show
+    // load pictogram file, display,
+    // make svg element
+
+
 
 // Initialize plot
-update_medals(year)
+//update_medals(year)
+update_sports(year, season)
