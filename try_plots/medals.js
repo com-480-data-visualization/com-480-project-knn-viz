@@ -247,6 +247,16 @@ function update_medals(year) {
   })
 }
 
+
+var event_tip = d3.tip()
+    .attr('class', 'd3-tip')
+    .offset([-10, 0])
+    .html(function(d) {
+      return d
+          })
+
+svg.call(event_tip);
+
 function display_sport_detail(game, sport_detail){
   svg_info_sports.selectAll("*").remove();
   var events_list = sport_detail;//Object.keys(sport_detail);
@@ -275,6 +285,10 @@ function display_sport_detail(game, sport_detail){
       .on("click",function(d){
         console.log(d)
       })
+      .on("mouseover", event_tip.show)
+
+      .on("mouseleave", event_tip.hide);
+
       }
 
           // participating countries -> update map as well?
