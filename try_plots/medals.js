@@ -1,8 +1,8 @@
 
 // set the dimensions and margins of the graph
-var margin_medals = {top: 20, right: 30, bottom: 70, left: 60},
-    width_medals= 1100 - margin_medals.left - margin_medals.right,
-    height_medals= 3500 - margin_medals.top - margin_medals.bottom;
+var margin_sports = {top: 20, right: 30, bottom: 70, left: 60},
+    width_sports= 1100 - margin_sports.left - margin_sports.right,
+    height_sports= 500 - margin_sports.top - margin_sports.bottom;
 
 var dy = 50;
 var sports = {}
@@ -18,23 +18,25 @@ var country = "Greece"
 // append the svg object to the body of the page
 var svg3 = d3.select("#medals")
   .append("svg")
-    .attr("width", width_medals)
-    .attr("height", height_medals+ margin_medals.top + margin_medals.bottom)
+    .attr("width", width_sports)
+    .attr("height", height_sports+ margin_sports.top + margin_sports.bottom)
   .append("g")
     .attr("width", 1000)
-    .attr("height", height_medals)
+    .attr("height", height_sports)
     .attr("transform",
-          "translate(" + margin_medals.left + "," + margin_medals.top + ")");
+          "translate(" + margin_sports.left + "," + margin_sports.top + ")");
 
-var svg_info_medals = d3.select("#medals")
+var svg_info_sports = d3.select("#medals")
   .append("svg")
-    .attr("width", width_medals/2)
-    .attr("height", height_medals+ margin_medals.top + margin_medals.bottom)
+    .attr("width",width_sports)
+    .attr("height", 123)
   .append("g")
-    .attr("width", 600)
-    .attr("height", height_medals)
+    .attr("width", 873)
+    .attr("height", 111)
     .attr("transform",
-          "translate(" + margin_medals.left + "," + margin_medals.top + ")");
+          "translate(" + margin_sports.left + "," + margin_sports.top + ")");
+
+
 
 
 var text_x_pos = function(i){
@@ -229,10 +231,6 @@ function update_medals(year) {
 
 
         // INFORMATION PART
-
-
-
-
       /*svg3.selectAll("podiums")
           .data(data)
           .enter()
@@ -246,50 +244,46 @@ function update_medals(year) {
                   if (d[String(year)][season] > 0){
                     return "/podium/podium.png";
                   }});*/
-
-
   })
 }
 
-var svg_events = d3.select("#medals")
-  .append("svg")
-    .attr("width", width_medals/2)
-    .attr("height", height_medals+ margin_medals.top + margin_medals.bottom)
-  .append("g")
-    .attr("width", 600)
-    .attr("height", height_medals)
-    .attr("transform",
-          "translate(" + margin_medals.left + "," + margin_medals.top + ")");
-
-
-
 function display_sport_detail(game, sport_detail){
+  svg_info_sports.selectAll("*").remove();
   var events_list = sport_detail;//Object.keys(sport_detail);
+  // it would be better to sort the events beforehand
   console.log(events_list)
-
-  svg3.selectAll("eventNames").remove()
+  svg_info_sports.selectAll("*").remove()
     .data(events_list)
     .enter()
-    .append("text")
+    .append("circle")
       .attr("class", "event")
-      .attr("x", function(d,i){
-        return deltaXText + text_x_pos(i)})
-      .attr("y", function(d,i){return 510 + text_y_pos(i)}) // 100 is where the first dot appears. 25 is the distance between dots
-      .text(function(d){
-        return d})
-      .attr("text-anchor", "left")
-      .style("alignment-baseline", "middle")
+      .attr("cx" , function(d,i){
+        return i*15})
+      .attr("cy" , function(d,i){
+        return 0})
+      .style("fill", function(d){
+        if (d.indexOf("Women's") != -1){
+          return "red"
+        }
+        else if (d.indexOf("Mixed") != -1) {
+          return "purple"
+        }
+        else{
+          return "blue"}
+        })
+      .attr("r",4)
+      .on("click",function(d){
+        console.log(d)
+      })
+      }
 
-
-
-    // participating countries -> update map as well?
-    // events -> individual/team, men's/women's/mixed -> into small svg circles
-    // for each events, show medalists
-    // MVP countries overall
-}
+          // participating countries -> update map as well?
+          // for each events, show medalists
+          // MVP countries overall
 
 function update_sports(year, season) {
     svg3.selectAll("*").remove();
+    svg_info_sports.selectAll("*").remove()
   //Remove previous entries to avoid overlapping
   var game = year + " " + season
 
