@@ -2,7 +2,7 @@
 // set the dimensions and margins of the graph
 var margin_sports = {top: 20, right: 30, bottom: 70, left: 60},
     width_sports= 1100 - margin_sports.left - margin_sports.right,
-    height_sports= 500 - margin_sports.top - margin_sports.bottom;
+    height_sports= 300 - margin_sports.top - margin_sports.bottom;
 
 var dy = 50;
 var sports = {}
@@ -40,11 +40,11 @@ var svg_info_sports = d3.select("#medals")
 
 
 var text_x_pos = function(i){
-  return parseInt(i%6)*150
+  return parseInt(i%12)*80
 }
 
 var text_y_pos = function(i){
-  return parseInt(i/6)*80
+  return parseInt(i/12)*80
 }
 
 // Display info medals
@@ -248,34 +248,45 @@ function update_medals(year) {
 }
 
 
-var event_tip = d3.tip()
+var sport_tip = d3.tip()
     .attr('class', 'd3-tip')
     .offset([-10, 0])
     .html(function(d) {
       return d
           })
 
+var event_tip = d3.tip()
+    .attr('class', 'd3-tip')
+    .offset([-10, 0])
+    .html(function(d) {
+      console.log(Object.entries(d[1]['countries']))
+      return d[0] + '::: ' + 'countries: ' + Object.keys(d[1]['countries']).length + '::' + 'medalists: ' + d[1]['medalists']
+          })
+    // we have the necessary data. format those well.
+
 svg.call(event_tip);
+svg.call(sport_tip);
 
 function display_sport_detail(game, sport_detail){
   svg_info_sports.selectAll("*").remove();
-  var events_list = sport_detail;//Object.keys(sport_detail);
+
+  var events_list = Object.entries(sport_detail);
   // it would be better to sort the events beforehand
-  console.log(events_list)
   svg_info_sports.selectAll("*").remove()
     .data(events_list)
     .enter()
     .append("circle")
       .attr("class", "event")
       .attr("cx" , function(d,i){
-        return i*15})
+        return 300 + i*15})
       .attr("cy" , function(d,i){
         return 0})
       .style("fill", function(d){
-        if (d.indexOf("Women's") != -1){
+        //differentiate circles with color
+        if (d[0].indexOf("Women's") != -1){
           return "red"
         }
-        else if (d.indexOf("Mixed") != -1) {
+        else if (d[0].indexOf("Mixed") != -1) {
           return "purple"
         }
         else{
@@ -286,7 +297,6 @@ function display_sport_detail(game, sport_detail){
         console.log(d)
       })
       .on("mouseover", event_tip.show)
-
       .on("mouseleave", event_tip.hide);
 
       }
@@ -302,25 +312,26 @@ function update_sports(year, season) {
   var game = year + " " + season
 
   d3.json("sports_game_details.json",function(data){
+    console.log(data)
     var sports_list = Object.keys(data[game]);
 
     svg3.selectAll("sportNames").remove()
       .data(sports_list)
       .enter()
-      .append("text")
-        .attr("class", "sport")
+      .append("svg:image")
+
         .attr("x", function(d,i){
           return deltaXText + text_x_pos(i)})
         .attr("y", function(d,i){return 10 + text_y_pos(i)}) // 100 is where the first dot appears. 25 is the distance between dots
-        .text(function(d){
-          return d})
-        .attr("text-anchor", "left")
-        .style("alignment-baseline", "middle")
+        .attr('width', 60)
+        .attr('height', 60)
+        .attr("xlink:href", "sports_picto/summer/archery.jpeg")
+        .on("mouseover", sport_tip.show)
         .on("click", function(s){
           // on click, show events
           display_sport_detail(game,data[game][s]);
 
-        // load pictogram file, display,  make svg element
+        // load pictogram file, display,  make svg element -> check with data
         })
       })
     }
