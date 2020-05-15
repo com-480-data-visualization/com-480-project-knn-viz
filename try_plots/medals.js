@@ -1,19 +1,24 @@
 
 // set the dimensions and margins of the graph
 var margin_sports = {top: 20, right: 30, bottom: 70, left: 60},
-    width_sports= 1100 - margin_sports.left - margin_sports.right,
-    height_sports= 300 - margin_sports.top - margin_sports.bottom;
+    width_sports= 800 - margin_sports.left - margin_sports.right,
+    height_sports= 400 - margin_sports.top - margin_sports.bottom;
 
 var dy = 50;
 var sports = {}
 var selectedSport = []
-var deltaXText = 100
+var deltaXText = 0
 var selected_sport = "Athelics"
 
 //var year = 1896
 var city = "Athina"
 var country = "Greece"
 
+
+var title_details = d3.select("#medals")
+                .append("svg")
+                .attr("width", 1100)
+                .attr("height", 80);
 
 // append the svg object to the body of the page
 var svg3 = d3.select("#medals")
@@ -36,15 +41,24 @@ var svg_info_sports = d3.select("#medals")
     .attr("transform",
           "translate(" + margin_sports.left + "," + margin_sports.top + ")");
 
+var svg_info_medalists = d3.select("#medals")
+  .append("svg")
+    .attr("width",width_sports)
+    .attr("height", 150)
+  .append("g")
+    .attr("width", 873)
+    .attr("height", 150)
+    .attr("transform",
+          "translate(" + margin_sports.left + "," + margin_sports.top + ")");
 
 
 
 var text_x_pos = function(i){
-  return parseInt(i%12)*80
+  return parseInt(i%8)*70
 }
 
 var text_y_pos = function(i){
-  return parseInt(i/12)*80
+  return parseInt(i/8)*70
 }
 
 // Display info medals
@@ -260,15 +274,48 @@ var event_tip = d3.tip()
     .offset([-10, 0])
     .html(function(d) {
       console.log(Object.entries(d[1]['countries']))
-      return d[0] + '::: ' + 'countries: ' + Object.keys(d[1]['countries']).length + '::' + 'medalists: ' + d[1]['medalists']
+
+      return "<strong> Event: </strong>" + d[0] + "<br> <strong> Participant Countries: </strong> <span>" + Object.keys(d[1]['countries']).length + "</span>"
+    + "<br> <strong> Total Athletes: </strong> <span>" + Object.values(d[1]['countries']).reduce((a, b) => a + b, 0) + "</span>";
           })
     // we have the necessary data. format those well.
 
 svg.call(event_tip);
 svg.call(sport_tip);
+//svg.call(medalist_tip);
+
+
+
+function display_medalists(medalists){
+  // we can make this more precise as well. considering the ties
+  svg_info_medalists.selectAll("*").remove()
+    .data(medalists)
+    .enter()
+    .append("circle")
+      .attr("class","medalist")
+      .attr("cx", function(d,i){
+        return (i+1)%3 * 40})
+      .attr("cy", function(d,i){
+        return 40 + i * 20})
+      .style("fill", function(d,i){
+        if (i == 0){
+          return "rgba(255, 215, 0,1)"
+        }
+        else if (i == 1){
+          return "rgba(192, 192, 192,1)"
+        }
+        else{
+          return "rgba(205, 127, 50,1)"}
+        })
+        .attr("r", 15)
+        .on("mouseover", sport_tip.show)
+        .on("mouseleave", sport_tip.hide);
+      }
+
 
 function display_sport_detail(game, sport_detail){
   svg_info_sports.selectAll("*").remove();
+  svg_info_medalists.selectAll("*").remove()
 
   var events_list = Object.entries(sport_detail);
   // it would be better to sort the events beforehand
@@ -278,9 +325,9 @@ function display_sport_detail(game, sport_detail){
     .append("circle")
       .attr("class", "event")
       .attr("cx" , function(d,i){
-        return 300 + i*15})
+        return 80 + parseInt(i%20)*25})
       .attr("cy" , function(d,i){
-        return 0})
+        return parseInt(i/20)*25})
       .style("fill", function(d){
         //differentiate circles with color
         if (d[0].indexOf("Women's") != -1){
@@ -292,14 +339,16 @@ function display_sport_detail(game, sport_detail){
         else{
           return "blue"}
         })
-      .attr("r",4)
-      .on("click",function(d){
-        console.log(d)
-      })
+      .attr("r",10)
       .on("mouseover", event_tip.show)
-      .on("mouseleave", event_tip.hide);
+      .on("mouseleave", event_tip.hide)
+      .on("click", function(d){
+        display_medalists(d[1]['medalists']);
+      })
 
       }
+
+
 
           // participating countries -> update map as well?
           // for each events, show medalists
@@ -308,11 +357,12 @@ function display_sport_detail(game, sport_detail){
 function update_sports(year, season) {
     svg3.selectAll("*").remove();
     svg_info_sports.selectAll("*").remove()
+    svg_info_medalists.selectAll("*").remove()
   //Remove previous entries to avoid overlapping
   var game = year + " " + season
 
   d3.json("sports_game_details.json",function(data){
-    console.log(data)
+
     var sports_list = Object.keys(data[game]);
 
     svg3.selectAll("sportNames").remove()
@@ -325,14 +375,30 @@ function update_sports(year, season) {
         .attr("y", function(d,i){return 10 + text_y_pos(i)}) // 100 is where the first dot appears. 25 is the distance between dots
         .attr('width', 60)
         .attr('height', 60)
-        .attr("xlink:href", "sports_picto/summer/archery.jpeg")
+        .attr("xlink:href", function(d) {
+          return "sports_picto/" + d + ".jpeg"
+        })
         .on("mouseover", sport_tip.show)
         .on("click", function(s){
           // on click, show events
-          display_sport_detail(game,data[game][s]);
+          display_sport_detail(game,data[game][s]);})
 
         // load pictogram file, display,  make svg element -> check with data
-        })
+
+
+    title_details.selectAll("text").remove()
+      .data(game, sports_list)
+      .entr()
+      .append("text")
+      .attr("x", 150)
+      .attr("y", 50)
+      .text("Sports of " + game + ": " + sports_list.length)
+      .attr("font-family", "Oswald")
+      .attr("font-size", "20px")
+      .attr("font-weight", 900);
+
+
+
       })
     }
 
