@@ -364,7 +364,6 @@ function update_sports(year, season) {
   d3.json("sports_game_details.json",function(data){
 
     var sports_list = Object.keys(data[game]);
-
     svg3.selectAll("sportNames").remove()
       .data(sports_list)
       .enter()
@@ -400,6 +399,7 @@ function update_sports(year, season) {
 
 
       })
+
     }
 
 
