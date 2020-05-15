@@ -314,7 +314,6 @@ function update_sports(year, season) {
   d3.json("sports_game_details.json",function(data){
     console.log(data)
     var sports_list = Object.keys(data[game]);
-
     svg3.selectAll("sportNames").remove()
       .data(sports_list)
       .enter()
@@ -325,15 +324,19 @@ function update_sports(year, season) {
         .attr("y", function(d,i){return 10 + text_y_pos(i)}) // 100 is where the first dot appears. 25 is the distance between dots
         .attr('width', 60)
         .attr('height', 60)
-        .attr("xlink:href", "sports_picto/summer/archery.jpeg")
+        .attr("xlink:href", function(d) {
+          return "sports_picto/" + d + ".jpeg"
+        })
         .on("mouseover", sport_tip.show)
         .on("click", function(s){
           // on click, show events
+          console.log(s)
           display_sport_detail(game,data[game][s]);
 
         // load pictogram file, display,  make svg element -> check with data
         })
       })
+
     }
 
 
