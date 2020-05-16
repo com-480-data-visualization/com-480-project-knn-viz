@@ -19,7 +19,7 @@ var svg = d3.select("#my_dataviz")
 
 var info_games = d3.select("#logo_games")
         .append("svg")
-        .attr("width", width_adjusted)
+        .attr("width", width_adjusted-200)
         .attr("height", 200)
         .attr("transform", "translate("+ (width_adjusted/4) + ","+ 100 +")");
 
@@ -301,27 +301,40 @@ function ready(error, topo, markers) {
 
 
     // remove the previous circle in host city
-    svg.selectAll("circle").remove()
+    svg.selectAll("image").remove()
 
     // get the data for host city
     var data_marker = [markers[year][season]]
     console.log(data_marker)
 
     // Add circle in host city
-    svg.selectAll("myCircles")
+    /*svg.selectAll("myCircles")
       .data(data_marker)
       .enter()
       .append("circle")
         .attr("transform", "translate(" + delta_x + ",100)")
-        .attr("cx", function(d){ return projection([d.long, d.lat])[0] })
-        .attr("cy", function(d){ return projection([d.long, d.lat])[1] })
+        .attr("cx", function(d){ return projection([d.long, d.lat])[0]})
+        .attr("cy", function(d){ return projection([d.long, d.lat])[1]})
         .attr("r", 4)
-        .style("fill", "#0000A0")
-        .attr("stroke", "#0000A0")
+        .style("fill", "#FF0000")
+        .attr("stroke", "#FF0000")
         .attr("stroke-width", 1)
         .attr("fill-opacity", .7)
         .on("mouseover", tip2.show)
-        .on("mouseleave", tip2.hide);;
+        .on("mouseleave", tip2.hide);*/
+
+    svg.selectAll("myLocation")
+      .data(data_marker)
+      .enter()
+      .append("svg:image")
+        .attr("transform", "translate(" + delta_x + ",100)")
+        .attr("x", function(d){ return projection([d.long, d.lat])[0]-17})
+        .attr("y", function(d){ return projection([d.long, d.lat])[1]-30})
+        .attr('width', 35)
+        .attr('height', 45)
+        .attr("xlink:href", "images/location.png")
+        .on("mouseover", tip2.show)
+        .on("mouseleave", tip2.hide);
 
     var edition = markers[year][season]['edition']
     var n_athletes = markers[year][season]['n_athletes']

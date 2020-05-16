@@ -14,7 +14,7 @@ function update_title(year, city, country){
     title_games.append("text")
             .attr("x", width_title/3)
             .attr("y", 50)
-            .text("Discovering the Olympic games of " + year + " ( " + city + ", " + country + ")")
+            .text("Discovering the Olympic games of " + year + " (" + city + ", " + country + ")")
             .attr("font-family", "Oswald")
             .attr("font-size", "25px")
             .attr("font-weight", 900);

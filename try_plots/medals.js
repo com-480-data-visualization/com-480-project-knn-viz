@@ -21,6 +21,24 @@ var country = "Greece"
                 .attr("height", 80);*/
 
 // append the svg object to the body of the page
+var title_section = d3.select("#medals")
+  .append("svg")
+    .attr("width", width_sports)
+    .attr("height", 100)
+  .append("g")
+    .attr("width", width_sports)
+    .attr("height", 100)
+    .attr("transform",
+          "translate(" + margin_sports.left + "," + margin_sports.top + ")");
+
+  title_section.append("text")
+          .attr("x", width_sports/2 - 110)
+          .attr("y", 50)
+          .text("Sports, Events and Medalists")
+          .attr("font-family", "Oswald")
+          .attr("font-size", "25px")
+          .attr("font-weight", 400);
+
 var svg3 = d3.select("#medals")
   .append("svg")
     .attr("width", width_sports/2)
@@ -281,11 +299,11 @@ function update_sports(year, season) {
     svg3.selectAll("*").remove();
     svg_info_sports.selectAll("*").remove()
     svg_info_medalists.selectAll("*").remove()
+    svg_bars.selectAll("*").remove()
   //Remove previous entries to avoid overlapping
   var game = year + " " + season
 
   d3.json("sports_game_details.json",function(data){
-
     var sports_list = Object.keys(data[game]);
     svg3.selectAll("sportNames").remove()
       .data(sports_list)
@@ -306,8 +324,13 @@ function update_sports(year, season) {
           // on click, show events
           display_sport_detail(game,data[game][s]);
           d3.json("info_sports.json", function(info) {
-            update_bars(info[year][s]);
+            update_bars(info[year][s], s);
           });
+          d3.json("medals_country.json", function(top) {
+            console.log(top)
+            console.log("(" + year + ", '" + season + "', '" + s + "')")
+            update_top_countries(top["(" + year + ", '" + season + "', '" + s + "')"])
+          })
         })
 
         // load pictogram file, display,  make svg element -> check with data
@@ -332,7 +355,7 @@ function update_sports(year, season) {
 
     function get_data_bar(value, label1, label2) {
       data_bar = [ {'cumulative': 0.0, 'value': value, 'label': label1},
-          {'cumulative': value, 'value': 100.0-value, 'label': label2}];
+          {'cumulative': value, 'value': Math.round((100.0-value) * 10) / 10, 'label': label2}];
       return data_bar
     }
 
@@ -340,8 +363,6 @@ function update_sports(year, season) {
       config = {
         f: d3.format('.1f'),
         margin: {top: 20, right: 10, bottom: 20, left: 10},
-        width: 250,
-        height: 500,
         barHeight: 30,
         colors: ['#2FBD29', '#A7B7A6', '#3B8ACC', '#CC4F3B']
       }
@@ -355,14 +376,8 @@ function update_sports(year, season) {
         .domain([0, 100])
         .range([0, 200])
 
-      // create svg in passed in div
-      selection.attr('width', width)
-        .attr('height', height)
-        .append('g')
-        .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
-
       selection.selectAll('rect').remove();
-      selection.selectAll('text').remove()
+      selection.selectAll('text').remove();
 
       // stack rect for each data value
       selection.selectAll('rect')
@@ -372,7 +387,7 @@ function update_sports(year, season) {
         .attr('stroke', 'black')
         .attr('stroke-width', 0.4)
         .attr('x', d => xScale(d.cumulative) + 30)
-        .attr('y', halfBarHeight + 30)
+        .attr('y', halfBarHeight + 100)
         .attr('height', barHeight)
         .attr('width', d => xScale(d.value))
         .style('fill', (d, i) => colors[i])
@@ -388,7 +403,7 @@ function update_sports(year, season) {
         .attr("font-size", "12px")
         .attr("font-weight", 100)
         .attr('x', xScale(data[0][0]['cumulative']) + (xScale(data[0][0]['value']) / 2) + 30)
-        .attr('y', barHeight + 65)
+        .attr('y', 2*barHeight + 100)
         .text(data[0][0]['value'] + ' %')
 
       // add the labels
@@ -401,7 +416,7 @@ function update_sports(year, season) {
         .attr("font-size", "15px")
         .attr('text-anchor', 'middle')
         .attr('x', 130)
-        .attr('y', barHeight)
+        .attr('y', barHeight - 25 + 100)
         .style('fill', 'black')
         .text("Countries participating")
 
@@ -411,8 +426,8 @@ function update_sports(year, season) {
         .attr('class', 'rect-stacked')
         .attr('stroke', 'black')
         .attr('stroke-width', 0.4)
-        .attr('x', d => xScale(d.cumulative) + 30)
-        .attr('y', halfBarHeight + 130 + 20)
+        .attr('x', d => xScale(d.cumulative) + 30 + 280)
+        .attr('y', halfBarHeight + 100)
         .attr('height', barHeight)
         .attr('width', d => xScale(d.value))
         .style('fill', (d, i) => colors[i])
@@ -426,8 +441,8 @@ function update_sports(year, season) {
           .attr('text-anchor', 'middle')
           .attr("font-family", "Oswald")
           .attr("font-size", "12px")
-          .attr('x', xScale(data[1][0]['cumulative']) + (xScale(data[1][0]['value']) / 2) + 30)
-          .attr('y', barHeight + 165 + 20)
+          .attr('x', xScale(data[1][0]['cumulative']) + (xScale(data[1][0]['value']) / 2) + 30 + 280)
+          .attr('y', 2*barHeight + 100)
           .text(data[1][0]['value'] + ' %')
 
         // add the labels
@@ -439,8 +454,8 @@ function update_sports(year, season) {
           .attr("font-family", "Oswald")
           .attr("font-size", "15px")
           .attr('text-anchor', 'middle')
-          .attr('x', 130)
-          .attr('y', barHeight + 100 + 20)
+          .attr('x', 130 + 280)
+          .attr('y', barHeight - 25 + 100)
           .style('fill', 'black')
           .text("Athletes participating")
 
@@ -451,7 +466,7 @@ function update_sports(year, season) {
         .attr('stroke', 'black')
         .attr('stroke-width', 0.4)
         .attr('x', d => xScale(d.cumulative) + 30)
-        .attr('y', halfBarHeight + 230 + 40)
+        .attr('y', halfBarHeight + 100 + 100)
         .attr('height', barHeight)
         .attr('width', d => xScale(d.value))
         .style('fill', (d, i) => colors[i+2])
@@ -465,13 +480,14 @@ function update_sports(year, season) {
           .attr('text-anchor', 'middle')
           .attr("font-family", "Oswald")
           .attr("font-size", "12px")
-          .attr('x', d => xScale(data[2][0]['cumulative']) + (xScale(data[2][0]['value']) / 2) + 30)
-          .attr('y', barHeight + 265 + 40)
-          .text(data[2][0]['value'] + ' %')
+          .attr('x', d => xScale(d.cumulative) + (xScale(d.value) / 2) + 30)
+          .attr('y', 2*barHeight + 100 + 100)
+          .text(d  => d.value + ' %')
+          .style('fill', (d, i) => colors[i+2])
 
         // add the labels
         selection.selectAll('.text-label3')
-          .data(data[3])
+          .data(data[2])
           .enter().append('text')
           .attr('class', 'text-label')
           .attr('text-anchor', 'middle')
@@ -479,7 +495,7 @@ function update_sports(year, season) {
           .attr("font-size", "15px")
           .attr('text-anchor', 'middle')
           .attr('x', 130)
-          .attr('y', barHeight + 200 + 40)
+          .attr('y', barHeight - 25 + 100 + 100)
           .style('fill', 'black')
           .text("Male vs Female Athletes")
 
@@ -489,8 +505,8 @@ function update_sports(year, season) {
             .attr('class', 'rect-stacked')
             .attr('stroke', 'black')
             .attr('stroke-width', 0.4)
-            .attr('x', d => xScale(d.cumulative) + 30)
-            .attr('y', halfBarHeight + 330 + 60)
+            .attr('x', d => xScale(d.cumulative) + 30 + 280)
+            .attr('y', halfBarHeight + 100 + 100)
             .attr('height', barHeight)
             .attr('width', d => xScale(d.value))
             .style('fill', (d, i) => colors[i+2])
@@ -504,9 +520,10 @@ function update_sports(year, season) {
               .attr('text-anchor', 'middle')
               .attr("font-family", "Oswald")
               .attr("font-size", "12px")
-              .attr('x', xScale(data[3][0]['cumulative']) + (xScale(data[3][0]['value']) / 2) + 30)
-              .attr('y', barHeight + 365 + 60)
-              .text(data[3][0]['value'] + ' %')
+              .attr('x', d => xScale(d.cumulative) + (xScale(d.value) / 2) + 30 + 280)
+              .attr('y', 2*barHeight + 100 + 100)
+              .text(d => d.value + ' %')
+              .style('fill', (d, i) => colors[i+2])
 
             // add the labels
             selection.selectAll('.text-label4')
@@ -517,19 +534,87 @@ function update_sports(year, season) {
               .attr("font-family", "Oswald")
               .attr("font-size", "15px")
               .attr('text-anchor', 'middle')
-              .attr('x', 130)
-              .attr('y', barHeight + 300 + 60)
+              .attr('x', 130 + 280)
+              .attr('y', barHeight - 25 + 100 + 100)
               .style('fill', 'black')
               .text("Individual vs Team Events")
 
       }
 
+    function update_top_countries(top_data) {
+      console.log(top_data);
+      const img_size = 40;
+      svg_bars.selectAll("image").remove();
+
+      svg_bars.append("text")
+                .attr("x", width_sports/4)
+                .attr("y", 330)
+                .text("TOP Countries")
+                .style("text-anchor", "middle")
+                .attr("font-family", "Oswald")
+                .attr("font-size", "20px")
+                .attr("font-weight", 400);
+
+      svg_bars.append("text")
+                .attr("x", width_sports/12)
+                .attr("y", 380)
+                .text("Gold")
+                .style("text-anchor", "middle")
+                .attr("font-family", "Oswald")
+                .attr("font-size", "18px")
+                .attr("font-weight", 400);
+
+      svg_bars.append("svg:image")
+              .attr("x", width_sports/12 - img_size/2)
+              .attr("y", 390)
+              .style("text-anchor", "middle")
+              .attr("width", img_size)
+              .attr("height", img_size)
+              .attr("xlink:href", "country-flags-master/svg/" + top_data["Gold"][0] + ".svg");
+
+        svg_bars.append("text")
+                .attr("x", width_sports/12 + width_sports/6)
+                .attr("y", 380)
+                .text("Silver")
+                .style("text-anchor", "middle")
+                .attr("font-family", "Oswald")
+                .attr("font-size", "18px")
+                .attr("font-weight", 400);
+
+      svg_bars.append("svg:image")
+              .attr("x", width_sports/12 + width_sports/6 - img_size/2)
+              .attr("y", 390)
+              .style("text-anchor", "middle")
+              .attr("width", img_size)
+              .attr("height", img_size)
+              .attr("xlink:href", "country-flags-master/svg/" + top_data["Silver"][0] + ".svg");
+
+        svg_bars.append("text")
+                .attr("x", width_sports/12 + 2*width_sports/6)
+                .attr("y", 380)
+                .text("Bronze")
+                .style("text-anchor", "middle")
+                .attr("font-family", "Oswald")
+                .attr("font-size", "18px")
+                .attr("font-weight", 400);
+
+        svg_bars.append("svg:image")
+                .attr("x", width_sports/12 + 2*width_sports/6 - img_size/2)
+                .attr("y", 390)
+                .style("text-anchor", "middle")
+                .attr("width", img_size)
+                .attr("height", img_size)
+                .attr("xlink:href", "country-flags-master/svg/" + top_data["Bronze"][0] + ".svg");
+    }
+
     const svg_bars = d3.select('#bars_sports')
-      .append('svg')
-      .attr("transform", "translate(" + (1.5 * width_sports/2) + ", -" + (height_sports + 70)+ ")")
+      .append("svg")
+      .attr("width", width_sports/2)
+      .attr("height", height_sports+ margin_sports.top + margin_sports.bottom)
+      .attr("transform", "translate(" + (1.5 * width_sports/2 - 200) + ", -" + (height_sports + 210)+ ")")
 
 
-    function update_bars(data) {
+    function update_bars(data, sport) {
 
       let data_countries = get_data_bar(data['countries'], 'Countries participating', 'Total');
       let data_athletes = get_data_bar(data['athletes'], 'Athletes participating', 'Total');
@@ -537,11 +622,17 @@ function update_sports(year, season) {
       let data_indiv = get_data_bar(data['individual'], 'Individual events', 'Team events');
 
       let all_data = [data_countries, data_athletes, data_sex, data_indiv]
-      //console.log(all_data)
-      //console.log(all_data[0])
-      //console.log(all_data[1])
 
       stackedBar(svg_bars, all_data);
+
+      svg_bars.append("text")
+              .attr("x", width_sports/4)
+              .attr("y", 40)
+              .text(sport)
+              .style("text-anchor", "middle")
+              .attr("font-family", "Oswald")
+              .attr("font-size", "22px")
+              .attr("font-weight", 400);
     }
 // Initialize plot
 update_sports(year, season)
