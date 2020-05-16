@@ -1,8 +1,8 @@
 
 // set the dimensions and margins of the graph
 var margin_sports = {top: 20, right: 30, bottom: 70, left: 60},
-    width_sports= 800 - margin_sports.left - margin_sports.right,
-    height_sports= 400 - margin_sports.top - margin_sports.bottom;
+    width_sports= window.innerWidth - 300 - margin_sports.left - margin_sports.right,
+    height_sports= 1100 - margin_sports.top - margin_sports.bottom;
 
 var dy = 50;
 var sports = {}
@@ -15,50 +15,50 @@ var city = "Athina"
 var country = "Greece"
 
 
-var title_details = d3.select("#medals")
+/** ar title_details = d3.select("#medals")
                 .append("svg")
-                .attr("width", 1100)
-                .attr("height", 80);
+                .attr("width", width_sports/2)
+                .attr("height", 80);*/
 
 // append the svg object to the body of the page
 var svg3 = d3.select("#medals")
   .append("svg")
-    .attr("width", width_sports)
+    .attr("width", width_sports/2)
     .attr("height", height_sports+ margin_sports.top + margin_sports.bottom)
   .append("g")
-    .attr("width", 1000)
+    .attr("width", width_sports/2)
     .attr("height", height_sports)
     .attr("transform",
           "translate(" + margin_sports.left + "," + margin_sports.top + ")");
 
-var svg_info_sports = d3.select("#medals")
+var svg_info_sports = d3.select("#mini_sports")
   .append("svg")
-    .attr("width",width_sports)
+    .attr("width",width_sports/3)
     .attr("height", 123)
-  .append("g")
-    .attr("width", 873)
+    .append("g")
+    .attr("width", width_sports/3)
     .attr("height", 111)
     .attr("transform",
-          "translate(" + margin_sports.left + "," + margin_sports.top + ")");
+          "translate(" + margin_sports.left + ",  " + margin_sports.top + ")");
 
 var svg_info_medalists = d3.select("#medals")
   .append("svg")
-    .attr("width",width_sports)
+    .attr("width",width_sports/3)
     .attr("height", 150)
   .append("g")
-    .attr("width", 873)
+    .attr("width", width_sports/3)
     .attr("height", 150)
     .attr("transform",
-          "translate(" + margin_sports.left + "," + margin_sports.top + ")");
+          "translate(" + margin_sports.left + ", -" + (height_sports/2) + ")");
 
 
 
 var text_x_pos = function(i){
-  return parseInt(i%8)*70
+  return parseInt(i%4)*110
 }
 
 var text_y_pos = function(i){
-  return parseInt(i/8)*70
+  return parseInt(i/4)*110
 }
 
 // Display info medals
@@ -121,6 +121,7 @@ var delete_content = function delete_content(){
 
 // A function that create / update the plot for a given variable:
 function update_medals(year) {
+
   //Remove previous entries to avoid overlapping
   svg3.selectAll("*").remove();
 
@@ -177,87 +178,9 @@ function update_medals(year) {
             .style("alignment-baseline", "middle")
 
 
-    svg3.selectAll("sportCircles")
-          .data(data)
-          .enter()
-          .append("circle")
-            .attr("class", "myCircleMedals")
-            .attr("cx", function(d,i){
-              return deltaXText -10 + getXText(i)})
-            .attr("cy", function(d,i){return 7 + getYText(i)}) // 100 is where the first dot appears. 25 is the distance between dots
-            .style("fill", function(d){
-              if (d[String(year)][season] > 0){
-                return 'green';
-              }
-              return 'red';
-            })
-            .attr("r",4)
-
-
-            // add medal symbols - GOLD
-      svg3.selectAll("sportCircles")
-          .data(data)
-          .enter()
-          .append("circle")
-              .attr("class", "myCircleMedals")
-              .attr("cx", function(d,i){
-                      return deltaXText -10 + 10+ getXText(i)})
-              .attr("cy", function(d,i){return 10 + 35 + getYText(i)}) // 100 is where the first dot appears. 25 is the distance between dots
-              .style("fill", function(d){
-                      if (d[String(year)][season] > 0){
-                        return "rgba(255, 215, 0,1)";
-                      }
-                      return "rgba(255,255,255,0)";
-                    })
-              .attr("r",4)
-
-        svg3.selectAll("sportCircles")
-            .data(data)
-            .enter()
-            .append("circle")
-                .attr("class", "myCircleMedals")
-                .attr("cx", function(d,i){
-                        return deltaXText -10 + 50+ getXText(i)})
-                .attr("cy", function(d,i){return 10 + 35 + getYText(i)}) // 100 is where the first dot appears. 25 is the distance between dots
-                .style("fill", function(d){
-                        if (d[String(year)][season] > 0){
-                          return "rgba(192, 192, 192,1)";
-                        }
-                        return "rgba(255,255,255,0)";
-                      })
-                .attr("r",4)
-
-        svg3.selectAll("sportCircles")
-            .data(data)
-            .enter()
-            .append("circle")
-                .attr("class", "myCircleMedals")
-                .attr("cx", function(d,i){
-                        return deltaXText -10 + 90+ getXText(i)})
-                .attr("cy", function(d,i){return 10 + 35 + getYText(i)}) // 100 is where the first dot appears. 25 is the distance between dots
-                .style("fill", function(d){
-                        if (d[String(year)][season] > 0){
-                          return "rgba(205, 127, 50,1)";
-                        }
-                        return "rgba(255,255,255,0)";
-                      })
-                .attr("r",4)
-
 
         // INFORMATION PART
-      /*svg3.selectAll("podiums")
-          .data(data)
-          .enter()
-          .append("svg:image")
-          .attr('x', function(d,i){
-            return deltaXText -10 + getXText(i)})
-          .attr('y', function(d,i){return 25 + getYText(i)})
-          .attr('width', 90)
-          .attr('height', 50)
-          .attr("xlink:href", function(d){
-                  if (d[String(year)][season] > 0){
-                    return "/podium/podium.png";
-                  }});*/
+
   })
 }
 
@@ -273,7 +196,7 @@ var event_tip = d3.tip()
     .attr('class', 'd3-tip')
     .offset([-10, 0])
     .html(function(d) {
-      console.log(Object.entries(d[1]['countries']))
+      //console.log(Object.entries(d[1]['countries']))
 
       return "<strong> Event: </strong>" + d[0] + "<br> <strong> Participant Countries: </strong> <span>" + Object.keys(d[1]['countries']).length + "</span>"
     + "<br> <strong> Total Athletes: </strong> <span>" + Object.values(d[1]['countries']).reduce((a, b) => a + b, 0) + "</span>";
@@ -331,13 +254,13 @@ function display_sport_detail(game, sport_detail){
       .style("fill", function(d){
         //differentiate circles with color
         if (d[0].indexOf("Women's") != -1){
-          return "red"
+          return "rgba(238,51,78,1)";
         }
         else if (d[0].indexOf("Mixed") != -1) {
           return "purple"
         }
         else{
-          return "blue"}
+          return "rgba(0,129,200,1)";}
         })
       .attr("r",10)
       .on("mouseover", event_tip.show)
@@ -372,12 +295,13 @@ function update_sports(year, season) {
         .attr("x", function(d,i){
           return deltaXText + text_x_pos(i)})
         .attr("y", function(d,i){return 10 + text_y_pos(i)}) // 100 is where the first dot appears. 25 is the distance between dots
-        .attr('width', 60)
-        .attr('height', 60)
+        .attr('width', 90)
+        .attr('height', 90)
         .attr("xlink:href", function(d) {
           return "sports_picto/" + d + ".jpeg"
         })
         .on("mouseover", sport_tip.show)
+        .on("mouseleave", sport_tip.hide)
         .on("click", function(s){
           // on click, show events
           display_sport_detail(game,data[game][s]);
@@ -602,6 +526,8 @@ function update_sports(year, season) {
 
     const svg_bars = d3.select('#bars_sports')
       .append('svg')
+      .attr("transform", "translate(" + (1.5 * width_sports/2) + ", -" + (height_sports + 70)+ ")")
+
 
     function update_bars(data) {
 
@@ -611,9 +537,9 @@ function update_sports(year, season) {
       let data_indiv = get_data_bar(data['individual'], 'Individual events', 'Team events');
 
       let all_data = [data_countries, data_athletes, data_sex, data_indiv]
-      console.log(all_data)
-      console.log(all_data[0])
-      console.log(all_data[1])
+      //console.log(all_data)
+      //console.log(all_data[0])
+      //console.log(all_data[1])
 
       stackedBar(svg_bars, all_data);
     }
