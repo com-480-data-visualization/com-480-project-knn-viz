@@ -380,7 +380,11 @@ function update_sports(year, season) {
         .on("mouseover", sport_tip.show)
         .on("click", function(s){
           // on click, show events
-          display_sport_detail(game,data[game][s]);})
+          display_sport_detail(game,data[game][s]);
+          d3.json("info_sports.json", function(info) {
+            update_bars(info[year][s]);
+          });
+        })
 
         // load pictogram file, display,  make svg element -> check with data
 
@@ -402,6 +406,216 @@ function update_sports(year, season) {
 
     }
 
+    function get_data_bar(value, label1, label2) {
+      data_bar = [ {'cumulative': 0.0, 'value': value, 'label': label1},
+          {'cumulative': value, 'value': 100.0-value, 'label': label2}];
+      return data_bar
+    }
 
+    function stackedBar (selection, data) {
+      config = {
+        f: d3.format('.1f'),
+        margin: {top: 20, right: 10, bottom: 20, left: 10},
+        width: 250,
+        height: 500,
+        barHeight: 30,
+        colors: ['#2FBD29', '#A7B7A6', '#3B8ACC', '#CC4F3B']
+      }
+      const { f, margin, width, height, barHeight, colors } = config
+      const w = width - margin.left - margin.right
+      const h = height - margin.top - margin.bottom
+      const halfBarHeight = barHeight / 2
+
+      // set up scales for horizontal placement
+      const xScale = d3.scaleLinear()
+        .domain([0, 100])
+        .range([0, 200])
+
+      // create svg in passed in div
+      selection.attr('width', width)
+        .attr('height', height)
+        .append('g')
+        .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+
+      selection.selectAll('rect').remove();
+      selection.selectAll('text').remove()
+
+      // stack rect for each data value
+      selection.selectAll('rect')
+        .data(data[0])
+        .enter().append('rect')
+        .attr('class', 'rect-stacked')
+        .attr('stroke', 'black')
+        .attr('stroke-width', 0.4)
+        .attr('x', d => xScale(d.cumulative) + 30)
+        .attr('y', halfBarHeight + 30)
+        .attr('height', barHeight)
+        .attr('width', d => xScale(d.value))
+        .style('fill', (d, i) => colors[i])
+
+      // add values on bar
+      selection.selectAll('.text-value')
+        .data(data[0])
+        .enter().append('text')
+        .attr('class', 'text-value')
+        .style('fill', 'black')
+        .attr('text-anchor', 'middle')
+        .attr("font-family", "Oswald")
+        .attr("font-size", "12px")
+        .attr("font-weight", 100)
+        .attr('x', xScale(data[0][0]['cumulative']) + (xScale(data[0][0]['value']) / 2) + 30)
+        .attr('y', barHeight + 65)
+        .text(data[0][0]['value'] + ' %')
+
+      // add the labels
+      selection.selectAll('.text-label')
+        .data(data[0])
+        .enter().append('text')
+        .attr('class', 'text-label')
+        .attr('text-anchor', 'middle')
+        .attr("font-family", "Oswald")
+        .attr("font-size", "15px")
+        .attr('text-anchor', 'middle')
+        .attr('x', 130)
+        .attr('y', barHeight)
+        .style('fill', 'black')
+        .text("Countries participating")
+
+      selection.selectAll('rect2')
+        .data(data[1])
+        .enter().append('rect')
+        .attr('class', 'rect-stacked')
+        .attr('stroke', 'black')
+        .attr('stroke-width', 0.4)
+        .attr('x', d => xScale(d.cumulative) + 30)
+        .attr('y', halfBarHeight + 130 + 20)
+        .attr('height', barHeight)
+        .attr('width', d => xScale(d.value))
+        .style('fill', (d, i) => colors[i])
+
+        // add values on bar
+        selection.selectAll('.text-value2')
+          .data(data[1])
+          .enter().append('text')
+          .attr('class', 'text-value')
+          .style('fill', 'black')
+          .attr('text-anchor', 'middle')
+          .attr("font-family", "Oswald")
+          .attr("font-size", "12px")
+          .attr('x', xScale(data[1][0]['cumulative']) + (xScale(data[1][0]['value']) / 2) + 30)
+          .attr('y', barHeight + 165 + 20)
+          .text(data[1][0]['value'] + ' %')
+
+        // add the labels
+        selection.selectAll('.text-label2')
+          .data(data[1])
+          .enter().append('text')
+          .attr('class', 'text-label')
+          .attr('text-anchor', 'middle')
+          .attr("font-family", "Oswald")
+          .attr("font-size", "15px")
+          .attr('text-anchor', 'middle')
+          .attr('x', 130)
+          .attr('y', barHeight + 100 + 20)
+          .style('fill', 'black')
+          .text("Athletes participating")
+
+      selection.selectAll('rect3')
+        .data(data[2])
+        .enter().append('rect')
+        .attr('class', 'rect-stacked')
+        .attr('stroke', 'black')
+        .attr('stroke-width', 0.4)
+        .attr('x', d => xScale(d.cumulative) + 30)
+        .attr('y', halfBarHeight + 230 + 40)
+        .attr('height', barHeight)
+        .attr('width', d => xScale(d.value))
+        .style('fill', (d, i) => colors[i+2])
+
+        // add values on bar
+        selection.selectAll('.text-value3')
+          .data(data[2])
+          .enter().append('text')
+          .attr('class', 'text-value')
+          .style('fill', 'black')
+          .attr('text-anchor', 'middle')
+          .attr("font-family", "Oswald")
+          .attr("font-size", "12px")
+          .attr('x', d => xScale(data[2][0]['cumulative']) + (xScale(data[2][0]['value']) / 2) + 30)
+          .attr('y', barHeight + 265 + 40)
+          .text(data[2][0]['value'] + ' %')
+
+        // add the labels
+        selection.selectAll('.text-label3')
+          .data(data[3])
+          .enter().append('text')
+          .attr('class', 'text-label')
+          .attr('text-anchor', 'middle')
+          .attr("font-family", "Oswald")
+          .attr("font-size", "15px")
+          .attr('text-anchor', 'middle')
+          .attr('x', 130)
+          .attr('y', barHeight + 200 + 40)
+          .style('fill', 'black')
+          .text("Male vs Female Athletes")
+
+          selection.selectAll('rect4')
+            .data(data[3])
+            .enter().append('rect')
+            .attr('class', 'rect-stacked')
+            .attr('stroke', 'black')
+            .attr('stroke-width', 0.4)
+            .attr('x', d => xScale(d.cumulative) + 30)
+            .attr('y', halfBarHeight + 330 + 60)
+            .attr('height', barHeight)
+            .attr('width', d => xScale(d.value))
+            .style('fill', (d, i) => colors[i+2])
+
+            // add values on bar
+            selection.selectAll('.text-value4')
+              .data(data[3])
+              .enter().append('text')
+              .attr('class', 'text-value')
+              .style('fill', 'black')
+              .attr('text-anchor', 'middle')
+              .attr("font-family", "Oswald")
+              .attr("font-size", "12px")
+              .attr('x', xScale(data[3][0]['cumulative']) + (xScale(data[3][0]['value']) / 2) + 30)
+              .attr('y', barHeight + 365 + 60)
+              .text(data[3][0]['value'] + ' %')
+
+            // add the labels
+            selection.selectAll('.text-label4')
+              .data(data[3])
+              .enter().append('text')
+              .attr('class', 'text-label')
+              .attr('text-anchor', 'middle')
+              .attr("font-family", "Oswald")
+              .attr("font-size", "15px")
+              .attr('text-anchor', 'middle')
+              .attr('x', 130)
+              .attr('y', barHeight + 300 + 60)
+              .style('fill', 'black')
+              .text("Individual vs Team Events")
+
+      }
+
+    const svg_bars = d3.select('#bars_sports')
+      .append('svg')
+
+    function update_bars(data) {
+
+      let data_countries = get_data_bar(data['countries'], 'Countries participating', 'Total');
+      let data_athletes = get_data_bar(data['athletes'], 'Athletes participating', 'Total');
+      let data_sex = get_data_bar(data['male'], 'Men', 'Women');
+      let data_indiv = get_data_bar(data['individual'], 'Individual events', 'Team events');
+
+      let all_data = [data_countries, data_athletes, data_sex, data_indiv]
+      console.log(all_data)
+      console.log(all_data[0])
+      console.log(all_data[1])
+
+      stackedBar(svg_bars, all_data);
+    }
 // Initialize plot
 update_sports(year, season)
