@@ -1,14 +1,18 @@
+var width_title = window.innerWidth;
+var height_title = 80;
+
 var title_games = d3.select("#title")
                 .append("svg")
-                .attr("width", 1100)
-                .attr("height", 80);
+                .attr("width", width_title - width_timeline)
+                .attr("height", height_title);
 
 function update_title(year, city, country){
         console.log("here")
+        console.log(width_title)
   title_games.selectAll("text").remove();
 
     title_games.append("text")
-            .attr("x", 250)
+            .attr("x", width_title/2)
             .attr("y", 50)
             .text("Discovering the Olympic games of " + year + " ( " + city + ", " + country + ")")
             .attr("font-family", "Oswald")
