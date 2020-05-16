@@ -541,6 +541,16 @@ function update_sports(year, season) {
 
       }
 
+    var country_tip = d3.tip()
+        .attr('class', 'd3-tip')
+        .offset([70, 0])
+        .html(function(d) {
+          return d
+              })
+
+    svg.call(country_tip);
+
+
     function update_top_countries(top_data) {
       console.log(top_data);
       const img_size = 40;
@@ -564,13 +574,18 @@ function update_sports(year, season) {
                 .attr("font-size", "18px")
                 .attr("font-weight", 400);
 
-      svg_bars.append("svg:image")
+      svg_bars.selectAll("countryFlags")
+              .data(top_data["Gold"])
+              .enter()
+              .append("svg:image")
               .attr("x", width_sports/12 - img_size/2)
-              .attr("y", 390)
+              .attr("y", (d,i) => i*(img_size+10) + 390)
               .style("text-anchor", "middle")
               .attr("width", img_size)
               .attr("height", img_size)
-              .attr("xlink:href", "country-flags-master/svg/" + top_data["Gold"][0] + ".svg");
+              .attr("xlink:href", d => "country-flags-master/svg/" + d + ".svg")
+              .on("mouseover", country_tip.show)
+              .on("mouseleave", country_tip.hide);
 
         svg_bars.append("text")
                 .attr("x", width_sports/12 + width_sports/6)
@@ -581,13 +596,18 @@ function update_sports(year, season) {
                 .attr("font-size", "18px")
                 .attr("font-weight", 400);
 
-      svg_bars.append("svg:image")
+      svg_bars.selectAll("countryFlags")
+              .data(top_data["Silver"])
+              .enter()
+              .append("svg:image")
               .attr("x", width_sports/12 + width_sports/6 - img_size/2)
-              .attr("y", 390)
+              .attr("y", (d,i) => i*(img_size+10) + 390)
               .style("text-anchor", "middle")
               .attr("width", img_size)
               .attr("height", img_size)
-              .attr("xlink:href", "country-flags-master/svg/" + top_data["Silver"][0] + ".svg");
+              .attr("xlink:href", d => "country-flags-master/svg/" + d + ".svg")
+              .on("mouseover", country_tip.show)
+              .on("mouseleave", country_tip.hide);
 
         svg_bars.append("text")
                 .attr("x", width_sports/12 + 2*width_sports/6)
@@ -598,13 +618,18 @@ function update_sports(year, season) {
                 .attr("font-size", "18px")
                 .attr("font-weight", 400);
 
-        svg_bars.append("svg:image")
+        svg_bars.selectAll("countryFlags")
+                .data(top_data["Bronze"])
+                .enter()
+                .append("svg:image")
                 .attr("x", width_sports/12 + 2*width_sports/6 - img_size/2)
-                .attr("y", 390)
+                .attr("y", (d,i) => i*(img_size+10) + 390)
                 .style("text-anchor", "middle")
                 .attr("width", img_size)
                 .attr("height", img_size)
-                .attr("xlink:href", "country-flags-master/svg/" + top_data["Bronze"][0] + ".svg");
+                .attr("xlink:href", d => "country-flags-master/svg/" + d + ".svg")
+                .on("mouseover", country_tip.show)
+                .on("mouseleave", country_tip.hide);
     }
 
     const svg_bars = d3.select('#bars_sports')
