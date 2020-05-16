@@ -542,8 +542,8 @@ function update_sports(year, season) {
       }
 
     var country_tip = d3.tip()
-        .attr('class', 'd3-tip')
-        .offset([70, 0])
+        .attr('class', 'd3-tip3')
+        .offset([60, 0])
         .html(function(d) {
           return d
               })
