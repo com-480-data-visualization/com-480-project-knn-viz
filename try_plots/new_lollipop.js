@@ -1,14 +1,27 @@
 // set the dimensions and margins of the graph
 var margin = {top: 50, right: 30, bottom: 20, left: 30},
     width_timeline= 200 - margin.left - margin.right,
-    height_timeline= 1200 - margin.top - margin.bottom;
+    height_timeline= 1600 - margin.top - margin.bottom;
     //height_timeline= window.innerHeight - margin.top - margin.bottom;
 //console.log(window.innerHeight)
 
 var dx = 50;
 
-var cValue = function(d) { return d.Continent;},
-    color = d3.scaleOrdinal(d3.schemeCategory10);
+var cValue = function(d) { console.log(d.Continent); return d.Continent;},
+    color = function(d){
+      if(d.Continent == 'Europe'){
+        return "rgba(0,129,200,1)";
+      } else if (d.Continent == 'Asia') {
+        return "rgba(252,177,49,1)";
+      } else if (d.Continent == 'Oceania') {
+        return "rgba(0,166,81,1)";
+      } else if (d.Continent == 'America') {
+        return "rgba(238,51,78,1)";
+      } else {
+        return "rgba(0,0,0,1)";
+      }};
+
+
 
 var xLevel = function(d) {
     if(d.Season == "Summer"){
@@ -80,7 +93,7 @@ var g_timeline = svg5.append("g")
               .text("Winter")
               .attr("font-family", "Oswald")
 
-
+/*
 var legend_timeline = d3.legendColor()
               .labels(function (d) {
                 console.log(d.Continent)
@@ -90,7 +103,7 @@ var legend_timeline = d3.legendColor()
 
 svg2.select(".legendColor")
     .call(legend_timeline);
-
+*/
 
 // Initialize the X axis
 var x = d3.scaleLinear()
@@ -105,6 +118,7 @@ var y = d3.scaleBand()
   .padding(1);
 
 var yAxis = svg2.append("g")
+  .attr("class", "axis")
   .attr("transform", "translate(" + (width_timeline/2 ) + "," + 0 + ")")
 
 
@@ -145,10 +159,12 @@ function update(selectedVar) {
     // Y axis
     y.domain(domain_function(63, 2))
 
+
     yAxis.call(d3.axisLeft(y2))
       .selectAll("text")
-      .attr("transform", "translate(0,-6)")
+      .attr("transform", "translate(20,-6)")
       .attr("font-family", "Oswald")
+      .attr("font-size", "12px")
 
     // Add X axis
     x.domain([-dx, d3.max(data, function(d) {
@@ -166,16 +182,19 @@ function update(selectedVar) {
       .attr("class", "myLine")
       .merge(j)
         .attr("x1", width_timeline/2 )
-        .attr("x2", function(d) { return xLevel(d); })
+        .attr("x2", function(d) { if (d.Season == "Summer"){ return xLevel(d) + 10;} else {return  xLevel(d) - 10;} })
         .attr("y1", function(d) { return y(d.Year); })
         .attr("y2", function(d) { return y(d.Year); })
-        .attr("stroke", "grey")
+        .attr("stroke", function(d) { return color(d);})
+        .attr("stroke-width", 2)
 
 
     // variable u: map data to existing circle
-    var u = svg2.selectAll("circle")
-      .data(data)
+/*
+
     // update bars
+
+
     u
       .enter()
       .append("circle")
@@ -189,8 +208,22 @@ function update(selectedVar) {
         .attr("fill", function(d) { return color(cValue(d));})
       .on("mouseover", tip_timeline.show)
       .on("mouseleave", tip_timeline.hide)
-      .on("click", function(d){return clickYear(d);});
+      .on("click", function(d){return clickYear(d);}); */
+    var u = svg2.selectAll("circle")
+      .data(data)
 
+    u.enter()
+      .append("svg:image")
+        .attr('x', function(d)  { if (d.Season == "Summer"){ return xLevel(d) - 30;} else {return  xLevel(d);} })
+        .attr('y', function(d) { return y(d.Year) - 15; })
+        .attr('width', 30)
+        .attr('height', 30)
+        .attr("xlink:href", function(d){return "logos/" + d.Continent + "_rings.png";})
+        .on("mouseover", tip_timeline.show)
+        .on("mouseleave", tip_timeline.hide)
+        .on("click", function(d){return clickYear(d);});
+
+/*
     var size = 20
     var allgroups = ["Asia", "Europe", "America", "Oceania"]
       svg4.selectAll("myrect")
@@ -215,8 +248,7 @@ function update(selectedVar) {
           .text(function(d){ return d})
           .attr("text-anchor", "middle")
           .style("alignment-baseline", "middle")
-
-
+*/
 
   })
 

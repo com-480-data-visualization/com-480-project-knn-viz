@@ -1,7 +1,10 @@
-var width = 1100
+var width = 1200
 var height = 600
 var width_window = window.innerWidth
 var height_window = window.innerHeight
+
+var width_adjusted = window.innerWidth  - 300
+
 var year = 1896
 var season = 'Summer'
 var city = "Athina"
@@ -11,14 +14,14 @@ var country_code = d3.map()
 
 var svg = d3.select("#my_dataviz")
   .append("svg")
-  .attr("width", width)
+  .attr("width", width_adjusted)
   .attr("height", height);
 
 var info_games = d3.select("#logo_games")
         .append("svg")
-        .attr("width", 1000)
+        .attr("width", width_adjusted)
         .attr("height", 200)
-        .attr("transform", "translate("+ (width_window - width)/2 + ","+ 100 +")");
+        .attr("transform", "translate("+ (width_adjusted/4) + ","+ 100 +")");
 
 
 
@@ -119,8 +122,8 @@ upload_info_games(year, "Athina", country, 1, season, 12, 176);
 // Map and projection
 var path = d3.geoPath();
 var projection = d3.geoNaturalEarth()
-    .scale(width / 2 / Math.PI)
-    .translate([width / 2, height / 2])
+    .scale(width_adjusted / 2 / Math.PI)
+    .translate([width_adjusted / 2, height / 2])
 var path = d3.geoPath()
     .projection(projection);
 
