@@ -344,7 +344,7 @@ function update_sports(year, season) {
                   update_bars(info[year][s], s);
                   });
           d3.json("data/medals_country.json", function(top) {
-                  update_top_countries(top[year][season][s])
+                  update_top_countries(top[year][s])
                     })
           })
 
