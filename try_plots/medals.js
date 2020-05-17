@@ -319,7 +319,7 @@ function update_sports(year, season) {
 
 
 
-  d3.json("sports_game_details.json",function(data){
+  d3.json("data/sports_game_details.json",function(data){
     var sports_list = Object.keys(data[game]);
     var number_sports = sports_list.length
 
@@ -344,7 +344,7 @@ function update_sports(year, season) {
                   update_bars(info[year][s], s);
                   });
           d3.json("data/medals_country.json", function(top) {
-                  update_top_countries(top["(" + year + ", '" + season + "', '" + s + "')"])
+                  update_top_countries(top[year][season][s])
                     })
           })
 
@@ -605,17 +605,17 @@ function stackedBar (selection, data) {
   }
 
 var country_tip = d3.tip()
-    .attr('class', 'd3-tip3')
-    .offset([60, 0])
+    .attr('class', 'd3-tip')
+    .offset([-5, 0])
     .html(function(d) {
-      return d
+      return "<strong>Country: </strong>" + d["Country"] + "<br><strong>Medals: </strong>" + d["Medals"];
           })
 
 svg.call(country_tip);
 
 
 function update_top_countries(top_data) {
-  console.log(top_data);
+  console.log(top_data["Gold"]);
   const img_size = 40;
   svg_bars.selectAll("image").remove();
 
@@ -646,7 +646,7 @@ function update_top_countries(top_data) {
           .style("text-anchor", "middle")
           .attr("width", img_size)
           .attr("height", img_size)
-          .attr("xlink:href", d => "country-flags-master/svg/" + d + ".svg")
+          .attr("xlink:href", function(d) { return "country-flags-master/svg/" + d["Country"] + ".svg" })
           .on("mouseover", country_tip.show)
           .on("mouseleave", country_tip.hide);
 
@@ -668,7 +668,7 @@ function update_top_countries(top_data) {
           .style("text-anchor", "middle")
           .attr("width", img_size)
           .attr("height", img_size)
-          .attr("xlink:href", d => "country-flags-master/svg/" + d + ".svg")
+          .attr("xlink:href", d => "country-flags-master/svg/" + d["Country"] + ".svg")
           .on("mouseover", country_tip.show)
           .on("mouseleave", country_tip.hide);
 
@@ -690,7 +690,7 @@ function update_top_countries(top_data) {
             .style("text-anchor", "middle")
             .attr("width", img_size)
             .attr("height", img_size)
-            .attr("xlink:href", d => "country-flags-master/svg/" + d + ".svg")
+            .attr("xlink:href", d => "country-flags-master/svg/" + d["Country"] + ".svg")
             .on("mouseover", country_tip.show)
             .on("mouseleave", country_tip.hide);
 }
