@@ -40,10 +40,10 @@ var title_section = d3.select("#medals")
 
 var svg3 = d3.select("#medals")
   .append("svg")
-    .attr("width", width_sports/2)
+    .attr("width", 550)
     .attr("height", height_sports+ margin_sports.top + margin_sports.bottom)
   .append("g")
-    .attr("width", width_sports/2)
+    .attr("width", 550)
     .attr("height", height_sports)
     .attr("transform",
           "translate(" + margin_sports.left + "," + margin_sports.top + ")");
@@ -319,7 +319,7 @@ function update_sports(year, season) {
 
 
 
-  d3.json("sports_game_details.json",function(data){
+  d3.json("data/sports_game_details.json",function(data){
     var sports_list = Object.keys(data[game]);
     var number_sports = sports_list.length
 
@@ -699,7 +699,7 @@ const svg_bars = d3.select('#bars_sports')
   .append("svg")
   .attr("width", width_sports/2)
   .attr("height", 400+ margin_sports.top + margin_sports.bottom)
-  .attr("transform", "translate(" + (1.5 * width_sports/2 - 200) + ", -" + (height_sports + 100)+ ")")
+  .attr("transform", "translate(" + 560 + ", -" + (height_sports + 100)+ ")")
 
 var svg_subsports = d3.select('#bars_sports')
                       .append("svg")
