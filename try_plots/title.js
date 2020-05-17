@@ -7,8 +7,6 @@ var title_games = d3.select("#title")
                 .attr("height", height_title);
 
 function update_title(year, city, country){
-        console.log("here")
-        console.log(width_title)
   title_games.selectAll("text").remove();
 
     title_games.append("text")

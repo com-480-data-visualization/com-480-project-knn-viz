@@ -1,5 +1,5 @@
 var width = 1200
-var height = 600
+var height = 700
 var width_window = window.innerWidth
 var height_window = window.innerHeight
 
@@ -127,11 +127,15 @@ var projection = d3.geoNaturalEarth()
 var path = d3.geoPath()
     .projection(projection);
 
+
 // Data and color scale
 var data = d3.map();
 var full_data = d3.map();
-var colorScheme = d3.schemeReds[8];
-colorScheme.unshift("#eee")
+
+
+var colorScheme = d3.schemeYlOrRd[8]
+    colorScheme.unshift("#eee")
+    
 var colorScale = d3.scaleThreshold()
     .domain([1, 11, 51, 101, 201, 301, 401, 501])
     .range(colorScheme);
@@ -146,14 +150,6 @@ var g = svg.append("g")
     .attr("x", 0)
     .attr("y", -6)
     .text("Athletes");
-
-    /*g.append("text")
-    .attr("class", "title")
-    .attr("x", width/2)
-    .attr("y", -6)
-    .text(season + " Olympic Games Year " + year + " held in " + city + ", " + country);*/
-
-
 
 
 var labels = ['0', '1-10', '11-50', '50-100', '101-200', '201-300', '301-400', '401-500', '> 500'];
@@ -194,8 +190,8 @@ svg.call(tip2);
 // Load external data and boot
 d3.queue()
     .defer(d3.json, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson")
-    .defer(d3.json, "host_cities_markers.json")
-    .defer(d3.csv, "regions_participants3.csv",
+    .defer(d3.json, "data/host_cities_markers.json")
+    .defer(d3.csv, "data/regions_participants3.csv",
         function(d) {
             //console.log(d)
             if ('$' + d.Year in full_data){
@@ -240,17 +236,6 @@ function load_data(){
 
 function ready(error, topo, markers) {
     if (error) throw error;
-
-  /**
-  var tooltip = d3.select("#my_dataviz")
-    .append("div")
-    .attr("class", "tooltip")
-    .style("opacity", 1)
-    .style("color", "black")
-    .style("background-color", "white")
-    .style("border-width", "1px")
-    .style("padding", "5px");
-*/
 
 
     svg.selectAll("path").remove();
@@ -340,7 +325,7 @@ function ready(error, topo, markers) {
     var n_athletes = markers[year][season]['n_athletes']
     var n_countries = markers[year][season]['n_countries']
 
-    console.log(city)
+    //console.log(city)
     // Change info about games
     upload_info_games(year, city, country, edition, season, n_countries, n_athletes);
 }
