@@ -248,19 +248,29 @@ function display_medalists(medalists){
 
 function display_sport_detail(game, sport_detail){
   g_subsports.selectAll("*").remove();
-  svg_info_medalists.selectAll("*").remove()
+  svg_info_medalists.selectAll("*").remove();
+
+  g_subsports.append("text")
+            .attr("x", width_sports/6 + 10)
+            .attr("y", 0)
+            .text("Disciplines")
+            .style("text-anchor", "middle")
+            .attr("font-family", "Oswald")
+            .attr("font-size", "20px")
+            .attr("font-weight", 400);
 
   var events_list = Object.entries(sport_detail);
+  console.log(events_list);
   // it would be better to sort the events beforehand
-  g_subsports.selectAll("*").remove()
+  g_subsports.selectAll("myCircleEvents")
     .data(events_list)
     .enter()
     .append("circle")
       .attr("class", "event")
-      .attr("cx" , function(d,i){
+      .attr("cx" , function(d,i){ console.log(d); console.log(i);
         return 80 + parseInt(i%10)*25})
       .attr("cy" , function(d,i){
-        return parseInt(i/10)*25})
+        return 30 + parseInt(i/10)*25})
       .style("fill", function(d){
         //differentiate circles with color
         if (d[0].indexOf("Women's") != -1){
@@ -646,7 +656,7 @@ function update_top_countries(top_data) {
           .style("text-anchor", "middle")
           .attr("width", img_size)
           .attr("height", img_size)
-          .attr("xlink:href", function(d) { return "country-flags-master/svg/" + d["Country"] + ".svg" })
+          .attr("xlink:href", function(d,i) { return "country-flags-master/svg/" + d["Country"] + ".svg" })
           .on("mouseover", country_tip.show)
           .on("mouseleave", country_tip.hide);
 
@@ -704,7 +714,7 @@ const svg_bars = d3.select('#bars_sports')
 var svg_subsports = d3.select('#bars_sports')
                       .append("svg")
                       .attr("width",width_sports/2)
-                      .attr("height", 123)
+                      .attr("height", 163)
                       .attr("transform", "translate(" + margin_sports.left + ", -" + (height_sports - 110)+ ")")
 
 var g_subsports = svg_subsports.append("g")
