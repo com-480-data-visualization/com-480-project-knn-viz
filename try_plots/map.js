@@ -29,7 +29,6 @@ function upload_info_games(year, city, country, edition, season, n_countries, n_
   info_games.selectAll("text").remove();
   info_games.selectAll("image").remove();
 
-
   if (year <= 1928) {
     info_games.append("svg:image")
       .attr('x', 50)
@@ -133,9 +132,17 @@ var data = d3.map();
 var full_data = d3.map();
 
 
-var colorScheme = d3.schemeYlOrRd[8]
+var get_color = function(season){
+    if (season == "Summer"){
+        return d3.schemeYlOrRd[8];
+    } else {
+        return d3.schemePuBu[8];
+    }
+}
+
+var colorScheme = get_color(season)
     colorScheme.unshift("#eee")
-    
+
 var colorScale = d3.scaleThreshold()
     .domain([1, 11, 51, 101, 201, 301, 401, 501])
     .range(colorScheme);
@@ -274,15 +281,6 @@ function ready(error, topo, markers) {
     g.selectAll(".title")
     .text(season + " Olympic Games Year " + year + " held in " + city + ", " + country);
 
-    // delete previous image
-    //g.selectAll("image").remove()
-    // add new
-    /*g.append("svg:image")
-    .attr("xlink:href", "country-flags-master/svg/" + country +".svg")
-    .attr("x", width-100)
-    .attr("y", -20)
-    .attr("width", "20")
-    .attr("height", "20");*/
 
 
     // remove the previous circle in host city
@@ -292,21 +290,6 @@ function ready(error, topo, markers) {
     var data_marker = [markers[year][season]]
     console.log(data_marker)
 
-    // Add circle in host city
-    /*svg.selectAll("myCircles")
-      .data(data_marker)
-      .enter()
-      .append("circle")
-        .attr("transform", "translate(" + delta_x + ",100)")
-        .attr("cx", function(d){ return projection([d.long, d.lat])[0]})
-        .attr("cy", function(d){ return projection([d.long, d.lat])[1]})
-        .attr("r", 4)
-        .style("fill", "#FF0000")
-        .attr("stroke", "#FF0000")
-        .attr("stroke-width", 1)
-        .attr("fill-opacity", .7)
-        .on("mouseover", tip2.show)
-        .on("mouseleave", tip2.hide);*/
 
     svg.selectAll("myLocation")
       .data(data_marker)
