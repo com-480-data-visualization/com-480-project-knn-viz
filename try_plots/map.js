@@ -1,6 +1,6 @@
 var width = 1200
 var height = 700
-var width_window = window.innerWidth
+var width_window = Math.min(1200, window.innerWidth)
 var height_window = window.innerHeight
 
 var width_adjusted = window.innerWidth  - 300

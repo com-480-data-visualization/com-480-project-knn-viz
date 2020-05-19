@@ -1,4 +1,4 @@
-var width_title = window.innerWidth  - 300 //width_timeline = 200 + width_legend_timeline=100;
+var width_title = Math.min(1200, window.innerWidth)  - 300 //width_timeline = 200 + width_legend_timeline=100;
 var height_title = 80;
 
 var title_games = d3.select("#title")

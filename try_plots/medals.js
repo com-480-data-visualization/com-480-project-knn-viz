@@ -1,9 +1,10 @@
 
 // set the dimensions and margins of the graph
-var margin_sports = {top: 20, right: 30, bottom: 70, left: 60},
-    width_sports= window.innerWidth - 300 - margin_sports.left - margin_sports.right,
-    height_sports= 1100 - margin_sports.top - margin_sports.bottom;
+var margin_sports = {top: 20, right: 30, bottom: 70, left: 30},
+    width_sports= Math.min(1400,window.innerWidth) - 300 - margin_sports.left - margin_sports.right,
+    height_sports= 1400 - margin_sports.top - margin_sports.bottom;
 
+console.log(width_sports)
 var dy = 50;
 var sports = {}
 var selectedSport = []
@@ -16,109 +17,31 @@ var country = "Greece"
 var number_sports = 9
 
 
-// append the svg object to the body of the page
-var title_section = d3.select("#medals")
-  .append("svg")
-    .attr("width", width_sports)
-    .attr("height", 100)
-  .append("g")
-    .attr("width", width_sports)
-    .attr("height", 100)
-    .attr("transform",
-          "translate(" + margin_sports.left + "," + margin_sports.top + ")");
-
-  title_section.append("text")
-          .attr("x", width_sports/2 - 110)
-          .attr("y", 50)
-          .text("Sports, Events and Medalists")
-          .attr("font-family", "Oswald")
-          .attr("font-size", "25px")
-          .attr("font-weight", 400);
-
-
-
-
+// svg pictograms
 var svg3 = d3.select("#medals")
   .append("svg")
-    .attr("width", 550)
+    .attr("width", (width_sports - 100)/2)
     .attr("height", height_sports+ margin_sports.top + margin_sports.bottom)
   .append("g")
-    .attr("width", 550)
+    .attr("width", (width_sports - 100)/2)
     .attr("height", height_sports)
     .attr("transform",
           "translate(" + margin_sports.left + "," + margin_sports.top + ")");
 
-var svg_info_medalists = d3.select("#medals")
-  .append("svg")
-    .attr("width",width_sports/3)
-    .attr("height", 150)
-  .append("g")
-    .attr("width", width_sports/3)
-    .attr("height", 150)
-    .attr("transform",
-          "translate(" + margin_sports.left + ", -" + (height_sports/2) + ")");
-
-
 
 var text_x_pos = function(i){
-  return parseInt(i%4)*110
+  max_per_row = Math.floor(((width_sports - 100)/220))
+  console.log((width_sports - 100)/220)
+  //console.log(max_per_row)
+  return parseInt(i%max_per_row)*110
 }
 
 var text_y_pos = function(i){
-  return parseInt(i/4)*110
+  max_per_row = Math.floor(((width_sports - 100)/220))
+  //console.log(max_per_row)
+  return parseInt(i/max_per_row)*110
 }
 
-// Display info medals
-/* var info_medal = function generate_info_medals(selected_sport){
-  console.log(selected_sport)
-  svg_info_medals.selectAll(".infoTitle").remove();
-
-  svg_info_medals.append("text")
-    .attr("class", "infoTitle")
-    .attr("x", margin.left)
-    .attr("y", 10)
-    .text(selected_sport)
-    .attr("font-size", "30px")
-
-  svg_info_medals.selectAll("image").remove()
-    // add new
-  svg_info_medals.append("svg:image")
-    .attr("xlink:href", "pictures/olympics_" + year +".jpg")
-    .attr("x", 100)
-    .attr("y", -20)
-    .attr("width", "400")
-    .attr("height", "150");
-
-  svg_info_medals.append("text")
-    .attr("class", "infoTitle")
-    .attr("x", margin.left)
-    .attr("y", 250)
-    .text("Number of participating athletes: ")
-    .attr("font-size", "20px")
-
-  svg_info_medals.append("text")
-    .attr("class", "infoTitle")
-    .attr("x", margin.left + 20)
-    .attr("y", 300)
-    .text("   Men: ")
-    .attr("font-size", "15px")
-
-  svg_info_medals.append("text")
-    .attr("class", "infoTitle")
-    .attr("x", margin.left + 20)
-    .attr("y", 350)
-    .text("   Women: ")
-    .attr("font-size", "15px")
-
-  svg_info_medals.append("text")
-    .attr("class", "infoTitle")
-    .attr("x", margin.left)
-    .attr("y", 450)
-    .text("Number of participating countries: ")
-    .attr("font-size", "20px")
-
-
-} */
 
 var delete_content = function delete_content(){
     svg_info_medals.selectAll(".infoTitle").remove();
@@ -215,40 +138,11 @@ var event_tip = d3.tip()
 
 svg.call(event_tip);
 svg.call(sport_tip);
-//svg.call(medalist_tip);
-
-
-
-function display_medalists(medalists){
-  // we can make this more precise as well. considering the ties
-  svg_info_medalists.selectAll("*").remove()
-    .data(medalists)
-    .enter()
-    .append("circle")
-      .attr("class","medalist")
-      .attr("cx", function(d,i){
-        return (i+1)%3 * 40})
-      .attr("cy", function(d,i){
-        return 40 + i * 20})
-      .style("fill", function(d,i){
-        if (i == 0){
-          return "rgba(255, 215, 0,1)"
-        }
-        else if (i == 1){
-          return "rgba(192, 192, 192,1)"
-        }
-        else{
-          return "rgba(205, 127, 50,1)"}
-        })
-        .attr("r", 15)
-        .on("mouseover", sport_tip.show)
-        .on("mouseleave", sport_tip.hide);
-      }
 
 
 function display_sport_detail(game, sport_detail){
   g_subsports.selectAll("*").remove();
-  svg_info_medalists.selectAll("*").remove();
+  //svg_info_medalists.selectAll("*").remove();
 
   g_subsports.append("text")
             .attr("x", width_sports/6 + 10)
@@ -300,9 +194,7 @@ function display_sport_detail(game, sport_detail){
 function update_sports(year, season) {
     svg3.selectAll("*").remove();
     g_subsports.selectAll("*").remove()
-    svg_info_medalists.selectAll("*").remove()
     svg_bars.selectAll("*").remove()
-    title_section.selectAll(".sport_information").remove()
   //Remove previous entries to avoid overlapping
   var game = year + " " + season
 
@@ -406,18 +298,6 @@ function update_sports(year, season) {
                       .attr("font-family", "Oswald")
                       .attr("font-size", "25px")
                       .attr("font-weight", 200);
-        // Update subtitle
-        /*
-        title_section.append("text")
-                  .attr("class", "sport_information")
-                  .attr("x", width_sports/2 - 270)
-                  .attr("y", 100)
-                  .text("During the " + season + " Olympic games of " + year +
-                  ", athletes could compete in " + sports_list.length + " different sports.")
-                  .attr("font-family", "Oswald")
-                  .attr("font-size", "20px")
-                  .attr("font-weight", 200); */
-        // load pictogram file, display,  make svg element -> check with data
 
       })
 
@@ -707,9 +587,9 @@ function update_top_countries(top_data) {
 
 const svg_bars = d3.select('#bars_sports')
   .append("svg")
-  .attr("width", width_sports/2)
+  .attr("width", (width_sports + margin.left)/2)
   .attr("height", 400+ margin_sports.top + margin_sports.bottom)
-  .attr("transform", "translate(" + 560 + ", -" + (height_sports + 100)+ ")")
+  .attr("transform", "translate(" + ((width_sports - 100)/2 + margin.left)+ ", -" + (height_sports + 100)+ ")")
 
 var svg_subsports = d3.select('#bars_sports')
                       .append("svg")

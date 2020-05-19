@@ -3,7 +3,7 @@
 
 <head>
   <link href="https://fonts.googleapis.com/css?family=Jost|Roboto|Oswald" rel="stylesheet">
-</head>
+
 
 <style>
 
@@ -199,14 +199,18 @@ left: 0;
     }
 
   .headertekst {
-      {
+
         text-align: center;
-        width:100%
+        width:100%;
+        font-family: Oswald;
+        font-size: 25px; 
       }
 
 </style>
 
+</head>
 
+<body>
 
 
   <div id="my_dataviz_legend_timeline" class="fixed_legend"></div>
@@ -221,7 +225,10 @@ left: 0;
       <div id="my_dataviz"></div>
   </div>
 
-  <div id="medals"></div>
+  <h2 class="headertekst"> Sports, Events and Medals </h2>
+  <div id="medals">
+
+  </div>
 
   <div id="mini_sports"></div>
 
@@ -243,3 +250,5 @@ left: 0;
 
 <script type="text/javascript" src="map.js"></script>
 <script type="text/javascript" src="medals.js"></script>
+
+</body>
