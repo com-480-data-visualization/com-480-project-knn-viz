@@ -1,7 +1,7 @@
 
 // set the dimensions and margins of the graph
 var margin_sports = {top: 20, right: 30, bottom: 70, left: 30},
-    width_sports= Math.min(1400,window.innerWidth) - 300 - margin_sports.left - margin_sports.right,
+    width_sports= Math.min(1500,window.innerWidth) - 300 - margin_sports.left - margin_sports.right,
     height_sports= 1400 - margin_sports.top - margin_sports.bottom;
 
 console.log(width_sports)
@@ -190,6 +190,7 @@ function display_sport_detail(game, sport_detail){
           // participating countries -> update map as well?
           // for each events, show medalists
           // MVP countries overall
+const margin_text = width_adjusted/20;
 
 function update_sports(year, season) {
     svg3.selectAll("*").remove();
@@ -204,14 +205,14 @@ function update_sports(year, season) {
           .attr("x", 10)
           .attr("y", 150)
           .append('tspan')
-          .attr('x', 0)
+          .attr('x', 0 + margin_text)
           .attr('dy', 5)
             .text("Click on the different pictograms to discover" )
             .attr("font-family", "Oswald")
             .attr("font-size", "20px")
             .attr("font-weight", 100)
           .append('tspan')
-          .attr('x', 0)
+          .attr('x', 0 + margin_text)
           .attr('dy', 25)
             .text("more information about each sport." )
             .attr("font-family", "Oswald")
@@ -252,17 +253,17 @@ function update_sports(year, season) {
 
         svg_bars.append("text")
                   .attr("class", "sport_information")
-                  .attr("x", 10)
+                  .attr("x", width_adjusted/4)
                   .attr("y", 50)
                   .append('tspan')
-                    .attr('x', 0)
+                    .attr('x', 0 + margin_text)
                     .attr('dy', 5)
                       .text("During the ")
                       .attr("font-family", "Oswald")
                       .attr("font-size", "25px")
                       .attr("font-weight", 200)
                   .append('tspan')
-                    .attr('x', 100)
+                    .attr('x', 100 + margin_text)
                     .attr('dy', 0)
                       .text(season)
                       .attr("font-family", "Oswald")
@@ -280,9 +281,9 @@ function update_sports(year, season) {
                   .append('tspan')
                     .attr('x', function(){
                       if (season == "Summer"){
-                        return 175;
+                        return 175 + margin_text;
                       } else {
-                        return 160;
+                        return 160 + margin_text;
                       }
                     })
                     .attr('dy', 0)
@@ -292,7 +293,7 @@ function update_sports(year, season) {
                       .attr("font-weight", 200)
                       .attr("fill","#000")
                   .append('tspan')
-                    .attr('x', 0)
+                    .attr('x', 0 + margin_text)
                     .attr('dy', 35)
                       .text("athletes could compete in " + number_sports + " different sports")
                       .attr("font-family", "Oswald")
@@ -587,18 +588,18 @@ function update_top_countries(top_data) {
 
 const svg_bars = d3.select('#bars_sports')
   .append("svg")
-  .attr("width", (width_sports + margin.left)/2)
+  .attr("width", (width_sports)/2)
   .attr("height", 400+ margin_sports.top + margin_sports.bottom)
   .attr("transform", "translate(" + ((width_sports - 100)/2 + margin.left)+ ", -" + (height_sports + 100)+ ")")
 
 var svg_subsports = d3.select('#bars_sports')
                       .append("svg")
-                      .attr("width",width_sports/2)
+                      .attr("width",(width_sports)/2)
                       .attr("height", 163)
                       .attr("transform", "translate(" + margin_sports.left + ", -" + (height_sports - 110)+ ")")
 
 var g_subsports = svg_subsports.append("g")
-                                .attr("width", width_sports/2)
+                                .attr("width", (width_sports)/2)
                                 .attr("height", 111)
                                 .attr("transform",
                                       "translate(" + 0 + ",  " + margin_sports.top + ")");
