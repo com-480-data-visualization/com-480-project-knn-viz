@@ -126,11 +126,7 @@ var yAxis = svg2.append("g")
 var tip_timeline = d3.tip()
           .attr('class', 'd3-tip')
           .offset(function(d){
-            if (d.Season == "Summer"){
-              return [-10, 30];
-            } else {
-              return [-10, 30];
-            }
+              return [0, 0]
           })
           .html(function(d) {
                   return d["City"] + ", " + d["Country"] + "<br/> Year "+ d.Year;

@@ -290,15 +290,24 @@ function ready(error, topo, markers) {
     var data_marker = [markers[year][season]]
     console.log(data_marker)
 
+    /*svg.selectAll("myLocation")
+      .data(data_marker)
+      .enter()
+      .append("circle")
+        .attr("transform", "translate(" + delta_x + ",100)")
+        .attr("cx", function(d){ return projection([d.long, d.lat])[0]})
+        .attr("cy", function(d){ return projection([d.long, d.lat])[1]})
+        .attr('r', 5)
+        .attr('fill', 'blue');*/
 
     svg.selectAll("myLocation")
       .data(data_marker)
       .enter()
       .append("svg:image")
         .attr("transform", "translate(" + delta_x + ",100)")
-        .attr("x", function(d){ return projection([d.long, d.lat])[0]-17})
-        .attr("y", function(d){ return projection([d.long, d.lat])[1]-30})
-        .attr('width', 35)
+        .attr("x", function(d){ return projection([d.long, d.lat])[0]-23})
+        .attr("y", function(d){ return projection([d.long, d.lat])[1]-40})
+        .attr('width', 45)
         .attr('height', 45)
         .attr("xlink:href", "images/location_torch.png")
         .on("mouseover", tip2.show)
