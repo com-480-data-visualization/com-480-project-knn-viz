@@ -1,10 +1,10 @@
 
 // set the dimensions and margins of the graph
 var margin_sports = {top: 20, right: 30, bottom: 70, left: 30},
-    width_sports= Math.min(1500,window.innerWidth) - 300 - margin_sports.left - margin_sports.right,
+    width_sports= Math.min(1800,window.innerWidth) - 300 - margin_sports.left - margin_sports.right,
     height_sports= 1400 - margin_sports.top - margin_sports.bottom;
 
-console.log(width_sports)
+console.log('windowWidth', window.innerWidth)
 var dy = 50;
 var sports = {}
 var selectedSport = []
@@ -22,6 +22,8 @@ var svg3 = d3.select("#medals")
   .append("svg")
     .attr("width", (width_sports - 100)/2)
     .attr("height", height_sports+ margin_sports.top + margin_sports.bottom)
+    .attr("display","block")
+    .attr("margin","auto")
   .append("g")
     .attr("width", (width_sports - 100)/2)
     .attr("height", height_sports)
@@ -145,13 +147,15 @@ function display_sport_detail(game, sport_detail){
   //svg_info_medalists.selectAll("*").remove();
 
   g_subsports.append("text")
-            .attr("x", width_sports/6 + 10)
+            .attr("x", width_svg_bars/2)
             .attr("y", 0)
             .text("Disciplines")
             .style("text-anchor", "middle")
             .attr("font-family", "Oswald")
             .attr("font-size", "20px")
-            .attr("font-weight", 400);
+            .attr("font-weight", 400)
+            .attr("alignment-baseline","middle")
+            .attr("text-anchor", "middle");
 
   var events_list = Object.entries(sport_detail);
   console.log(events_list);
@@ -190,7 +194,7 @@ function display_sport_detail(game, sport_detail){
           // participating countries -> update map as well?
           // for each events, show medalists
           // MVP countries overall
-const margin_text = width_adjusted/20;
+const margin_text = 5//width_adjusted/20;
 
 function update_sports(year, season) {
     svg3.selectAll("*").remove();
@@ -321,12 +325,15 @@ function stackedBar (selection, data) {
   const { f, margin, width, height, barHeight, colors } = config
   const w = width - margin.left - margin.right
   const h = height - margin.top - margin.bottom
+  console.log(h, barHeight)
   const halfBarHeight = barHeight / 2
 
   // set up scales for horizontal placement
-  const xScale = d3.scaleLinear()
+  var widthBars = Math.min(200, width_svg_bars/3)
+
+  var xScale = d3.scaleLinear()
     .domain([0, 100])
-    .range([0, 200])
+    .range([0, widthBars])
 
   svg_bars.selectAll('text').remove();
 
@@ -369,7 +376,7 @@ function stackedBar (selection, data) {
     .attr("font-family", "Oswald")
     .attr("font-size", "15px")
     .attr('text-anchor', 'middle')
-    .attr('x', 130)
+    .attr('x', 30 + widthBars/2)
     .attr('y', barHeight - 25 + 100)
     .style('fill', 'black')
     .text("Countries participating")
@@ -380,7 +387,7 @@ function stackedBar (selection, data) {
     .attr('class', 'rect-stacked')
     .attr('stroke', 'black')
     .attr('stroke-width', 0.4)
-    .attr('x', d => xScale(d.cumulative) + 30 + 280)
+    .attr('x', d => xScale(d.cumulative) + 30 + widthBars*1.5)
     .attr('y', halfBarHeight + 100)
     .attr('height', barHeight)
     .attr('width', d => xScale(d.value))
@@ -395,7 +402,7 @@ function stackedBar (selection, data) {
       .attr('text-anchor', 'middle')
       .attr("font-family", "Oswald")
       .attr("font-size", "12px")
-      .attr('x', xScale(data[1][0]['cumulative']) + (xScale(data[1][0]['value']) / 2) + 30 + 280)
+      .attr('x', xScale(data[1][0]['cumulative']) + (xScale(data[1][0]['value']) / 2) + 30 + widthBars*1.5)
       .attr('y', 2*barHeight + 100)
       .text(data[1][0]['value'] + ' %')
 
@@ -408,7 +415,7 @@ function stackedBar (selection, data) {
       .attr("font-family", "Oswald")
       .attr("font-size", "15px")
       .attr('text-anchor', 'middle')
-      .attr('x', 130 + 280)
+      .attr('x',  30 + widthBars*1.5 + widthBars/2)
       .attr('y', barHeight - 25 + 100)
       .style('fill', 'black')
       .text("Athletes participating")
@@ -448,7 +455,7 @@ function stackedBar (selection, data) {
       .attr("font-family", "Oswald")
       .attr("font-size", "15px")
       .attr('text-anchor', 'middle')
-      .attr('x', 130)
+      .attr('x', 30 + widthBars/2)
       .attr('y', barHeight - 25 + 100 + 100)
       .style('fill', 'black')
       .text("Male vs Female Athletes")
@@ -459,7 +466,7 @@ function stackedBar (selection, data) {
         .attr('class', 'rect-stacked')
         .attr('stroke', 'black')
         .attr('stroke-width', 0.4)
-        .attr('x', d => xScale(d.cumulative) + 30 + 280)
+        .attr('x', d => xScale(d.cumulative) + 30 + widthBars*1.5)
         .attr('y', halfBarHeight + 100 + 100)
         .attr('height', barHeight)
         .attr('width', d => xScale(d.value))
@@ -474,7 +481,7 @@ function stackedBar (selection, data) {
           .attr('text-anchor', 'middle')
           .attr("font-family", "Oswald")
           .attr("font-size", "12px")
-          .attr('x', d => xScale(d.cumulative) + (xScale(d.value) / 2) + 30 + 280)
+          .attr('x', d => xScale(d.cumulative) + (xScale(d.value) / 2) + 30 + widthBars*1.5)
           .attr('y', 2*barHeight + 100 + 100)
           .text(d => d.value + ' %')
           .style('fill', (d, i) => colors[i+2])
@@ -488,7 +495,7 @@ function stackedBar (selection, data) {
           .attr("font-family", "Oswald")
           .attr("font-size", "15px")
           .attr('text-anchor', 'middle')
-          .attr('x', 130 + 280)
+          .attr('x', 30 + widthBars*1.5 + widthBars/2)
           .attr('y', barHeight - 25 + 100 + 100)
           .style('fill', 'black')
           .text("Individual vs Team Events")
@@ -513,7 +520,7 @@ function update_top_countries(top_data) {
   svg_bars.selectAll("image").remove();
 
   svg_bars.append("text")
-            .attr("x", width_sports/4)
+            .attr("x", (width_svg_bars/2))
             .attr("y", 330)
             .text("TOP Countries")
             .style("text-anchor", "middle")
@@ -522,7 +529,7 @@ function update_top_countries(top_data) {
             .attr("font-weight", 400);
 
   svg_bars.append("text")
-            .attr("x", width_sports/12)
+            .attr("x", (width_svg_bars/2) - 100)
             .attr("y", 380)
             .text("Gold")
             .style("text-anchor", "middle")
@@ -534,7 +541,7 @@ function update_top_countries(top_data) {
           .data(top_data["Gold"])
           .enter()
           .append("svg:image")
-          .attr("x", width_sports/12 - img_size/2)
+          .attr("x", (width_svg_bars/2) - 100 - img_size/2)
           .attr("y", (d,i) => i*(img_size+10) + 390)
           .style("text-anchor", "middle")
           .attr("width", img_size)
@@ -544,7 +551,7 @@ function update_top_countries(top_data) {
           .on("mouseleave", country_tip.hide);
 
     svg_bars.append("text")
-            .attr("x", width_sports/12 + width_sports/6)
+            .attr("x", (width_svg_bars/2))
             .attr("y", 380)
             .text("Silver")
             .style("text-anchor", "middle")
@@ -556,7 +563,7 @@ function update_top_countries(top_data) {
           .data(top_data["Silver"])
           .enter()
           .append("svg:image")
-          .attr("x", width_sports/12 + width_sports/6 - img_size/2)
+          .attr("x", (width_svg_bars/2) - img_size/2)
           .attr("y", (d,i) => i*(img_size+10) + 390)
           .style("text-anchor", "middle")
           .attr("width", img_size)
@@ -566,7 +573,7 @@ function update_top_countries(top_data) {
           .on("mouseleave", country_tip.hide);
 
     svg_bars.append("text")
-            .attr("x", width_sports/12 + 2*width_sports/6)
+            .attr("x", (width_svg_bars/2) + 100)
             .attr("y", 380)
             .text("Bronze")
             .style("text-anchor", "middle")
@@ -578,7 +585,7 @@ function update_top_countries(top_data) {
             .data(top_data["Bronze"])
             .enter()
             .append("svg:image")
-            .attr("x", width_sports/12 + 2*width_sports/6 - img_size/2)
+            .attr("x", (width_svg_bars/2) + 100 - img_size/2)
             .attr("y", (d,i) => i*(img_size+10) + 390)
             .style("text-anchor", "middle")
             .attr("width", img_size)
@@ -588,20 +595,25 @@ function update_top_countries(top_data) {
             .on("mouseleave", country_tip.hide);
 }
 
+var width_svg_bars = Math.min(550, (width_sports/2 + 100 ))
+var translateX_bars = Math.max((width_sports -  width_svg_bars), (width_sports/2 ))
+
 const svg_bars = d3.select('#bars_sports')
   .append("svg")
-  .attr("width", (width_sports)/2)
+  .attr("width", width_svg_bars)
   .attr("height", 400+ margin_sports.top + margin_sports.bottom)
-  .attr("transform", "translate(" + ((width_sports - 100)/2 + margin.left)+ ", -" + (height_sports + 100)+ ")")
+  .attr("transform", "translate(" + translateX_bars + ", -" + (height_sports + 100)+ ")")
+  .attr("display","block")
+  .attr("margin","auto")
 
 var svg_subsports = d3.select('#bars_sports')
                       .append("svg")
-                      .attr("width",(width_sports)/2)
+                      .attr("width",width_svg_bars)
                       .attr("height", 163)
-                      .attr("transform", "translate(" + margin_sports.left + ", -" + (height_sports - 110)+ ")")
+                      .attr("transform", "translate(" + translateX_bars + ", -" + (height_sports)+ ")")
 
 var g_subsports = svg_subsports.append("g")
-                                .attr("width", (width_sports)/2)
+                                .attr("width", width_svg_bars)
                                 .attr("height", 111)
                                 .attr("transform",
                                       "translate(" + 0 + ",  " + margin_sports.top + ")");
@@ -620,13 +632,15 @@ function update_bars(data, sport) {
   stackedBar(svg_bars, all_data);
 
   svg_bars.append("text")
-          .attr("x", width_sports/4)
+          .attr("x", width_svg_bars/2)
           .attr("y", 40)
           .text(sport)
           .style("text-anchor", "middle")
           .attr("font-family", "Oswald")
           .attr("font-size", "22px")
-          .attr("font-weight", 400);
+          .attr("font-weight", 400)
+          .attr("alignment-baseline","middle")
+          .attr("text-anchor", "middle");
 }
 // Initialize plot
 update_sports(year, season)
