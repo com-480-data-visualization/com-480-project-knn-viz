@@ -21,6 +21,19 @@ var cValue = function(d) { console.log(d.Continent); return d.Continent;},
         return "rgba(0,0,0,1)";
       }};
 
+    color_labels = function(d){
+      if(d == 'Europe'){
+        return "rgba(0,129,200,1)";
+      } else if (d == 'Asia') {
+        return "rgba(252,177,49,1)";
+      } else if (d == 'Oceania') {
+        return "rgba(0,166,81,1)";
+      } else if (d == 'America') {
+        return "rgba(238,51,78,1)";
+      } else {
+        return "rgba(0,0,0,1)";
+      }};
+
 
 
 var xLevel = function(d) {
@@ -51,7 +64,7 @@ var clickYear = function(d){
 
 var svg4 = d3.select("#my_dataviz_legend_timeline")
   .append("svg")
-    .attr("width", 50)
+    .attr("width", 60)
     .attr("height", window.innerHeight + margin.top + margin.bottom)
   .append("g")
     .attr("transform",
@@ -219,17 +232,18 @@ function update(selectedVar) {
         .on("mouseleave", tip_timeline.hide)
         .on("click", function(d){return clickYear(d);});
 
-/*
+
     var size = 20
     var allgroups = ["Asia", "Europe", "America", "Oceania"]
       svg4.selectAll("myrect")
         .data(allgroups)
         .enter()
-        .append("circle")
-          .attr("cy", function(d,i){ return 120 + i*window.innerHeight/6})
-          .attr("cx", -5) // 100 is where the first dot appears. 25 is the distance between dots
-          .attr("r", 7)
-          .style("fill", function(d){ return color(d);})
+        .append("svg:image")
+          .attr("y", function(d,i){ return 105 + i*window.innerHeight/6})
+          .attr("x", -22) // 100 is where the first dot appears. 25 is the distance between dots
+          .attr('width', 30)
+          .attr('height', 30)
+          .attr("xlink:href", function(d){return "logos/" + d + "_rings.png";})
 
       // Add labels beside legend dots
       svg4.selectAll("mylabels")
@@ -239,12 +253,12 @@ function update(selectedVar) {
           .attr("font-family", "Oswald")
           .attr("class", "continentLegend")
           .attr("y", function(d,i){ return 140 + i*window.innerHeight/6})
-          .attr("x", -5) // 100 is where the first dot appears. 25 is the distance between dots
-          .style("fill", "black")
+          .attr("x", -7) // 100 is where the first dot appears. 25 is the distance between dots
+          .style("fill", function(d) {return color_labels(d);})
           .text(function(d){ return d})
           .attr("text-anchor", "middle")
           .style("alignment-baseline", "middle")
-*/
+
 
   })
 
