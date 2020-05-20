@@ -496,11 +496,13 @@ function stackedBar (selection, data) {
   }
 
 var country_tip = d3.tip()
-    .attr('class', 'd3-tip')
-    .offset([-5, 0])
+    .attr('class', 'd3-tip3')
+    .offset(function() {
+      return [this.getBBox().height*2, 0]
+    })
     .html(function(d) {
       return "<strong>Country: </strong>" + d["Country"] + "<br><strong>Medals: </strong>" + d["Medals"];
-          })
+    });
 
 svg.call(country_tip);
 
