@@ -1,6 +1,6 @@
 var width = 1200
 var height = 700
-var width_window = Math.min(1200, window.innerWidth)
+var width_window = Math.min(1500, window.innerWidth)
 var height_window = window.innerHeight
 
 var width_adjusted = window.innerWidth  - 300
@@ -19,9 +19,9 @@ var svg = d3.select("#my_dataviz")
 
 var info_games = d3.select("#logo_games")
         .append("svg")
-        .attr("width", width_adjusted-200)
+        .attr("width", width_adjusted)
         .attr("height", 200)
-        .attr("transform", "translate("+ (width_adjusted/4) + ","+ 100 +")");
+        .attr("transform", "translate("+ (width_adjusted/5) + ","+ 100 +")");
 
 
 
