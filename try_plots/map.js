@@ -134,7 +134,7 @@ var full_data = d3.map();
 
 var get_color = function(season){
     if (season == "Summer"){
-        return d3.schemeYlOrRd[8];
+        return d3.schemeBlues[8];
     } else {
         return d3.schemePuBu[8];
     }
@@ -300,7 +300,7 @@ function ready(error, topo, markers) {
         .attr("y", function(d){ return projection([d.long, d.lat])[1]-30})
         .attr('width', 35)
         .attr('height', 45)
-        .attr("xlink:href", "images/location.png")
+        .attr("xlink:href", "images/location_torch.png")
         .on("mouseover", tip2.show)
         .on("mouseleave", tip2.hide);
 
