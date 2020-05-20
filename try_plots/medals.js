@@ -16,17 +16,25 @@ var city = "Athina"
 var country = "Greece"
 var number_sports = 9
 
+var heighMedals = function(){
+  if((width_sports - 100)/2 < 100){
+    return 4000;
+  } else if ((width_sports - 100)/2 < 300) {
+    return 2000;
+  } else {
+    return height_sports;
+  }}
 
 // svg pictograms
 var svg3 = d3.select("#medals")
   .append("svg")
     .attr("width", (width_sports - 100)/2)
-    .attr("height", height_sports+ margin_sports.top + margin_sports.bottom)
+    .attr("height", function(){return heighMedals();})
     .attr("display","block")
     .attr("margin","auto")
   .append("g")
     .attr("width", (width_sports - 100)/2)
-    .attr("height", height_sports)
+    .attr("height", function(){return heighMedals();})
     .attr("transform",
           "translate(" + margin_sports.left + "," + margin_sports.top + ")");
 
@@ -56,9 +64,6 @@ function update_medals(year) {
 
   //Remove previous entries to avoid overlapping
   svg3.selectAll("*").remove();
-
-
-
 
   // Parse the Data
   d3.json("data/sports_years.json", function(data){
@@ -160,13 +165,63 @@ function display_sport_detail(game, sport_detail){
   var events_list = Object.entries(sport_detail);
   console.log(events_list);
   // it would be better to sort the events beforehand
+  g_subsports.append("circle")
+    .attr("cx", width_svg_bars/2 - 100)
+    .attr("cy", (events_list.length/10 + 1)*30 +60)
+    .attr("fill", "rgba(238,51,78,1)")
+    .attr("r", 10);
+
+  g_subsports.append("text")
+            .attr("x", (width_svg_bars/2) - 100)
+            .attr("y", (events_list.length/10 + 1)*30 +40)
+            .text("Femenin Events")
+            .style("text-anchor", "middle")
+            .attr("font-family", "Oswald")
+            .attr("font-size", "14px")
+            .attr("font-weight", 200);
+
+  g_subsports.append("circle")
+    .attr("cx", width_svg_bars/2)
+    .attr("cy", (events_list.length/10 + 1)*30 +60)
+    .attr("fill", "purple")
+    .attr("r", 10);
+
+  g_subsports.append("text")
+            .attr("x", (width_svg_bars/2))
+            .attr("y", (events_list.length/10 + 1)*30 +40)
+            .text("Mixed Events")
+            .style("text-anchor", "middle")
+            .attr("font-family", "Oswald")
+            .attr("font-size", "14px")
+            .attr("font-weight", 200);
+
+  g_subsports.append("circle")
+    .attr("cx", width_svg_bars/2 + 100)
+    .attr("cy", (events_list.length/10 + 1)*30 +60)
+    .attr("fill", "rgba(0,129,200,1)")
+    .attr("r", 10);
+
+  g_subsports.append("text")
+            .attr("x", (width_svg_bars/2) + 100)
+            .attr("y", (events_list.length/10 + 1)*30 +40)
+            .text("Masculin Events")
+            .style("text-anchor", "middle")
+            .attr("font-family", "Oswald")
+            .attr("font-size", "14px")
+            .attr("font-weight", 200);
+
   g_subsports.selectAll("myCircleEvents")
     .data(events_list)
     .enter()
     .append("circle")
       .attr("class", "event")
       .attr("cx" , function(d,i){ console.log(d); console.log(i);
-        return 80 + parseInt(i%10)*25})
+        if (i%2 == 0){
+          return width_svg_bars/2 + parseInt((i)%10)*20 + 20;
+        } else {
+          return width_svg_bars/2 - parseInt((i)%10)*20;
+        }})
+        //return 80 + *parseInt(i%9)*25})
       .attr("cy" , function(d,i){
         return 30 + parseInt(i/10)*25})
       .style("fill", function(d){
@@ -194,7 +249,7 @@ function display_sport_detail(game, sport_detail){
           // participating countries -> update map as well?
           // for each events, show medalists
           // MVP countries overall
-const margin_text = 5//width_adjusted/20;
+const margin_text = 25//width_adjusted/20;
 
 function update_sports(year, season) {
     svg3.selectAll("*").remove();
@@ -203,7 +258,12 @@ function update_sports(year, season) {
   //Remove previous entries to avoid overlapping
   var game = year + " " + season
 
-
+  var sizeText = function(){
+    if (width_svg_bars < 500){
+      return "15px";
+    } else {
+      return "20px";
+    }};
 
   svg_bars.append("text")
           .attr("x", 10)
@@ -213,14 +273,14 @@ function update_sports(year, season) {
           .attr('dy', 5)
             .text("Click on the different pictograms to discover" )
             .attr("font-family", "Oswald")
-            .attr("font-size", "20px")
+            .attr("font-size", function(){return sizeText()})
             .attr("font-weight", 100)
           .append('tspan')
           .attr('x', 0 + margin_text)
           .attr('dy', 25)
             .text("more information about each sport." )
             .attr("font-family", "Oswald")
-            .attr("font-size", "20px")
+            .attr("font-size", function(){return sizeText()})
             .attr("font-weight", 100);
 
 
@@ -229,6 +289,29 @@ function update_sports(year, season) {
   d3.json("data/sports_game_details.json",function(data){
     var sports_list = Object.keys(data[game]);
     var number_sports = sports_list.length
+
+    var sizeTextBig = function(){
+      if (width_svg_bars < 500){
+        return "20px";
+      } else {
+        return "25px";
+      }};
+
+    var marginSummer = function(){
+      if (width_svg_bars < 500){
+        return -8;
+      } else {
+        return 15;
+      }
+    }
+
+    var positionSeason = function(){
+      if (width_svg_bars < 500){
+        return 90;
+      } else {
+        return 85;
+      }
+    }
 
     svg3.selectAll("sportNames").remove()
       .data(sports_list)
@@ -264,14 +347,14 @@ function update_sports(year, season) {
                     .attr('dy', 5)
                       .text("During the ")
                       .attr("font-family", "Oswald")
-                      .attr("font-size", "25px")
+                      .attr("font-size", function(){return sizeTextBig()})
                       .attr("font-weight", 200)
                   .append('tspan')
-                    .attr('x', 100 + margin_text)
+                    .attr('x', positionSeason() + margin_text + marginSummer())
                     .attr('dy', 0)
                       .text(season)
                       .attr("font-family", "Oswald")
-                      .attr("font-size", "25px")
+                      .attr("font-size", function(){return sizeTextBig()})
                       .attr("fill", function(){
                         console.log('here', season)
                         if (season == "Summer"){
@@ -285,15 +368,15 @@ function update_sports(year, season) {
                   .append('tspan')
                     .attr('x', function(){
                       if (season == "Summer"){
-                        return 175 + margin_text;
+                        return 160 + margin_text + marginSummer();
                       } else {
-                        return 160 + margin_text;
+                        return 145 + margin_text + + marginSummer();
                       }
                     })
                     .attr('dy', 0)
                       .text(" Olympic games of " + year + ",")
                       .attr("font-family", "Oswald")
-                      .attr("font-size", "25px")
+                      .attr("font-size", function(){return sizeTextBig()})
                       .attr("font-weight", 200)
                       .attr("fill","#000")
                   .append('tspan')
@@ -301,7 +384,7 @@ function update_sports(year, season) {
                     .attr('dy', 35)
                       .text("athletes could compete in " + number_sports + " different sports")
                       .attr("font-family", "Oswald")
-                      .attr("font-size", "25px")
+                      .attr("font-size", function(){return sizeTextBig()})
                       .attr("font-weight", 200);
 
       })
@@ -602,19 +685,23 @@ const svg_bars = d3.select('#bars_sports')
   .append("svg")
   .attr("width", width_svg_bars)
   .attr("height", 400+ margin_sports.top + margin_sports.bottom)
-  .attr("transform", "translate(" + translateX_bars + ", -" + (height_sports + 100)+ ")")
+  .attr("transform", function(){
+    return "translate(" + translateX_bars + ", -" + heighMedals()+ ")";
+  })
   .attr("display","block")
   .attr("margin","auto")
 
 var svg_subsports = d3.select('#bars_sports')
                       .append("svg")
                       .attr("width",width_svg_bars)
-                      .attr("height", 163)
-                      .attr("transform", "translate(" + translateX_bars + ", -" + (height_sports)+ ")")
+                      .attr("height", 250)
+                      .attr("transform", function(){
+                        return "translate(" + translateX_bars + ", -" + heighMedals()+ ")";
+                      })
 
 var g_subsports = svg_subsports.append("g")
                                 .attr("width", width_svg_bars)
-                                .attr("height", 111)
+                                .attr("height", 250)
                                 .attr("transform",
                                       "translate(" + 0 + ",  " + margin_sports.top + ")");
 
