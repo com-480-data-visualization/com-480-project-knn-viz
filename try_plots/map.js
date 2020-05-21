@@ -3,7 +3,7 @@ var height = 700
 var width_window = Math.min(1800, window.innerWidth)
 var height_window = window.innerHeight
 
-var width_adjusted = window.innerWidth  - 300
+var width_adjusted = width_window  - 300
 
 var year = 1896
 var season = 'Summer'
@@ -19,9 +19,9 @@ var svg = d3.select("#my_dataviz")
 
 var info_games = d3.select("#logo_games")
         .append("svg")
-        .attr("width", width_adjusted)
-        .attr("height", 200)
-        .attr("transform", "translate("+ (width_adjusted/5) + ","+ 100 +")");
+        .attr("width", 750)
+        .attr("height", 250)
+        .attr("transform", "translate("+ (width_adjusted/2 - 750/2) + ","+ 10 +")");
 
 
 
@@ -249,10 +249,10 @@ function ready(error, topo, markers) {
     //svg.selectAll("g").remove();  // to see the legend
 
     // Draw the map
-    var delta_x = 100
-    svg.append("g")
+    var delta_x = 10
+    var g_map = svg.append("g")
         .attr("class", "countries")
-        .attr("transform", "translate(" + delta_x + ",100)")
+        .attr("transform", "translate(" + delta_x + ",0)")
         .selectAll("path")
         .data(topo.features)
         .enter().append("path")
@@ -304,7 +304,7 @@ function ready(error, topo, markers) {
       .data(data_marker)
       .enter()
       .append("svg:image")
-        .attr("transform", "translate(" + delta_x + ",100)")
+        .attr("transform", "translate(" + delta_x + ",0)")
         .attr("x", function(d){ return projection([d.long, d.lat])[0]-23})
         .attr("y", function(d){ return projection([d.long, d.lat])[1]-40})
         .attr('width', 45)
