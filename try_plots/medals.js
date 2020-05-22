@@ -287,6 +287,26 @@ function update_sports(year, season) {
 
 
   d3.json("data/sports_game_details.json",function(data){
+    console.log("GAME", game == "1916 Summer")
+    if (game == "1916 Summer" | game == "1940 Summer" | game == "1944 Summer" | game == "2020 Summer"){
+      svg_bars.selectAll("*").remove();
+
+      svg_bars.append("text")
+                .attr("class", "sport_information")
+                .attr("x", -width_adjusted/4)
+                .attr("y", 50)
+                .append('tspan')
+                  .attr('x', 0 + margin_text)
+                  .attr('dy', 5)
+                    .text("CANCELLED EDITION!")
+                    .attr("font-family", "Oswald")
+                    .attr("font-size", "40px")
+                    .attr("font-weight", 200)
+
+    } else {
+
+
+
     var sports_list = Object.keys(data[game]);
     var number_sports = sports_list.length
 
@@ -336,56 +356,57 @@ function update_sports(year, season) {
           d3.json("data/medals_country.json", function(top) {
                   update_top_countries(top[year][s])
                     })
-          })
+          });
 
-        svg_bars.append("text")
-                  .attr("class", "sport_information")
-                  .attr("x", width_adjusted/4)
-                  .attr("y", 50)
-                  .append('tspan')
-                    .attr('x', 0 + margin_text)
-                    .attr('dy', 5)
-                      .text("During the ")
-                      .attr("font-family", "Oswald")
-                      .attr("font-size", function(){return sizeTextBig()})
-                      .attr("font-weight", 200)
-                  .append('tspan')
-                    .attr('x', positionSeason() + margin_text + marginSummer())
-                    .attr('dy', 0)
-                      .text(season)
-                      .attr("font-family", "Oswald")
-                      .attr("font-size", function(){return sizeTextBig()})
-                      .attr("fill", function(){
-                        console.log('here', season)
-                        if (season == "Summer"){
+    svg_bars.append("text")
+              .attr("class", "sport_information")
+              .attr("x", width_adjusted/4)
+              .attr("y", 50)
+              .append('tspan')
+                .attr('x', 0 + margin_text)
+                .attr('dy', 5)
+                  .text("During the ")
+                  .attr("font-family", "Oswald")
+                  .attr("font-size", function(){return sizeTextBig()})
+                  .attr("font-weight", 200)
+              .append('tspan')
+                .attr('x', positionSeason() + margin_text + marginSummer())
+                .attr('dy', 0)
+                  .text(season)
+                  .attr("font-family", "Oswald")
+                  .attr("font-size", function(){return sizeTextBig()})
+                  .attr("fill", function(){
+                    console.log('here', season)
+                    if (season == "Summer"){
 
-                          return "rgba(238,51,78,1)";
-                        } else {
-                          return "rgba(0,129,200,1)";
-                        }
-                      })
-                      .attr("font-weight", 200)
-                  .append('tspan')
-                    .attr('x', function(){
-                      if (season == "Summer"){
-                        return 160 + margin_text + marginSummer();
-                      } else {
-                        return 145 + margin_text + + marginSummer();
-                      }
-                    })
-                    .attr('dy', 0)
-                      .text(" Olympic games of " + year + ",")
-                      .attr("font-family", "Oswald")
-                      .attr("font-size", function(){return sizeTextBig()})
-                      .attr("font-weight", 200)
-                      .attr("fill","#000")
-                  .append('tspan')
-                    .attr('x', 0 + margin_text)
-                    .attr('dy', 35)
-                      .text("athletes could compete in " + number_sports + " different sports")
-                      .attr("font-family", "Oswald")
-                      .attr("font-size", function(){return sizeTextBig()})
-                      .attr("font-weight", 200);
+                      return "rgba(238,51,78,1)";
+                    } else {
+                      return "rgba(0,129,200,1)";
+                    }
+                  })
+                  .attr("font-weight", 200)
+              .append('tspan')
+                .attr('x', function(){
+                  if (season == "Summer"){
+                    return 160 + margin_text + marginSummer();
+                  } else {
+                    return 145 + margin_text + + marginSummer();
+                  }
+                })
+                .attr('dy', 0)
+                  .text(" Olympic games of " + year + ",")
+                  .attr("font-family", "Oswald")
+                  .attr("font-size", function(){return sizeTextBig()})
+                  .attr("font-weight", 200)
+                  .attr("fill","#000")
+              .append('tspan')
+                .attr('x', 0 + margin_text)
+                .attr('dy', 35)
+                  .text("athletes could compete in " + number_sports + " different sports")
+                  .attr("font-family", "Oswald")
+                  .attr("font-size", function(){return sizeTextBig()})
+                  .attr("font-weight", 200);
+      }
 
       })
 

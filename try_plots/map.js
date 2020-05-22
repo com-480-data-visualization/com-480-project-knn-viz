@@ -29,7 +29,7 @@ function upload_info_games(year, city, country, edition, season, n_countries, n_
   info_games.selectAll("text").remove();
   info_games.selectAll("image").remove();
 
-  if (year <= 1928) {
+  if (year <= 1928 | year == 1940 | year == 1944 | year == 2020) {
     info_games.append("svg:image")
       .attr('x', 50)
       .attr('y', 10)
@@ -69,6 +69,23 @@ function upload_info_games(year, city, country, edition, season, n_countries, n_
                 .attr("font-family", "Oswald")
                 .attr("font-size", "30px")
                 .attr("font-weight", 900);
+  } else if (edition == "Cancelled"){
+      if (year == 1916){
+          var text_cancelled = 'CANCELLED EDITION: WORLD WAR I'
+      } else if (year == 1940 | year == 1944) {
+          var text_cancelled = 'CANCELLED EDITION: WORLD WAR II'
+      } else {
+          var text_cancelled = 'POSTPONED EDITION: COVID-19'
+      }
+      info_games.append("text")
+                .attr("x", 250)
+                .attr("y", 40)
+                .text(text_cancelled)
+                .attr("font-family", "Oswald")
+                .attr("font-size", "30px")
+                .attr("font-weight", 900);
+
+
   } else {
       info_games.append("text")
                 .attr("x", 250)
@@ -232,6 +249,7 @@ d3.queue()
                 }
 
             };
+
             data = full_data['$' + year][season]
         })
     .await(ready);
@@ -289,16 +307,6 @@ function ready(error, topo, markers) {
     // get the data for host city
     var data_marker = [markers[year][season]]
     console.log(data_marker)
-
-    /*svg.selectAll("myLocation")
-      .data(data_marker)
-      .enter()
-      .append("circle")
-        .attr("transform", "translate(" + delta_x + ",100)")
-        .attr("cx", function(d){ return projection([d.long, d.lat])[0]})
-        .attr("cy", function(d){ return projection([d.long, d.lat])[1]})
-        .attr('r', 5)
-        .attr('fill', 'blue');*/
 
     svg.selectAll("myLocation")
       .data(data_marker)

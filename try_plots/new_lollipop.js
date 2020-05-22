@@ -50,6 +50,7 @@ var clickYear = function(d){
       season = d.Season
       country = d.Country
       city = d.City
+
       //console.log(Object.keys(full_data['$'+year]).length)
       load_data();
       //update_medals(year);
@@ -106,17 +107,7 @@ var g_timeline = svg5.append("g")
               .text("Winter")
               .attr("font-family", "Oswald")
 
-/*
-var legend_timeline = d3.legendColor()
-              .labels(function (d) {
-                console.log(d.Continent)
-                return d.Continent; })
-              .shapePadding(4)
-              .scale(color);
 
-svg2.select(".legendColor")
-    .call(legend_timeline);
-*/
 
 // Initialize the X axis
 var x = d3.scaleLinear()
@@ -197,27 +188,6 @@ function update(selectedVar) {
         .attr("stroke", function(d) { return color(d);})
         .attr("stroke-width", 2)
 
-
-    // variable u: map data to existing circle
-/*
-
-    // update bars
-
-
-    u
-      .enter()
-      .append("circle")
-        .attr("class", "myCircleTimeline")
-      .merge(u)
-        .attr("cy", function(d) { return y(d.Year); })
-        .attr("cx", function(d) {
-          return xLevel(d);
-         })
-        .attr("r", 8)
-        .attr("fill", function(d) { return color(cValue(d));})
-      .on("mouseover", tip_timeline.show)
-      .on("mouseleave", tip_timeline.hide)
-      .on("click", function(d){return clickYear(d);}); */
     var u = svg2.selectAll("circle")
       .data(data)
 
