@@ -1,4 +1,4 @@
-var width_title = Math.min(1800, window.innerWidth) - 210//width_timeline = 200 + width_legend_timeline=100;
+var width_title = Math.min(1800, window.innerWidth) - 270;//width_timeline = 200 + width_legend_timeline=100;
 console.log(width_title)
 var height_title = 80;
 

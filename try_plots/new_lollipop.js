@@ -65,7 +65,7 @@ var clickYear = function(d){
 
 var svg4 = d3.select("#my_dataviz_legend_timeline")
   .append("svg")
-    .attr("width", 60)
+    .attr("width", 70)
     .attr("height", window.innerHeight + margin.top + margin.bottom)
   .append("g")
     .attr("transform",
