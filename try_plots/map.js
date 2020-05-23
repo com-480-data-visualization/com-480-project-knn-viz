@@ -313,11 +313,11 @@ function ready(error, topo, markers) {
       .enter()
       .append("svg:image")
         .attr("transform", "translate(" + delta_x + ",0)")
-        .attr("x", function(d){ return projection([d.long, d.lat])[0]-23})
-        .attr("y", function(d){ return projection([d.long, d.lat])[1]-40})
-        .attr('width', 45)
-        .attr('height', 45)
-        .attr("xlink:href", "images/location_torch.png")
+        .attr("x", function(d){ return projection([d.long, d.lat])[0]-7})
+        .attr("y", function(d){ return projection([d.long, d.lat])[1]-29})
+        .attr('width', 15)
+        .attr('height', 30)
+        .attr("xlink:href", "images/location_torch_crop.png")
         .on("mouseover", tip2.show)
         .on("mouseleave", tip2.hide);
 
