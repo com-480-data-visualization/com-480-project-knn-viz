@@ -2,7 +2,7 @@
 // set the dimensions and margins of the graph
 var margin_sports = {top: 20, right: 30, bottom: 70, left: 30},
     width_sports= Math.min(1800,window.innerWidth) - 300 - margin_sports.left - margin_sports.right,
-    height_sports= 1400 - margin_sports.top - margin_sports.bottom;
+    height_sports= 1500 - margin_sports.top - margin_sports.bottom;
 
 console.log('windowWidth', window.innerWidth)
 var dy = 50;
@@ -16,27 +16,6 @@ var city = "Athina"
 var country = "Greece"
 var number_sports = 9
 
-var heighMedals = function(){
-  if((width_sports - 100)/2 < 100){
-    return 4000;
-  } else if ((width_sports - 100)/2 < 300) {
-    return 2000;
-  } else {
-    return height_sports;
-  }}
-
-// svg pictograms
-var svg3 = d3.select("#medals")
-  .append("svg")
-    .attr("width", (width_sports - 100)/2)
-    .attr("height", function(){return heighMedals();})
-    .attr("display","block")
-    .attr("margin","auto")
-  .append("g")
-    .attr("width", (width_sports - 100)/2)
-    .attr("height", function(){return heighMedals();})
-    .attr("transform",
-          "translate(" + margin_sports.left + "," + margin_sports.top + ")");
 
 
 var text_x_pos = function(i){
@@ -702,7 +681,31 @@ function update_top_countries(top_data) {
 var width_svg_bars = Math.min(550, (width_sports/2 + 100 ))
 var translateX_bars = Math.max((width_sports -  width_svg_bars), (width_sports/2 ))
 
-const svg_bars = d3.select('#bars_sports')
+
+var heighMedals = function(){
+  if((width_sports - 100)/2 < 100){
+    return 4000;
+  } else if ((width_sports - 100)/2 < 300) {
+    return 2000;
+  } else {
+    return height_sports;
+  }}
+
+// svg pictograms
+var svg3 = d3.select("#medals")
+  .append("svg")
+    .attr("width", (width_sports - 100)/2)
+    .attr("height", function(){return heighMedals();})
+    .attr("display","block")
+    .attr("margin","auto")
+  .append("g")
+    .attr("width", (width_sports - 100)/2)
+    .attr("height", function(){return heighMedals();})
+    .attr("transform",
+          "translate(" + margin_sports.left + "," + margin_sports.top + ")");
+
+
+const svg_bars = d3.select('#medals')
   .append("svg")
   .attr("width", width_svg_bars)
   .attr("height", 400+ margin_sports.top + margin_sports.bottom)
@@ -712,17 +715,19 @@ const svg_bars = d3.select('#bars_sports')
   .attr("display","block")
   .attr("margin","auto")
 
-var svg_subsports = d3.select('#bars_sports')
+
+
+var svg_subsports = d3.select('#medals')
                       .append("svg")
                       .attr("width",width_svg_bars)
-                      .attr("height", 250)
+                      .attr("height", 280)
                       .attr("transform", function(){
                         return "translate(" + translateX_bars + ", -" + heighMedals()+ ")";
                       })
 
 var g_subsports = svg_subsports.append("g")
                                 .attr("width", width_svg_bars)
-                                .attr("height", 250)
+                                .attr("height", 280)
                                 .attr("transform",
                                       "translate(" + 0 + ",  " + margin_sports.top + ")");
 
