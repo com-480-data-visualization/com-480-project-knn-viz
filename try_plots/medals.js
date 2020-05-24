@@ -312,6 +312,16 @@ function update_sports(year, season) {
       }
     }
 
+    var height_svg3 = function(){
+      max_per_row = Math.floor((width_sports - 100)/220)
+      h_pictos =  Math.ceil(sports_list.length/max_per_row)*120
+      return Math.max(h_pictos, 700); // select max between pictograms and bars
+    }
+
+    // Adapt height svg to avoid extra blank space
+    svg_svg3.attr("height", function(){return height_svg3(); })
+
+    // Pictograms of sports
     svg3.selectAll("sportNames").remove()
       .data(sports_list)
       .enter()
@@ -337,6 +347,7 @@ function update_sports(year, season) {
                     })
           });
 
+    // Initial text next to pictograms
     svg_bars.append("text")
               .attr("class", "sport_information")
               .attr("x", width_adjusted/4)
@@ -678,8 +689,15 @@ function update_top_countries(top_data) {
             .on("mouseleave", country_tip.hide);
 }
 
-var width_svg_bars = Math.min(550, (width_sports/2 + 100 ))
-var translateX_bars = Math.max((width_sports -  width_svg_bars), (width_sports/2 ))
+var width_svg_bars = Math.min(550, (width_sports/2 + 50 ))
+var translateX_bars = function(){
+  if (width_sports < 900){
+    return width_sports -  width_svg_bars;
+  } else {
+    return (width_sports)/2
+  }
+  //Math.max((width_sports -  width_svg_bars), )/2
+}
 
 
 var heighMedals = function(){
@@ -692,44 +710,29 @@ var heighMedals = function(){
   }}
 
 // svg pictograms
-var svg3 = d3.select("#medals")
+var svg_svg3 = d3.select("#medals")
   .append("svg")
-    .attr("width", (width_sports - 100)/2)
+    .attr("width", width_sports)
     .attr("height", function(){return heighMedals();})
-    .attr("display","block")
-    .attr("margin","auto")
-  .append("g")
-    .attr("width", (width_sports - 100)/2)
-    .attr("height", function(){return heighMedals();})
-    .attr("transform",
-          "translate(" + margin_sports.left + "," + margin_sports.top + ")");
+
+var svg3 = svg_svg3.append("g")
+                  .attr("width", (width_sports - 100)/2)
+                  .attr("height", function(){return heighMedals();})
+                  .attr("transform",
+                        "translate(" + margin_sports.left + "," + margin_sports.top + ")");
+
+var svg_bars = svg_svg3.append("g")
+                .attr("width", width_svg_bars)
+                .attr("height", 400+ margin_sports.top + margin_sports.bottom)
+                .attr("transform", function(){
+                  return "translate(" + translateX_bars() + ", -" + 0 + ")";})
 
 
-const svg_bars = d3.select('#medals')
-  .append("svg")
-  .attr("width", width_svg_bars)
-  .attr("height", 400+ margin_sports.top + margin_sports.bottom)
-  .attr("transform", function(){
-    return "translate(" + translateX_bars + ", -" + heighMedals()+ ")";
-  })
-  .attr("display","block")
-  .attr("margin","auto")
-
-
-
-var svg_subsports = d3.select('#medals')
-                      .append("svg")
-                      .attr("width",width_svg_bars)
+var g_subsports = svg_svg3.append("g")
+                      .attr("width", width_svg_bars)
                       .attr("height", 280)
-                      .attr("transform", function(){
-                        return "translate(" + translateX_bars + ", -" + heighMedals()+ ")";
-                      })
-
-var g_subsports = svg_subsports.append("g")
-                                .attr("width", width_svg_bars)
-                                .attr("height", 280)
-                                .attr("transform",
-                                      "translate(" + 0 + ",  " + margin_sports.top + ")");
+                      .attr("transform",
+                            "translate(" + translateX_bars() + ",  " + (400+ margin_sports.top + 2*margin_sports.bottom) + ")");
 
 
 
