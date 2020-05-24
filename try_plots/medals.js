@@ -268,19 +268,18 @@ function update_sports(year, season) {
   d3.json("data/sports_game_details.json",function(data){
     console.log("GAME", game == "1916 Summer")
     if (game == "1916 Summer" | game == "1940 Summer" | game == "1944 Summer" | game == "2020 Summer"){
+
       svg_bars.selectAll("*").remove();
 
-      svg_bars.append("text")
-                .attr("class", "sport_information")
-                .attr("x", -width_adjusted/4)
-                .attr("y", 50)
-                .append('tspan')
-                  .attr('x', 0 + margin_text)
-                  .attr('dy', 5)
-                    .text("CANCELLED EDITION!")
-                    .attr("font-family", "Oswald")
-                    .attr("font-size", "40px")
-                    .attr("font-weight", 200)
+      svg_svg3.attr("height", 300)
+      svg3.selectAll("sportNames").remove()
+
+      svg3.append("svg:image")
+          .attr("x", ((width_sports/2)/2))
+          .attr("y", 60)
+          .attr('width', (width_sports/2))
+          .attr('height', 220)
+          .attr("xlink:href", "sports_picto/cancelled_" + game.split(' ')[0] + ".png");
 
     } else {
 
