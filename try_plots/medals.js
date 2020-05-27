@@ -4,7 +4,6 @@ var margin_sports = {top: 20, right: 30, bottom: 70, left: 30},
     width_sports= Math.min(1800,window.innerWidth) - 300 - margin_sports.left - margin_sports.right,
     height_sports= 1500 - margin_sports.top - margin_sports.bottom;
 
-//console.log('windowWidth', window.innerWidth)
 
 // declare variables
 var dy = 50;
@@ -119,7 +118,7 @@ function display_sport_detail(game, sport_detail){
     .enter()
     .append("circle")
       .attr("class", "event")
-      .attr("cx" , function(d,i){ console.log(d); console.log(i);
+      .attr("cx" , function(d,i){
         if (i%2 == 0){
           return width_svg_bars/2 + parseInt((i)%10)*20 + 20;
         } else {
@@ -449,7 +448,6 @@ function update_top_countries(top_data) {
 
     svg_svg3.attr("height", function(){return (heighMedals() + (height_flags - 3)*60);})
     if (height_flags > 3){
-      console.log('Here!! ')
       g_subsports.attr("transform",
               "translate(" + translateX_bars() + ",  " + (400+ margin_sports.top + 2*margin_sports.bottom + (height_flags-3)*60) + ")");
     }
@@ -666,7 +664,6 @@ function update_sports(year, season) {
                   .attr("font-family", "Oswald")
                   .attr("font-size", function(){return sizeTextBig()})
                   .attr("fill", function(){
-                    console.log('here', season)
                     if (season == "Summer"){
 
                       return "rgba(238,51,78,1)";
