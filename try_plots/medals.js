@@ -364,26 +364,7 @@ function update_top_countries(top_data) {
   const img_size = 40;
   svg_bars.selectAll("image").remove();
 
-  // title
-  svg_bars.append("text")
-            .attr("x", (width_svg_bars/2))
-            .attr("y", 330)
-            .text("TOP Countries")
-            .style("text-anchor", "middle")
-            .attr("font-family", "Oswald")
-            .attr("font-size", "20px")
-            .attr("font-weight", 400);
-
-  // top1 country
-  svg_bars.append("text")
-            .attr("x", (width_svg_bars/2) - 100)
-            .attr("y", 380)
-            .text("Gold")
-            .style("text-anchor", "middle")
-            .attr("font-family", "Oswald")
-            .attr("font-size", "18px")
-            .attr("font-weight", 400);
-
+  // update top1 countries
   svg_bars.selectAll("countryFlags")
           .data(top_data["Gold"])
           .enter()
@@ -397,16 +378,7 @@ function update_top_countries(top_data) {
           .on("mouseover", country_tip.show)
           .on("mouseleave", country_tip.hide);
 
-    // top 2 country
-    svg_bars.append("text")
-            .attr("x", (width_svg_bars/2))
-            .attr("y", 380)
-            .text("Silver")
-            .style("text-anchor", "middle")
-            .attr("font-family", "Oswald")
-            .attr("font-size", "18px")
-            .attr("font-weight", 400);
-
+  // update top2 countries
   svg_bars.selectAll("countryFlags")
           .data(top_data["Silver"])
           .enter()
@@ -420,16 +392,7 @@ function update_top_countries(top_data) {
           .on("mouseover", country_tip.show)
           .on("mouseleave", country_tip.hide);
 
-    // top3 country
-    svg_bars.append("text")
-            .attr("x", (width_svg_bars/2) + 100)
-            .attr("y", 380)
-            .text("Bronze")
-            .style("text-anchor", "middle")
-            .attr("font-family", "Oswald")
-            .attr("font-size", "18px")
-            .attr("font-weight", 400);
-
+    // update top3 countries
     svg_bars.selectAll("countryFlags")
             .data(top_data["Bronze"])
             .enter()
@@ -512,7 +475,7 @@ function update_bars(data, sport) {
   let data_sex = get_data_bar(data['male'], 'Men', 'Women');
   let data_indiv = get_data_bar(data['individual'], 'Individual events', 'Team events');
 
-  let all_data = [data_countries, data_athletes, data_sex, data_indiv]
+  let all_data = [data_countries, data_athletes, data_sex, data_indiv];
 
   stackedBar(svg_bars, all_data);
 
@@ -527,6 +490,44 @@ function update_bars(data, sport) {
           .attr("font-weight", 400)
           .attr("alignment-baseline","middle")
           .attr("text-anchor", "middle");
+
+  // title
+  svg_bars.append("text")
+            .attr("x", (width_svg_bars/2))
+            .attr("y", 330)
+            .text("TOP Countries")
+            .style("text-anchor", "middle")
+            .attr("font-family", "Oswald")
+            .attr("font-size", "20px")
+            .attr("font-weight", 400);
+
+  // top1 country text
+  svg_bars.append("text")
+            .attr("x", (width_svg_bars/2) - 100)
+            .attr("y", 380)
+            .text("Gold")
+            .style("text-anchor", "middle")
+            .attr("font-family", "Oswald")
+            .attr("font-size", "18px")
+            .attr("font-weight", 400);
+  // top 2 country text
+  svg_bars.append("text")
+          .attr("x", (width_svg_bars/2))
+          .attr("y", 380)
+          .text("Silver")
+          .style("text-anchor", "middle")
+          .attr("font-family", "Oswald")
+          .attr("font-size", "18px")
+          .attr("font-weight", 400);
+  // top3 country
+  svg_bars.append("text")
+          .attr("x", (width_svg_bars/2) + 100)
+          .attr("y", 380)
+          .text("Bronze")
+          .style("text-anchor", "middle")
+          .attr("font-family", "Oswald")
+          .attr("font-size", "18px")
+          .attr("font-weight", 400);
 }
 
 // function to show pictograms and change information on click
