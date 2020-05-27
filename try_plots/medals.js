@@ -151,177 +151,6 @@ function display_sport_detail(game, sport_detail){
 
 const margin_text = 25;
 
-// function to show pictograms and change information on click
-function update_sports(year, season) {
-  //Remove previous entries to avoid overlapping
-  svg3.selectAll("*").remove();
-  g_subsports.selectAll("*").remove();
-  svg_bars.selectAll("*").remove();
-
-  var game = year + " " + season
-
-  var sizeText = function(){
-    if (width_svg_bars < 500){
-      return "15px";
-    } else {
-      return "20px";
-    }};
-
-  svg_bars.append("text")
-          .attr("x", 10)
-          .attr("y", 150)
-          .append('tspan')
-          .attr('x', 0 + margin_text)
-          .attr('dy', 5)
-            .text("Click on the different pictograms to discover" )
-            .attr("font-family", "Oswald")
-            .attr("font-size", function(){return sizeText()})
-            .attr("font-weight", 100)
-          .append('tspan')
-          .attr('x', 0 + margin_text)
-          .attr('dy', 25)
-            .text("more information about each sport." )
-            .attr("font-family", "Oswald")
-            .attr("font-size", function(){return sizeText()})
-            .attr("font-weight", 100);
-
-
-  d3.json("data/sports_game_details.json",function(data){
-
-    // add info for cancelled or postponed events
-    if (game == "1916 Summer" | game == "1940 Summer" | game == "1944 Summer" | game == "2020 Summer"){
-
-      svg_bars.selectAll("*").remove();
-
-      svg_svg3.attr("height", 300);
-      svg3.selectAll("sportNames").remove();
-
-      svg3.append("svg:image")
-          .attr("x", ((width_sports/2)/2))
-          .attr("y", 60)
-          .attr('width', (width_sports/2))
-          .attr('height', 220)
-          .attr("xlink:href", "sports_picto/cancelled_" + game.split(' ')[0] + ".png");
-
-    } else { // Add information about sports and update when click
-
-
-    var sports_list = Object.keys(data[game]);
-    var number_sports = sports_list.length;
-
-    var sizeTextBig = function(){
-      if (width_svg_bars < 500){
-        return "20px";
-      } else {
-        return "25px";
-      }};
-
-    var marginSummer = function(){
-      if (width_svg_bars < 500){
-        return -8;
-      } else {
-        return 15;
-      }
-    }
-
-    var positionSeason = function(){
-      if (width_svg_bars < 500){
-        return 90;
-      } else {
-        return 85;
-      }
-    }
-
-    var height_svg3 = function(){
-      max_per_row = Math.floor((width_sports - 100)/220)
-      h_pictos =  Math.ceil(sports_list.length/max_per_row)*120
-      return Math.max(h_pictos, 800); // select max between pictograms and bars
-    }
-
-    // Adapt height svg to avoid extra blank space
-    svg_svg3.attr("height", function(){return height_svg3(); });
-
-    // Pictograms of sports
-    svg3.selectAll("sportNames").remove()
-      .data(sports_list)
-      .enter()
-      .append("svg:image")
-        .attr("x", function(d,i){
-          return deltaXText + text_x_pos(i)})
-        .attr("y", function(d,i){return 10 + text_y_pos(i)}) // 100 is where the first dot appears. 25 is the distance between dots
-        .attr('width', 90)
-        .attr('height', 90)
-        .attr("xlink:href", function(d) {
-          return "sports_picto/" + d + ".jpeg"
-        })
-        .on("mouseover", sport_tip.show)
-        .on("mouseleave", sport_tip.hide)
-        .on("click", function(s){
-          // on click, show events
-          display_sport_detail(game,data[game][s]);
-          d3.json("data/info_sports.json", function(info) {
-                  update_bars(info[year][s], s);
-                  });
-          d3.json("data/medals_country.json", function(top) {
-                  update_top_countries(top[year][s]);
-                });
-          });
-
-    // Initial text next to pictograms
-    svg_bars.append("text")
-              .attr("class", "sport_information")
-              .attr("x", width_adjusted/4)
-              .attr("y", 50)
-              .append('tspan')
-                .attr('x', 0 + margin_text)
-                .attr('dy', 5)
-                  .text("During the ")
-                  .attr("font-family", "Oswald")
-                  .attr("font-size", function(){return sizeTextBig()})
-                  .attr("font-weight", 200)
-              .append('tspan')
-                .attr('x', positionSeason() + margin_text + marginSummer())
-                .attr('dy', 0)
-                  .text(season)
-                  .attr("font-family", "Oswald")
-                  .attr("font-size", function(){return sizeTextBig()})
-                  .attr("fill", function(){
-                    console.log('here', season)
-                    if (season == "Summer"){
-
-                      return "rgba(238,51,78,1)";
-                    } else {
-                      return "rgba(0,129,200,1)";
-                    }
-                  })
-                  .attr("font-weight", 200)
-              .append('tspan')
-                .attr('x', function(){
-                  if (season == "Summer"){
-                    return 160 + margin_text + marginSummer();
-                  } else {
-                    return 145 + margin_text + + marginSummer();
-                  }
-                })
-                .attr('dy', 0)
-                  .text(" Olympic games of " + year + ",")
-                  .attr("font-family", "Oswald")
-                  .attr("font-size", function(){return sizeTextBig()})
-                  .attr("font-weight", 200)
-                  .attr("fill","#000")
-              .append('tspan')
-                .attr('x', 0 + margin_text)
-                .attr('dy', 35)
-                  .text("athletes could compete in " + number_sports + " different sports")
-                  .attr("font-family", "Oswald")
-                  .attr("font-size", function(){return sizeTextBig()})
-                  .attr("font-weight", 200);
-      }
-
-    });
-
-    }
-
 // function to get data ready for the stacked bar
 function get_data_bar(value, label1, label2) {
       data_bar = [ {'cumulative': 0.0, 'value': value, 'label': label1},
@@ -701,6 +530,177 @@ function update_bars(data, sport) {
           .attr("alignment-baseline","middle")
           .attr("text-anchor", "middle");
 }
+
+// function to show pictograms and change information on click
+function update_sports(year, season) {
+  //Remove previous entries to avoid overlapping
+  svg3.selectAll("*").remove();
+  g_subsports.selectAll("*").remove();
+  svg_bars.selectAll("*").remove();
+
+  var game = year + " " + season
+
+  var sizeText = function(){
+    if (width_svg_bars < 500){
+      return "15px";
+    } else {
+      return "20px";
+    }};
+
+  svg_bars.append("text")
+          .attr("x", 10)
+          .attr("y", 150)
+          .append('tspan')
+          .attr('x', 0 + margin_text)
+          .attr('dy', 5)
+            .text("Click on the different pictograms to discover" )
+            .attr("font-family", "Oswald")
+            .attr("font-size", function(){return sizeText()})
+            .attr("font-weight", 100)
+          .append('tspan')
+          .attr('x', 0 + margin_text)
+          .attr('dy', 25)
+            .text("more information about each sport." )
+            .attr("font-family", "Oswald")
+            .attr("font-size", function(){return sizeText()})
+            .attr("font-weight", 100);
+
+
+  d3.json("data/sports_game_details.json",function(data){
+
+    // add info for cancelled or postponed events
+    if (game == "1916 Summer" | game == "1940 Summer" | game == "1944 Summer" | game == "2020 Summer"){
+
+      svg_bars.selectAll("*").remove();
+
+      svg_svg3.attr("height", 300);
+      svg3.selectAll("sportNames").remove();
+
+      svg3.append("svg:image")
+          .attr("x", ((width_sports/2)/2))
+          .attr("y", 60)
+          .attr('width', (width_sports/2))
+          .attr('height', 220)
+          .attr("xlink:href", "sports_picto/cancelled_" + game.split(' ')[0] + ".png");
+
+    } else { // Add information about sports and update when click
+
+
+    var sports_list = Object.keys(data[game]);
+    var number_sports = sports_list.length;
+
+    var sizeTextBig = function(){
+      if (width_svg_bars < 500){
+        return "20px";
+      } else {
+        return "25px";
+      }};
+
+    var marginSummer = function(){
+      if (width_svg_bars < 500){
+        return -8;
+      } else {
+        return 15;
+      }
+    }
+
+    var positionSeason = function(){
+      if (width_svg_bars < 500){
+        return 90;
+      } else {
+        return 85;
+      }
+    }
+
+    var height_svg3 = function(){
+      max_per_row = Math.floor((width_sports - 100)/220)
+      h_pictos =  Math.ceil(sports_list.length/max_per_row)*120
+      return Math.max(h_pictos, 800); // select max between pictograms and bars
+    }
+
+    // Adapt height svg to avoid extra blank space
+    svg_svg3.attr("height", function(){return height_svg3(); });
+
+    // Pictograms of sports
+    svg3.selectAll("sportNames").remove()
+      .data(sports_list)
+      .enter()
+      .append("svg:image")
+        .attr("x", function(d,i){
+          return deltaXText + text_x_pos(i)})
+        .attr("y", function(d,i){return 10 + text_y_pos(i)}) // 100 is where the first dot appears. 25 is the distance between dots
+        .attr('width', 90)
+        .attr('height', 90)
+        .attr("xlink:href", function(d) {
+          return "sports_picto/" + d + ".jpeg"
+        })
+        .on("mouseover", sport_tip.show)
+        .on("mouseleave", sport_tip.hide)
+        .on("click", function(s){
+          // on click, show events
+          display_sport_detail(game,data[game][s]);
+          d3.json("data/info_sports.json", function(info) {
+                  update_bars(info[year][s], s);
+                  });
+          d3.json("data/medals_country.json", function(top) {
+                  update_top_countries(top[year][s]);
+                });
+          });
+
+    // Initial text next to pictograms
+    svg_bars.append("text")
+              .attr("class", "sport_information")
+              .attr("x", width_adjusted/4)
+              .attr("y", 50)
+              .append('tspan')
+                .attr('x', 0 + margin_text)
+                .attr('dy', 5)
+                  .text("During the ")
+                  .attr("font-family", "Oswald")
+                  .attr("font-size", function(){return sizeTextBig()})
+                  .attr("font-weight", 200)
+              .append('tspan')
+                .attr('x', positionSeason() + margin_text + marginSummer())
+                .attr('dy', 0)
+                  .text(season)
+                  .attr("font-family", "Oswald")
+                  .attr("font-size", function(){return sizeTextBig()})
+                  .attr("fill", function(){
+                    console.log('here', season)
+                    if (season == "Summer"){
+
+                      return "rgba(238,51,78,1)";
+                    } else {
+                      return "rgba(0,129,200,1)";
+                    }
+                  })
+                  .attr("font-weight", 200)
+              .append('tspan')
+                .attr('x', function(){
+                  if (season == "Summer"){
+                    return 160 + margin_text + marginSummer();
+                  } else {
+                    return 145 + margin_text + + marginSummer();
+                  }
+                })
+                .attr('dy', 0)
+                  .text(" Olympic games of " + year + ",")
+                  .attr("font-family", "Oswald")
+                  .attr("font-size", function(){return sizeTextBig()})
+                  .attr("font-weight", 200)
+                  .attr("fill","#000")
+              .append('tspan')
+                .attr('x', 0 + margin_text)
+                .attr('dy', 35)
+                  .text("athletes could compete in " + number_sports + " different sports")
+                  .attr("font-family", "Oswald")
+                  .attr("font-size", function(){return sizeTextBig()})
+                  .attr("font-weight", 200);
+      }
+
+    });
+
+    }
 
 // Initialize plot
 update_sports(year, season)

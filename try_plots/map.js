@@ -1,3 +1,4 @@
+// set dimensions
 var width = 1200
 var height = 700
 var width_window = Math.min(1800, window.innerWidth)
@@ -5,26 +6,29 @@ var height_window = window.innerHeight
 
 var width_adjusted = width_window  - 300
 
+// variables to initialize info
 var year = 1896
 var season = 'Summer'
 var city = "Athina"
 var country = "Greece"
 
+// initialize map
 var country_code = d3.map()
 
+// svg for the map
 var svg = d3.select("#my_dataviz")
   .append("svg")
   .attr("width", width_adjusted)
   .attr("height", height);
 
+// svg for the header
 var info_games = d3.select("#logo_games")
         .append("svg")
         .attr("width", 750)
         .attr("height", 250)
         .attr("transform", "translate("+ (width_adjusted/2 - 750/2) + ","+ 10 +")");
 
-
-
+// function to update header
 function upload_info_games(year, city, country, edition, season, n_countries, n_athletes) {
   info_games.selectAll("text").remove();
   info_games.selectAll("image").remove();
@@ -132,8 +136,8 @@ function upload_info_games(year, city, country, edition, season, n_countries, n_
 
 }
 
+// initialize header
 upload_info_games(year, "Athina", country, 1, season, 12, 176);
-
 
 // Map and projection
 var path = d3.geoPath();
@@ -143,12 +147,11 @@ var projection = d3.geoNaturalEarth()
 var path = d3.geoPath()
     .projection(projection);
 
-
 // Data and color scale
 var data = d3.map();
 var full_data = d3.map();
 
-
+// color
 var get_color = function(season){
     if (season == "Summer"){
         return d3.schemeBlues[8];
@@ -182,7 +185,7 @@ var legend = d3.legendColor()
     .shapePadding(4)
     .scale(colorScale);
 
-// tooltip
+// tooltip countries
 var tip = d3.tip()
     .attr('class', 'd3-tip')
     .offset([-10, 0])
@@ -194,6 +197,7 @@ var tip = d3.tip()
             return "<strong>Country: " + name +" <br> Participants: </strong> <span>" + part + "</span>";
           })
 
+// tooltip host city
 var tip2 = d3.tip()
     .attr('class', 'd3-tip2')
     .offset([-10, 0])
@@ -207,7 +211,7 @@ var tip2 = d3.tip()
 svg.select(".legendThreshold")
     .call(legend);
 
-// Tooltip
+// call Tooltips
 svg.call(tip);
 svg.call(tip2);
 
@@ -216,10 +220,8 @@ d3.queue()
     .defer(d3.json, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson")
     .defer(d3.json, "data/host_cities_markers.json")
     .defer(d3.csv, "data/regions_participants3.csv",
-        function(d) {
-            //console.log(d)
+        function(d) { // load data from csv
             if ('$' + d.Year in full_data){
-                //console.log(d)
                 var yearKey = '$' + d.Year;
                 season = d.Season;
 
@@ -254,11 +256,12 @@ d3.queue()
         })
     .await(ready);
 
+// function to load the data
 function load_data(){
     data = full_data['$' + year][season];
 }
 
-
+// update map, title and header
 function ready(error, topo, markers) {
     if (error) throw error;
 
@@ -295,10 +298,9 @@ function ready(error, topo, markers) {
           .on("mouseover", tip.show)
           .on("mouseleave", tip.hide);
 
-          // Update title
+    // Update title
     g.selectAll(".title")
     .text(season + " Olympic Games Year " + year + " held in " + city + ", " + country);
-
 
 
     // remove the previous circle in host city
@@ -306,8 +308,8 @@ function ready(error, topo, markers) {
 
     // get the data for host city
     var data_marker = [markers[year][season]]
-    //console.log(data_marker)
 
+    // update host city location
     svg.selectAll("myLocation")
       .data(data_marker)
       .enter()
@@ -325,7 +327,6 @@ function ready(error, topo, markers) {
     var n_athletes = markers[year][season]['n_athletes']
     var n_countries = markers[year][season]['n_countries']
 
-    //console.log(city)
-    // Change info about games
+    // Change info about games (header)
     upload_info_games(year, city, country, edition, season, n_countries, n_athletes);
 }

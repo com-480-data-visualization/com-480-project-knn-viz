@@ -1,7 +1,8 @@
-var width_title = Math.min(1800, window.innerWidth) - 270;//width_timeline = 200 + width_legend_timeline=100;
-
+// set dimensions
+var width_title = Math.min(1800, window.innerWidth) - 270;
 var height_title = 80;
 
+// svg for the title
 var title_games = d3.select("#title")
                 .append("svg")
                 .attr("width", width_title)
@@ -42,7 +43,7 @@ var openNewTab = function openInNewTab(url) {
             .on("click", function(){openNewTab("https://youtu.be/xWv1JyJC_aY")});
 
 
-
+// change the title when selecting a game
 function update_title(year, city, country){
   title_games.selectAll("text").remove();
     // add text
@@ -61,4 +62,5 @@ function update_title(year, city, country){
             .attr("text-anchor", "middle");
 }
 
+// initialize
 update_title(1896, "Athina", "Greece");

@@ -2,13 +2,13 @@
 var margin = {top: 50, right: 30, bottom: 20, left: 30},
     width_timeline= 200 - margin.left - margin.right,
     height_timeline= 1600 - margin.top - margin.bottom;
-    //height_timeline= window.innerHeight - margin.top - margin.bottom;
-//console.log(window.innerHeight)
 
+// set length of lines in timeline
 var dx = 50;
 
-var cValue = function(d) { console.log(d.Continent); return d.Continent;},
-    color = function(d){
+// function to change color of timeline according to continent
+var cValue = function(d) { return d.Continent;},
+      color = function(d){
       if(d.Continent == 'Europe'){
         return "rgba(0,129,200,1)";
       } else if (d.Continent == 'Asia') {
@@ -21,7 +21,8 @@ var cValue = function(d) { console.log(d.Continent); return d.Continent;},
         return "rgba(0,0,0,1)";
       }};
 
-    color_labels = function(d){
+// function to change color of label according to continent
+var color_labels = function(d){
       if(d == 'Europe'){
         return "rgba(0,129,200,1)";
       } else if (d == 'Asia') {
@@ -35,7 +36,7 @@ var cValue = function(d) { console.log(d.Continent); return d.Continent;},
       }};
 
 
-
+// function to set the lines of the timeline
 var xLevel = function(d) {
     if(d.Season == "Summer"){
       return width_timeline/2 - dx;
@@ -51,7 +52,6 @@ var clickYear = function(d){
       country = d.Country
       city = d.City
 
-      //console.log(Object.keys(full_data['$'+year]).length)
       load_data();
       //update_medals(year);
       update_sports(year, season);
@@ -60,9 +60,9 @@ var clickYear = function(d){
           .defer(d3.json, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson")
           .defer(d3.json, "data/host_cities_markers.json")
           .await(ready);
-
 }
 
+// legend svg
 var svg4 = d3.select("#my_dataviz_legend_timeline")
   .append("svg")
     .attr("width", 70)
@@ -71,6 +71,7 @@ var svg4 = d3.select("#my_dataviz_legend_timeline")
     .attr("transform",
           "translate(" + 30 + "," + 1.5*margin.top + ")");
 
+// summer and winter titles svg
 var svg5 = d3.select("#my_dataviz_timeline_seasons")
   .append("svg")
     .attr("width", width_timeline + margin.left + margin.right + 50)
@@ -88,7 +89,7 @@ var svg2 = d3.select("#my_dataviz_timeline")
     .attr("transform",
           "translate(" + 10 + "," + 1.5*margin.top + ")");
 
-
+// add titles of winter and summer to timeline
 var g_timeline = svg5.append("g")
               .attr("class", "legendColor")
               .attr("transform", "translate(-10,-20)");
@@ -98,22 +99,21 @@ var g_timeline = svg5.append("g")
               .attr("x", 35 + width_timeline/2 - dx)
               .attr("y", 0)
               .text("Summer")
-              .attr("font-family", "Oswald")
+              .attr("font-family", "Oswald");
 
               g_timeline.append("text")
               .attr("class", "caption")
               .attr("x", 35 + width_timeline/2 + dx)
               .attr("y", 0)
               .text("Winter")
-              .attr("font-family", "Oswald")
-
+              .attr("font-family", "Oswald");
 
 
 // Initialize the X axis
 var x = d3.scaleLinear()
   .range([0, width_timeline]);
 
-var xAxis = svg2.append("g")
+var xAxis = svg2.append("g");
 
 
 // Initialize the Y axis
@@ -123,10 +123,10 @@ var y = d3.scaleBand()
 
 var yAxis = svg2.append("g")
   .attr("class", "axis")
-  .attr("transform", "translate(" + (width_timeline/2 ) + "," + 0 + ")")
+  .attr("transform", "translate(" + (width_timeline/2 ) + "," + 0 + ")");
 
 
-// Tooltip
+// Tooltip timeline
 var tip_timeline = d3.tip()
           .attr('class', 'd3-tip')
           .offset(function(d){
@@ -134,8 +134,9 @@ var tip_timeline = d3.tip()
           })
           .html(function(d) {
                   return d["City"] + ", " + d["Country"] + "<br/> Year "+ d.Year;
-                })
-svg2.call(tip_timeline)
+          });
+
+svg2.call(tip_timeline);
 
 
 var domain_function = function range(size, step, startAt = 1896) {
