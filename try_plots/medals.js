@@ -314,7 +314,7 @@ function update_sports(year, season) {
     var height_svg3 = function(){
       max_per_row = Math.floor((width_sports - 100)/220)
       h_pictos =  Math.ceil(sports_list.length/max_per_row)*120
-      return Math.max(h_pictos, 700); // select max between pictograms and bars
+      return Math.max(h_pictos, 800); // select max between pictograms and bars
     }
 
     // Adapt height svg to avoid extra blank space
@@ -608,7 +608,6 @@ svg.call(country_tip);
 
 
 function update_top_countries(top_data) {
-  console.log(top_data["Gold"]);
   const img_size = 40;
   svg_bars.selectAll("image").remove();
 
@@ -686,6 +685,19 @@ function update_top_countries(top_data) {
             .attr("xlink:href", d => "country-flags-master/svg/" + d["Country"] + ".svg")
             .on("mouseover", country_tip.show)
             .on("mouseleave", country_tip.hide);
+
+    var height_flags =  Math.max(top_data["Gold"].length, top_data["Silver"].length, top_data["Bronze"].length);
+
+    svg_svg3.attr("height", function(){return (heighMedals() + (height_flags - 3)*60);})
+    if (height_flags > 3){
+      console.log('Here!! ')
+      g_subsports.attr("transform",
+              "translate(" + translateX_bars() + ",  " + (400+ margin_sports.top + 2*margin_sports.bottom + (height_flags-3)*60) + ")");
+    }
+
+
+
+
 }
 
 var width_svg_bars = Math.min(550, (width_sports/2 + 50 ))
@@ -698,7 +710,7 @@ var translateX_bars = function(){
   //Math.max((width_sports -  width_svg_bars), )/2
 }
 
-
+// select max between pictograms and bars
 var heighMedals = function(){
   if((width_sports - 100)/2 < 100){
     return 4000;
@@ -707,6 +719,8 @@ var heighMedals = function(){
   } else {
     return height_sports;
   }}
+
+
 
 // svg pictograms
 var svg_svg3 = d3.select("#medals")
