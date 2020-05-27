@@ -107,12 +107,8 @@ Some inspiration from other projects that are specially interesting because they
 
 Report for Milestone 2 can be found [here](https://github.com/com-480-data-visualization/com-480-project-knn-viz/blob/master/Milestone2_Dataviz.pdf).
 
-For a template of the final website, you can visit the following [link](https://com-480-data-visualization.github.io/com-480-project-knn-viz/website/index.html).
-
-First idea of the interactive timeline and map can be found [here](https://com-480-data-visualization.github.io/com-480-project-knn-viz/try_plots/map.html).
-
-
 ## Milestone 3 (Thursday 28th May, 5pm)
 
 **80% of the final grade**
 
+To see the final website, you can visit the following [link](https://com-480-data-visualization.github.io/com-480-project-knn-viz/website/map.html). Please, use Google Chrome or Firefox as browser for a better experience.
