@@ -306,7 +306,7 @@ function ready(error, topo, markers) {
 
     // get the data for host city
     var data_marker = [markers[year][season]]
-    console.log(data_marker)
+    //console.log(data_marker)
 
     svg.selectAll("myLocation")
       .data(data_marker)

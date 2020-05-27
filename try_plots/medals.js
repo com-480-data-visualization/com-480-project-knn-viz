@@ -4,128 +4,54 @@ var margin_sports = {top: 20, right: 30, bottom: 70, left: 30},
     width_sports= Math.min(1800,window.innerWidth) - 300 - margin_sports.left - margin_sports.right,
     height_sports= 1500 - margin_sports.top - margin_sports.bottom;
 
-console.log('windowWidth', window.innerWidth)
+//console.log('windowWidth', window.innerWidth)
+
+// declare variables
 var dy = 50;
 var sports = {}
 var selectedSport = []
 var deltaXText = 0
 var selected_sport = "Athelics"
 
-//var year = 1896
+// starting point
 var city = "Athina"
 var country = "Greece"
 var number_sports = 9
 
 
-
+// position of the text according to window size
 var text_x_pos = function(i){
   max_per_row = Math.floor(((width_sports - 100)/220))
-  console.log((width_sports - 100)/220)
-  //console.log(max_per_row)
   return parseInt(i%max_per_row)*110
 }
 
 var text_y_pos = function(i){
   max_per_row = Math.floor(((width_sports - 100)/220))
-  //console.log(max_per_row)
   return parseInt(i/max_per_row)*110
 }
 
-
-var delete_content = function delete_content(){
-    svg_info_medals.selectAll(".infoTitle").remove();
-    svg_info_medals.selectAll("image").remove();
-}
-
-
-// A function that create / update the plot for a given variable:
-function update_medals(year) {
-
-  //Remove previous entries to avoid overlapping
-  svg3.selectAll("*").remove();
-
-  // Parse the Data
-  d3.json("data/sports_years.json", function(data){
-
-    svg3.selectAll("sportNames")
-      .data(data)
-      .enter()
-      .append("text")
-        .attr("class", "sport")
-        .attr("x", function(d,i){
-          return deltaXText + getXText(i)})
-        .attr("y", function(d,i){return 10 + getYText(i)}) // 100 is where the first dot appears. 25 is the distance between dots
-        .style("fill", function(d){
-          if (d[String(year)][season] > 0){
-            return 'black';
-          }
-          return 'grey';
-        })
-        .text(function(d){
-          return d.name})
-        .attr("text-anchor", "left")
-        .style("alignment-baseline", "middle")
-        .on("click", function(d){
-          if (d[String(year)][season] > 0){
-            info_medal(d.name);
-          } else {
-            delete_content();
-          }
-
-        })
-
-    svg3.selectAll("sportNames")
-          .data(data)
-          .enter()
-          .append("text")
-            .attr("class", "sportLegend")
-            .attr("x", function(d,i){
-              return deltaXText + getXText(i)})
-            .attr("y", function(d,i){return 10 + 16 + getYText(i)}) // 100 is where the first dot appears. 25 is the distance between dots
-            .style("fill", function(d){
-              if (d[String(year)][season] > 0){
-                return 'black';
-              }
-              return 'grey';
-            })
-            .text(function(d){
-              if (d[String(year)][season] > 0){
-                return "Total Participants : " + String(d[String(year)][season]);
-              }
-              return " "})
-            .attr("text-anchor", "left")
-            .style("alignment-baseline", "middle")
-
-
-
-        // INFORMATION PART
-
-  })
-}
-
-
+// tooltip to indicate sports names
 var sport_tip = d3.tip()
     .attr('class', 'd3-tip4')
     .offset([-10, 0])
     .html(function(d) {
       return d
-          })
+    });
 
+// tooltip to show info of disciplines
 var event_tip = d3.tip()
     .attr('class', 'd3-tip')
     .offset([-10, 0])
     .html(function(d) {
-      //console.log(Object.entries(d[1]['countries']))
-
       return "<strong> Event: </strong>" + d[0] + "<br> <strong> Participant Countries: </strong> <span>" + Object.keys(d[1]['countries']).length + "</span>"
     + "<br> <strong> Total Athletes: </strong> <span>" + Object.values(d[1]['countries']).reduce((a, b) => a + b, 0) + "</span>";
-          })
-    // we have the necessary data. format those well.
+  });
 
+// call tooltips
 svg.call(event_tip);
 svg.call(sport_tip);
 
-
+// function that updates the information about disciplines inside a sport
 function display_sport_detail(game, sport_detail){
   g_subsports.selectAll("*").remove();
   //svg_info_medalists.selectAll("*").remove();
@@ -142,8 +68,7 @@ function display_sport_detail(game, sport_detail){
             .attr("text-anchor", "middle");
 
   var events_list = Object.entries(sport_detail);
-  console.log(events_list);
-  // it would be better to sort the events beforehand
+
   g_subsports.append("circle")
     .attr("cx", width_svg_bars/2 - 100)
     .attr("cy", (events_list.length/10 + 1)*30 +60)
@@ -204,7 +129,7 @@ function display_sport_detail(game, sport_detail){
       .attr("cy" , function(d,i){
         return 30 + parseInt(i/10)*25})
       .style("fill", function(d){
-        //differentiate circles with color
+        //differentiate circles with color according to gender
         if (d[0].indexOf("Women's") != -1){
           return "rgba(238,51,78,1)";
         }
@@ -219,22 +144,20 @@ function display_sport_detail(game, sport_detail){
       .on("mouseleave", event_tip.hide)
       .on("click", function(d){
         display_medalists(d[1]['medalists']);
-      })
+      });
 
       }
 
 
+const margin_text = 25;
 
-          // participating countries -> update map as well?
-          // for each events, show medalists
-          // MVP countries overall
-const margin_text = 25//width_adjusted/20;
-
+// function to show pictograms and change information on click
 function update_sports(year, season) {
-    svg3.selectAll("*").remove();
-    g_subsports.selectAll("*").remove()
-    svg_bars.selectAll("*").remove()
   //Remove previous entries to avoid overlapping
+  svg3.selectAll("*").remove();
+  g_subsports.selectAll("*").remove();
+  svg_bars.selectAll("*").remove();
+
   var game = year + " " + season
 
   var sizeText = function(){
@@ -263,16 +186,15 @@ function update_sports(year, season) {
             .attr("font-weight", 100);
 
 
-
-
   d3.json("data/sports_game_details.json",function(data){
-    console.log("GAME", game == "1916 Summer")
+
+    // add info for cancelled or postponed events
     if (game == "1916 Summer" | game == "1940 Summer" | game == "1944 Summer" | game == "2020 Summer"){
 
       svg_bars.selectAll("*").remove();
 
-      svg_svg3.attr("height", 300)
-      svg3.selectAll("sportNames").remove()
+      svg_svg3.attr("height", 300);
+      svg3.selectAll("sportNames").remove();
 
       svg3.append("svg:image")
           .attr("x", ((width_sports/2)/2))
@@ -281,12 +203,11 @@ function update_sports(year, season) {
           .attr('height', 220)
           .attr("xlink:href", "sports_picto/cancelled_" + game.split(' ')[0] + ".png");
 
-    } else {
-
+    } else { // Add information about sports and update when click
 
 
     var sports_list = Object.keys(data[game]);
-    var number_sports = sports_list.length
+    var number_sports = sports_list.length;
 
     var sizeTextBig = function(){
       if (width_svg_bars < 500){
@@ -318,7 +239,7 @@ function update_sports(year, season) {
     }
 
     // Adapt height svg to avoid extra blank space
-    svg_svg3.attr("height", function(){return height_svg3(); })
+    svg_svg3.attr("height", function(){return height_svg3(); });
 
     // Pictograms of sports
     svg3.selectAll("sportNames").remove()
@@ -342,8 +263,8 @@ function update_sports(year, season) {
                   update_bars(info[year][s], s);
                   });
           d3.json("data/medals_country.json", function(top) {
-                  update_top_countries(top[year][s])
-                    })
+                  update_top_countries(top[year][s]);
+                });
           });
 
     // Initial text next to pictograms
@@ -397,43 +318,42 @@ function update_sports(year, season) {
                   .attr("font-weight", 200);
       }
 
-      })
+    });
 
     }
 
+// function to get data ready for the stacked bar
 function get_data_bar(value, label1, label2) {
       data_bar = [ {'cumulative': 0.0, 'value': value, 'label': label1},
           {'cumulative': value, 'value': Math.round((100.0-value) * 10) / 10, 'label': label2}];
-      return data_bar
+      return data_bar;
     }
 
+// function to create the 4 informative bars for each sport
 function stackedBar (selection, data) {
   config = {
     f: d3.format('.1f'),
     margin: {top: 20, right: 10, bottom: 20, left: 10},
     barHeight: 30,
-    //colors: ['#2FBD29', '#A7B7A6', '#3B8ACC', '#CC4F3B']
     colors: ['rgba(252,177,49,1)', 'rgba(226,229,227,0.5)', 'rgba(0,129,200,1)', 'rgba(238,51,78,1)']
   }
-  const { f, margin, width, height, barHeight, colors } = config
-  const w = width - margin.left - margin.right
-  const h = height - margin.top - margin.bottom
-  console.log(h, barHeight)
-  const halfBarHeight = barHeight / 2
+  const { f, margin, width, height, barHeight, colors } = config;
+  const w = width - margin.left - margin.right;
+  const h = height - margin.top - margin.bottom;
+  const halfBarHeight = barHeight / 2;
 
   // set up scales for horizontal placement
-  var widthBars = Math.min(200, width_svg_bars/3)
+  var widthBars = Math.min(200, width_svg_bars/3);
 
   var xScale = d3.scaleLinear()
     .domain([0, 100])
-    .range([0, widthBars])
-
-  svg_bars.selectAll('text').remove();
+    .range([0, widthBars]);
 
   selection.selectAll('rect').remove();
   selection.selectAll('text').remove();
 
   // stack rect for each data value
+  // first bar - countries
   selection.selectAll('rect')
     .data(data[0])
     .enter().append('rect')
@@ -444,7 +364,7 @@ function stackedBar (selection, data) {
     .attr('y', halfBarHeight + 100)
     .attr('height', barHeight)
     .attr('width', d => xScale(d.value))
-    .style('fill', (d, i) => colors[i])
+    .style('fill', (d, i) => colors[i]);
 
   // add values on bar
   selection.selectAll('.text-value')
@@ -458,7 +378,7 @@ function stackedBar (selection, data) {
     .attr("font-weight", 100)
     .attr('x', xScale(data[0][0]['cumulative']) + (xScale(data[0][0]['value']) / 2) + 30)
     .attr('y', 2*barHeight + 100)
-    .text(data[0][0]['value'] + ' %')
+    .text(data[0][0]['value'] + ' %');
 
   // add the labels
   selection.selectAll('.text-label')
@@ -472,8 +392,9 @@ function stackedBar (selection, data) {
     .attr('x', 30 + widthBars/2)
     .attr('y', barHeight - 25 + 100)
     .style('fill', 'black')
-    .text("Countries participating")
+    .text("Countries participating");
 
+  // second bar - athletes
   selection.selectAll('rect2')
     .data(data[1])
     .enter().append('rect')
@@ -484,7 +405,7 @@ function stackedBar (selection, data) {
     .attr('y', halfBarHeight + 100)
     .attr('height', barHeight)
     .attr('width', d => xScale(d.value))
-    .style('fill', (d, i) => colors[i])
+    .style('fill', (d, i) => colors[i]);
 
     // add values on bar
     selection.selectAll('.text-value2')
@@ -497,7 +418,7 @@ function stackedBar (selection, data) {
       .attr("font-size", "12px")
       .attr('x', xScale(data[1][0]['cumulative']) + (xScale(data[1][0]['value']) / 2) + 30 + widthBars*1.5)
       .attr('y', 2*barHeight + 100)
-      .text(data[1][0]['value'] + ' %')
+      .text(data[1][0]['value'] + ' %');
 
     // add the labels
     selection.selectAll('.text-label2')
@@ -511,8 +432,9 @@ function stackedBar (selection, data) {
       .attr('x',  30 + widthBars*1.5 + widthBars/2)
       .attr('y', barHeight - 25 + 100)
       .style('fill', 'black')
-      .text("Athletes participating")
+      .text("Athletes participating");
 
+  // third bar - male vs female
   selection.selectAll('rect3')
     .data(data[2])
     .enter().append('rect')
@@ -523,7 +445,7 @@ function stackedBar (selection, data) {
     .attr('y', halfBarHeight + 100 + 100)
     .attr('height', barHeight)
     .attr('width', d => xScale(d.value))
-    .style('fill', (d, i) => colors[i+2])
+    .style('fill', (d, i) => colors[i+2]);
 
     // add values on bar
     selection.selectAll('.text-value3')
@@ -537,7 +459,7 @@ function stackedBar (selection, data) {
       .attr('x', d => xScale(d.cumulative) + (xScale(d.value) / 2) + 30)
       .attr('y', 2*barHeight + 100 + 100)
       .text(d  => d.value + ' %')
-      .style('fill', (d, i) => colors[i+2])
+      .style('fill', (d, i) => colors[i+2]);
 
     // add the labels
     selection.selectAll('.text-label3')
@@ -551,8 +473,9 @@ function stackedBar (selection, data) {
       .attr('x', 30 + widthBars/2)
       .attr('y', barHeight - 25 + 100 + 100)
       .style('fill', 'black')
-      .text("Male vs Female Athletes")
+      .text("Male vs Female Athletes");
 
+      // fourth bar - individual vs team
       selection.selectAll('rect4')
         .data(data[3])
         .enter().append('rect')
@@ -563,7 +486,7 @@ function stackedBar (selection, data) {
         .attr('y', halfBarHeight + 100 + 100)
         .attr('height', barHeight)
         .attr('width', d => xScale(d.value))
-        .style('fill', (d, i) => colors[i+2])
+        .style('fill', (d, i) => colors[i+2]);
 
         // add values on bar
         selection.selectAll('.text-value4')
@@ -577,7 +500,7 @@ function stackedBar (selection, data) {
           .attr('x', d => xScale(d.cumulative) + (xScale(d.value) / 2) + 30 + widthBars*1.5)
           .attr('y', 2*barHeight + 100 + 100)
           .text(d => d.value + ' %')
-          .style('fill', (d, i) => colors[i+2])
+          .style('fill', (d, i) => colors[i+2]);
 
         // add the labels
         selection.selectAll('.text-label4')
@@ -591,10 +514,11 @@ function stackedBar (selection, data) {
           .attr('x', 30 + widthBars*1.5 + widthBars/2)
           .attr('y', barHeight - 25 + 100 + 100)
           .style('fill', 'black')
-          .text("Individual vs Team Events")
+          .text("Individual vs Team Events");
 
   }
 
+// tooltip to show medals of top countries
 var country_tip = d3.tip()
     .attr('class', 'd3-tip3')
     .offset(function() {
@@ -604,13 +528,15 @@ var country_tip = d3.tip()
       return "<strong>Country: </strong>" + d["Country"] + "<br><strong>Medals: </strong>" + d["Medals"];
     });
 
+// call tooltip
 svg.call(country_tip);
 
-
+// function to show the top countries for each sport
 function update_top_countries(top_data) {
   const img_size = 40;
   svg_bars.selectAll("image").remove();
 
+  // title
   svg_bars.append("text")
             .attr("x", (width_svg_bars/2))
             .attr("y", 330)
@@ -620,6 +546,7 @@ function update_top_countries(top_data) {
             .attr("font-size", "20px")
             .attr("font-weight", 400);
 
+  // top1 country
   svg_bars.append("text")
             .attr("x", (width_svg_bars/2) - 100)
             .attr("y", 380)
@@ -642,6 +569,7 @@ function update_top_countries(top_data) {
           .on("mouseover", country_tip.show)
           .on("mouseleave", country_tip.hide);
 
+    // top 2 country
     svg_bars.append("text")
             .attr("x", (width_svg_bars/2))
             .attr("y", 380)
@@ -664,6 +592,7 @@ function update_top_countries(top_data) {
           .on("mouseover", country_tip.show)
           .on("mouseleave", country_tip.hide);
 
+    // top3 country
     svg_bars.append("text")
             .attr("x", (width_svg_bars/2) + 100)
             .attr("y", 380)
@@ -686,6 +615,7 @@ function update_top_countries(top_data) {
             .on("mouseover", country_tip.show)
             .on("mouseleave", country_tip.hide);
 
+    // adapt heaight accordint to number of top countries (ties)
     var height_flags =  Math.max(top_data["Gold"].length, top_data["Silver"].length, top_data["Bronze"].length);
 
     svg_svg3.attr("height", function(){return (heighMedals() + (height_flags - 3)*60);})
@@ -695,19 +625,18 @@ function update_top_countries(top_data) {
               "translate(" + translateX_bars() + ",  " + (400+ margin_sports.top + 2*margin_sports.bottom + (height_flags-3)*60) + ")");
     }
 
-
-
-
 }
 
+// adapt width svg
 var width_svg_bars = Math.min(550, (width_sports/2 + 50 ))
+
+// function to adapt to different widths
 var translateX_bars = function(){
   if (width_sports < 900){
     return width_sports -  width_svg_bars;
   } else {
     return (width_sports)/2
   }
-  //Math.max((width_sports -  width_svg_bars), )/2
 }
 
 // select max between pictograms and bars
@@ -726,8 +655,9 @@ var heighMedals = function(){
 var svg_svg3 = d3.select("#medals")
   .append("svg")
     .attr("width", width_sports)
-    .attr("height", function(){return heighMedals();})
+    .attr("height", function(){return heighMedals();});
 
+// create different svgs
 var svg3 = svg_svg3.append("g")
                   .attr("width", (width_sports - 100)/2)
                   .attr("height", function(){return heighMedals();})
@@ -738,7 +668,7 @@ var svg_bars = svg_svg3.append("g")
                 .attr("width", width_svg_bars)
                 .attr("height", 400+ margin_sports.top + margin_sports.bottom)
                 .attr("transform", function(){
-                  return "translate(" + translateX_bars() + ", -" + 0 + ")";})
+                  return "translate(" + translateX_bars() + ", -" + 0 + ")";});
 
 
 var g_subsports = svg_svg3.append("g")
@@ -747,8 +677,7 @@ var g_subsports = svg_svg3.append("g")
                       .attr("transform",
                             "translate(" + translateX_bars() + ",  " + (400+ margin_sports.top + 2*margin_sports.bottom) + ")");
 
-
-
+// function to get data and update the bars info for each sport
 function update_bars(data, sport) {
 
   let data_countries = get_data_bar(data['countries'], 'Countries participating', 'Total');
@@ -760,6 +689,7 @@ function update_bars(data, sport) {
 
   stackedBar(svg_bars, all_data);
 
+  // add title of sport
   svg_bars.append("text")
           .attr("x", width_svg_bars/2)
           .attr("y", 40)
@@ -771,5 +701,6 @@ function update_bars(data, sport) {
           .attr("alignment-baseline","middle")
           .attr("text-anchor", "middle");
 }
+
 // Initialize plot
 update_sports(year, season)
