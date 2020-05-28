@@ -112,3 +112,15 @@ Report for Milestone 2 can be found [here](https://github.com/com-480-data-visua
 **80% of the final grade**
 
 To see the final website, you can visit the following [link](https://com-480-data-visualization.github.io/com-480-project-knn-viz/website/map.html). Please, use Google Chrome or Firefox as browser for a better navigation experience.
+
+The video showing how the visualization works can be found in the following [link](https://www.youtube.com/watch?v=xWv1JyJC_aY&feature=youtu.be).
+
+The process book can be found [here](Process_Book_knn.pdf).
+
+The project is structured as follows:
+
+ * `data_exploration.ipynb`: data exploration of our dataset.
+ * `data/`: directory containing all the data used to perform the data exploration and later to extract the data used in the website.
+ * `website/`: directory containing all the files used to build the visaulization. Inside, you can find several folders used to store the data needed as well as images used in the visualization (`data/`, `logos/`, `images/`, `country-flags-master` and `sports_picto`). The html is stored in `map.html`, the style is defined in `map.css` and all the main visualizations and interactions (javascript files) are divided in different files according to the different sections in the website: `map.js`, `medals.js`, `new_lollipop.js` and `title.js`.
+ * `index.html`: html file that redirects to the visualization (to `website/map.html`).
+ * `website/`: directory containing all the files used to build the visaulization. Inside, you can find several folders used to store the data needed as well as images used in the visualization (`data/`, `logos/`, `images/`, `country-flags-master` and `sports_picto`). The html is stored in `map.html`, the style is defined in `map.css` and all the main visualizations and interactions (javascript files) are divided in different files according to the different sections in the website: `map.js`, `medals.js`, `new_lollipop.js` and `title.js`.
