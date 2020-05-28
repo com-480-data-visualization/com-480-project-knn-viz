@@ -111,4 +111,4 @@ Report for Milestone 2 can be found [here](https://github.com/com-480-data-visua
 
 **80% of the final grade**
 
-To see the final website, you can visit the following [link](https://com-480-data-visualization.github.io/com-480-project-knn-viz/website/map.html). Please, use Google Chrome or Firefox as browser for a better experience.
+To see the final website, you can visit the following [link](https://com-480-data-visualization.github.io/com-480-project-knn-viz/website/map.html). Please, use Google Chrome or Firefox as browser for a better navigation experience.
