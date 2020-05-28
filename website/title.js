@@ -30,7 +30,7 @@ var openNewTab = function openInNewTab(url) {
         .attr('width', 20)
         .attr('height', 20)
         .attr("xlink:href", "images/process.jpeg")
-        .on("click", function(){openNewTab("https://github.com/com-480-data-visualization/com-480-project-knn-viz")});
+        .on("click", function(){openNewTab("https://github.com/com-480-data-visualization/com-480-project-knn-viz/blob/master/Process_Book_knn.pdf")});
 
 // add icon video
       title_games
